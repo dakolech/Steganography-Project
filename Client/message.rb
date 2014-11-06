@@ -12,10 +12,26 @@ class Message
     end
 
     def encode
-        for i in (0..@image.width - 1)
-            for j in (0..@image.height - 1)
-                @image[i, j] &= 0xF8FCF8FF
-            end
+        i = 0
+        @text.each_byte do |byte|
+            magic = (byte << 24) & 0xE0FFFFFF
+            magic = magic | ((byte << 16) & 0xFF18FFFF)
+            magic = magic | ((byte <<  8) & 0xFFFF03FF)
+            @image[0, i] &= 0xF8FCF8FF
+            @image[0, i] |= magic
+            i += 1
+        end
+        #0.upto(@image.width - 1) do |i|
+        #    0.upto(@image.height - 1) do |j|
+        #        @image[i, j] &= 0xF8FCF8FF
+        #    end
+        #end
+    end
+
+    def decode
+        result = ''
+        @text.length.times do |n|
+
         end
     end
 
@@ -27,9 +43,6 @@ end
 msg = Message.new(text: 'Some random text', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
 msg.encode
 msg.save
-
-puts msg.text
-puts msg.ip_dest
 
 #image[0, 0] = ChunkyPNG::Color.rgba(255, 0, 0, 128)
 #image.line(1, 1, 10, 1, ChunkyPNG::Color.from_hex('#aa007f'))
