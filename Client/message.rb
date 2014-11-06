@@ -12,10 +12,10 @@ class Message
     end
 
     def encode
-        i = 0
-        @text.each_byte do |byte|
-            @image[0, i] = @image[0, i] & 0xFFFF00FF
-            i += 1
+        for i in (0..@image.width - 1)
+            for j in (0..@image.height - 1)
+                @image[i, j] &= 0xF8FCF8FF
+            end
         end
     end
 
@@ -30,9 +30,6 @@ msg.save
 
 puts msg.text
 puts msg.ip_dest
-
-a = [[0, 1], [2, 3]]
-a.each_index { |i| puts "a[#{i}] = #{a[i]}" }
 
 #image[0, 0] = ChunkyPNG::Color.rgba(255, 0, 0, 128)
 #image.line(1, 1, 10, 1, ChunkyPNG::Color.from_hex('#aa007f'))
