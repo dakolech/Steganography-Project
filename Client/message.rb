@@ -64,6 +64,13 @@ class Message
         end
 
         def decode_key
+            str = ''
+            (0..2).each do |i|
+                (0..2).each do |j|
+                    str += decode_letter(i, j)
+                end
+            end
+            return str
         end
 
         def encode_letter(x, y, letter)
