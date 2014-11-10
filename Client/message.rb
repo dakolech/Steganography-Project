@@ -10,11 +10,15 @@ class Message
         @text  = properties[:text] || 'Some default text'
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
 
+        @key = 0
         @occupied_pixels = Set.new
     end
 
     def encode
-        Random.srand 1410
+        @key = Random.srand.to_s.slice(0..8).to_i
+        encode_key
+
+        Random.srand @key
         @text.each_char.with_index do |char, index|
             x, y = find_next_pixel
             encode_letter(x, y, char)
@@ -23,8 +27,10 @@ class Message
     end
 
     def decode
+        decode_key
+        Random.srand @key
+
         str = ''
-        Random.srand 1410
         @text.length.times do
             x, y = find_next_pixel
             str += decode_letter(x, y)
@@ -49,6 +55,15 @@ class Message
             end
             @occupied_pixels.add([x, y])
             return x, y
+        end
+
+        def encode_key
+            @key.to_s.each_char.with_index do |char, i|
+                encode_letter(i/3, i%3, char)
+            end
+        end
+
+        def decode_key
         end
 
         def encode_letter(x, y, letter)
