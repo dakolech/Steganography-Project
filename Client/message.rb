@@ -11,6 +11,20 @@ class Message
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
     end
 
+    def encode
+        i = 0
+        @text.each_char do |char|
+            encode_letter(0, i, char)
+            i += 1
+        end
+    end
+
+    def decode
+        str = ''
+        @text.length.times { |i| str += decode_letter(0, i) }
+        return str
+    end
+
     def save
         @image.save('images/changed.png')
     end
@@ -35,6 +49,7 @@ class Message
 end
 
 msg = Message.new(text: 'Some random text', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
-msg.encode_letter(0, 0, 'A')
-puts msg.decode_letter(0, 0)
+msg.encode
+puts msg.decode
+
 msg.save
