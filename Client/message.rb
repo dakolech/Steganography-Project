@@ -12,11 +12,7 @@ class Message
     end
 
     def encode
-        i = 0
-        @text.each_char do |char|
-            encode_letter(0, i, char)
-            i += 1
-        end
+        @text.each_char.with_index { |char, index| encode_letter(0, index, char) }
     end
 
     def decode

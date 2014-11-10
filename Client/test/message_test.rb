@@ -8,11 +8,11 @@ describe Message do
 
     describe 'encoding and decoding single letters' do
 
-        it 'should properly decode letter after encoding' do
-            msg = Message.new()
-            [*('a'..'z'), *('A'..'Z')].each do |c|
-                msg.encode_letter(0, 0, c)
-                msg.decode_letter(0, 0).must_equal c
+        it 'should properly decode strings after encoding' do
+            ['', '', ''].each do |message|
+                msg = Message.new(text: message)
+                msg.encode
+                msg.decode.must_equal message
             end
         end
 
