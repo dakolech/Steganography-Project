@@ -1,4 +1,5 @@
 require 'oily_png'
+require 'minitest/spec'
 
 class Message
     attr_accessor :text, :ip_dest
@@ -7,7 +8,7 @@ class Message
         filename = properties[:filename] || 'images/cat_small.png'
 
         @image = ChunkyPNG::Image.from_file(filename)
-        @text  = properties[:text] || 'Some default text' 
+        @text  = properties[:text] || 'Some default text'
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
     end
 
