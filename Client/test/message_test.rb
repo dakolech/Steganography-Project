@@ -9,7 +9,9 @@ describe Message do
     describe 'encoding and decoding single letters' do
 
         it 'should properly decode strings after encoding' do
-            ['', '', ''].each do |message|
+            ['Sample text in length about 50 characters',
+             'Th!s_m@y__be  mqre PROBLEMATIC',
+             '($*%#@&*$^&(@^(*&*$&@))) hardcore'].each do |message|
                 msg = Message.new(text: message)
                 msg.encode
                 msg.decode.must_equal message

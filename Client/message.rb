@@ -9,6 +9,8 @@ class Message
         @image = ChunkyPNG::Image.from_file(filename)
         @text  = properties[:text] || 'Some default text'
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
+
+        @occupied_pixels = Set.new
     end
 
     def encode
@@ -17,6 +19,7 @@ class Message
             x, y = find_next_pixel
             encode_letter(x, y, char)
         end
+        @occupied_pixels.clear
     end
 
     def decode
@@ -25,7 +28,6 @@ class Message
         @text.length.times do
             x, y = find_next_pixel
             str += decode_letter(x, y)
-            puts "pixel: (#{x} #{y})"
         end
         return str
     end
@@ -41,8 +43,11 @@ class Message
             loop do
                 x = Random.rand(@image.width)
                 y = Random.rand(@image.height)
-                break if (x + y >= 5 && x + y <= @image.width + @image.height - 5)
+                break if (x + y >= 5 &&
+                          x + y <= @image.width + @image.height - 5 &&
+                          !@occupied_pixels.include?([x, y]))
             end
+            @occupied_pixels.add([x, y])
             return x, y
         end
 
@@ -63,8 +68,6 @@ class Message
         end
 end
 
-msg = Message.new(text: 'Some random text', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
+msg = Message.new(text: 'To jednak byl zamach', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
 msg.encode
 puts msg.decode
-
-msg.save
