@@ -12,12 +12,21 @@ class Message
     end
 
     def encode
-        @text.each_char.with_index { |char, index| encode_letter(0, index, char) }
+        Random.srand 1410
+        @text.each_char.with_index do |char, index|
+            x, y = find_next_pixel
+            encode_letter(x, y, char)
+        end
     end
 
     def decode
         str = ''
-        @text.length.times { |i| str += decode_letter(0, i) }
+        Random.srand 1410
+        @text.length.times do
+            x, y = find_next_pixel
+            str += decode_letter(x, y)
+            puts "pixel: (#{x} #{y})"
+        end
         return str
     end
 
@@ -26,6 +35,16 @@ class Message
     end
 
     private
+
+        def find_next_pixel
+            x = y = 0
+            loop do
+                x = Random.rand(@image.width)
+                y = Random.rand(@image.height)
+                break if (x + y >= 5 && x + y <= @image.width + @image.height - 5)
+            end
+            return x, y
+        end
 
         def encode_letter(x, y, letter)
             byte = letter.bytes.first
