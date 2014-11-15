@@ -21,7 +21,7 @@ end
 
 position = 0
 
-menu = Window.new(7,40,7,2)
+menu = Window.new(6, 40, 10, 40)
 menu.box('|', '-')
 draw_menu(menu, position)
 while ch = menu.getch
