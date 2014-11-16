@@ -1,4 +1,4 @@
-require './main_window'
+require 'main_window'
 
 class LoginWindow < Shoes
     url '/',        :show

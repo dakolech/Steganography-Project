@@ -1,3 +1,5 @@
+require '../helper/main_window_helper'
+
 class MainWindow < Shoes
     url '/main',    :show
 
@@ -19,7 +21,14 @@ class MainWindow < Shoes
             end
             stack width: '30%' do
                 border red, strokewidth: 1
-                para 'Friends'
+                friends = MainWindowHelper::load_friends
+                friends.each do |friend|
+                    stack do
+                        hover { |f| @hover_bg = f.background blue }
+                        leave { |f| @hover_bg.remove }
+                        para friend[0]
+                    end
+                end
             end
         end
     end
