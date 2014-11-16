@@ -1,20 +1,27 @@
 require 'oily_png'
 
+require './exceptions'
+
 class Message
     attr_accessor :text, :ip_dest
 
     def initialize(properties = {})
         filename = properties[:filename] || 'images/cat_small.png'
 
-        @image = ChunkyPNG::Image.from_file(filename)
         @text  = properties[:text] || 'Some default text'
-        @ip_dest = properties[:ip_dest]  || '127.0.0.1'
+        @image = ChunkyPNG::Image.from_file(filename)
+        raise ImageTooSmall.new unless @image.width*@image.height > Image::TIMES_LARGER*@text.length
 
+        @ip_dest = properties[:ip_dest]  || '127.0.0.1'
+        @key = 0
         @occupied_pixels = Set.new
     end
 
     def encode
-        Random.srand 1410
+        @key = Random.srand.to_s.slice(0..8).to_i
+        encode_key
+
+        Random.srand @key
         @text.each_char.with_index do |char, index|
             x, y = find_next_pixel
             encode_letter(x, y, char)
@@ -23,8 +30,10 @@ class Message
     end
 
     def decode
+        decode_key
+        Random.srand @key
+
         str = ''
-        Random.srand 1410
         @text.length.times do
             x, y = find_next_pixel
             str += decode_letter(x, y)
@@ -37,18 +46,38 @@ class Message
     end
 
     private
+        module Image
+            TIMES_LARGER = 50
+            FREE_PIXELS = 5
+        end
 
         def find_next_pixel
             x = y = 0
             loop do
                 x = Random.rand(@image.width)
                 y = Random.rand(@image.height)
-                break if (x + y >= 5 &&
-                          x + y <= @image.width + @image.height - 5 &&
+                break if (x + y >= Image::FREE_PIXELS &&
+                          x + y <= @image.width + @image.height - Image::FREE_PIXELS &&
                           !@occupied_pixels.include?([x, y]))
             end
             @occupied_pixels.add([x, y])
             return x, y
+        end
+
+        def encode_key
+            @key.to_s.each_char.with_index do |char, i|
+                encode_letter(i/3, i%3, char)
+            end
+        end
+
+        def decode_key
+            str = ''
+            (0..2).each do |i|
+                (0..2).each do |j|
+                    str += decode_letter(i, j)
+                end
+            end
+            return str
         end
 
         def encode_letter(x, y, letter)
@@ -68,6 +97,12 @@ class Message
         end
 end
 
-msg = Message.new(text: 'To jednak byl zamach', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
-msg.encode
-puts msg.decode
+begin
+    msg = Message.new(text: 'To jednak byl zamach', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
+    msg.encode
+    puts msg.decode
+
+    msg.save
+rescue ImageTooSmall => e
+    puts e.message
+end
