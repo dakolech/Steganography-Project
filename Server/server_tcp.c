@@ -19,7 +19,18 @@ void *client_loop(void *arg) {
     printf("[server] POCZĄTEK wątku client_loop\n");
     char buffer[1024] = "";
     int sck = *((int*) arg);
+    int rcvd;
 
+    int handle = 10;
+
+    while ((rcvd = read (sck, buffer, sizeof(buffer))) > 0)
+        //write (1, buffer, rcvd);
+
+    printf("%s\n", buffer);
+
+    //while(rcvd = recv(sck, buffer, 1024, 0))
+	//    send(sck, buffer, rcvd, 0);
+/*
     FILE *fp = fopen("send.txt", "r");
     int f_block_sz = 0;
     while ((f_block_sz = fread(buffer, sizeof(char), 1024, fp)) > 0) {
@@ -29,7 +40,7 @@ void *client_loop(void *arg) {
         }
         bzero(buffer, 1024);
     }
-    fclose(fp);
+    fclose(fp);*/
     close(sck);
     printf("[server] KONIEC wątku client_loop\n");
     pthread_exit(NULL);
