@@ -4,25 +4,24 @@ class LoginWindow < Shoes
     url '/',        :show
 
     def show
-        stack do
-            flow margin: 10 do
-                stack width: '30%' do
-                    para 'Your ID', size: 10
-                    para 'Password', size: 10
-                end
-                stack width: '-30%' do
-                    @id_edit = edit_line
-                    @pass_edit = edit_line secret: true
+        flow margin: 10 do
+            stack width: '30%' do
+                para 'Your ID:', size: 10
+                para 'Password:', size: 10
+            end
+            stack width: '-30%' do
+                @id_edit = edit_line
+                @pass_edit = edit_line secret: true
 
-                    @login_button = button 'Login'
-                    @login_button.click do
-                        visit '/main'
-                    end
-                    @login_button.style margin_top: 10
+                @login_button = button 'Login'
+                @login_button.click do
+                    visit '/main'
+                    close
                 end
+                @login_button.style margin_top: 10
             end
         end
     end
 end
 
-Shoes.app width: 300, height: 120, resizable: false
+Shoes.app width: 300, height: 120
