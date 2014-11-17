@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <strings.h>
 #include <arpa/inet.h>
+#include "generate.h"
 
 #define BUFSIZE 10000
 
@@ -20,7 +21,7 @@ int main ()
 {
 	struct sockaddr_in sck_addr;
 
-	int sck, odp;
+	int sck;//, odp;
 
 	printf ("Usługa %d na %s z serwera %s :\n", service_port, protocol, server);
 
@@ -39,9 +40,20 @@ int main ()
 		exit (EXIT_FAILURE);
 	}
 
-    char msg[1024]="Wiadomosc";
+    //char msg[1024]="Wiadomosc";
 
-    write(sck, msg, sizeof(msg));
+    char sentence[1024];
+
+    char id[4]="1234";
+    char key[11]= "BEZLITOSNY3";
+    char verb[10]= "LIKES";
+
+    generateSentence(id, key, verb, sentence);
+
+    //write(sck, msg, sizeof(msg));
+    printf("%s\n", sentence);
+
+    write(sck, sentence, sizeof(sentence));
     
 	//while ((odp = read (sck, bufor, BUFSIZE)) > 0)
 	//	write (1, bufor, odp);

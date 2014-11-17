@@ -23,7 +23,7 @@ void *client_loop(void *arg) {
 
     int handle = 10;
 
-    while ((rcvd = read (sck, buffer, sizeof(buffer))) > 0)
+    while ((rcvd = read (sck, buffer, sizeof(buffer))) > 0);
         //write (1, buffer, rcvd);
 
     printf("%s\n", buffer);
