@@ -4,23 +4,17 @@ class MainWindow < Shoes
     url '/main',    :show
 
     def show
-        window height: 435, width: 600, resizable: false do
-            stack width: '70%' do
-                stack height: 400, scroll: true do
+        @that = self
+        window height: 500, width: 600, resizable: false do
+            @messenger = stack width: '70%', height: 400, scroll: true do
                     20.times { inscription 'This is a messenger' }
-
-                end
-                flow margin_top: 4 do
-                    edit_line width: '80%'
-                    button 'Send', width: '20%'
-                end
             end
-            stack width: '30%' do
+            @side_bar = stack width: '30%' do
                 stack height: 400, scroll: true do
                     friends = MainWindowHelper::load_friends
                     friends.each do |friend|
                         flow margin_top: 2, margin_bottom: 2 do
-                            stack width: '80%' do
+                            @friends_stack = stack width: '80%' do
                                 leave do |f|
                                     f.clear { inscription friend[0] }
                                 end
@@ -43,16 +37,22 @@ class MainWindow < Shoes
                         end
                     end
                 end
+            end
+            stack width: '100%', margin_top: 4, margin_left: 4, margin_right: 4 do
+                edit_box width: '100%', height: 60
                 flow do
-                    @actions = ['Add new...', 'Logout']
+                    @actions = [{name: 'Send', method: :send},
+                                {name: 'Logout', method: :logout},
+                                {name: 'Add new contact', method: :add}]
                     @actions.each do |action|
-                        button action, margin_top: 4,
-                                        width: "#{100/@actions.length}%" do
-                            close
+                        button action[:name], margin_top: 2,
+                                        width: "#{100.0/@actions.length}%" do
+                            MainWindowHelper::send(action[:method].to_s)
                         end
                     end
                 end
             end
         end
     end
+
 end
