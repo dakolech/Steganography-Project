@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'oily_png'
 
 require './exceptions'
@@ -98,11 +99,15 @@ class Message
 end
 
 begin
-    msg = Message.new(text: 'To jednak byl zamach', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
+    msg = Message.new(text: 'Tajna wiadomosc', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
     msg.encode
     puts msg.decode
 
-    msg.save
+    'Zażółć'.each_byte do |byte|
+        puts byte
+    end
+
+    #msg.save
 rescue ImageTooSmall => e
     puts e.message
 end

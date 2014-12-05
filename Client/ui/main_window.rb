@@ -4,12 +4,11 @@ class MainWindow < Shoes
     url '/main',    :show
 
     def show
-        @that = self
         window height: 500, width: 600, resizable: false do
-            @messenger = stack width: '70%', height: 400, scroll: true do
-                    20.times { inscription 'This is a messenger' }
+            @messenger = stack width: '65%', height: 400, scroll: true do
+		        20.times { inscription 'This is a messenger' }
             end
-            @side_bar = stack width: '30%' do
+            @side_bar = stack width: '35%' do
                 stack height: 400, scroll: true do
                     friends = MainWindowHelper::load_friends
                     friends.each do |friend|
@@ -45,13 +44,17 @@ class MainWindow < Shoes
                                 {name: 'Logout', method: :logout},
                                 {name: 'Add new contact', method: :add}]
                     @actions.each do |action|
-                        button action[:name], margin_top: 2,
-                                        width: "#{100.0/@actions.length}%" do
+                        button action[:name], margin_top: 2, width: "#{100.0/@actions.length}%" do
                             MainWindowHelper::send(action[:method].to_s)
                         end
                     end
                 end
             end
+            
+	        @test_proc = lambda do
+	        	@messenger.clear
+	        end
+			MainWindowHelper.test(@test_proc)
         end
     end
 
