@@ -14,12 +14,45 @@
 
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
+#define MAINKEY "BEZLITOSNY3"
 
 void *client_loop(void *arg) {
-    printf("[server] POCZĄTEK wątku client_loop\n");
+    //printf("[server] POCZĄTEK wątku client_loop\n");
     char buffer[1024] = "";
+    char id[4] = "";
+    char pass[4] = "";
+    char destination[4] = "";
     int sck = *((int*) arg);
+    //int rcvd;
 
+    read (sck, buffer, 1024);
+    printf("%s\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, id));
+    printf("%s\n", id);    
+
+    read (sck, buffer, 1024);
+    printf("%s\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, pass));
+    printf("%s\n", pass);
+
+    read (sck, buffer, 1024);
+    printf("%s\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, destination));
+    printf("%s\n", destination);
+
+
+
+    //while ((rcvd = read (sck, buffer2, sizeof(buffer2))) > 0);
+
+/*
+    decodeSentence(buffer, MAINKEY, id);*/
+
+    //while(rcvd = recv(sck, buffer, 1024, 0))
+	//    send(sck, buffer, rcvd, 0);
+/*
     FILE *fp = fopen("send.txt", "r");
     int f_block_sz = 0;
     while ((f_block_sz = fread(buffer, sizeof(char), 1024, fp)) > 0) {
@@ -29,7 +62,7 @@ void *client_loop(void *arg) {
         }
         bzero(buffer, 1024);
     }
-    fclose(fp);
+    fclose(fp);*/
     close(sck);
     printf("[server] KONIEC wątku client_loop\n");
     pthread_exit(NULL);
@@ -39,7 +72,7 @@ int main(int argc, char* argv[]) {
     int nSocket, nClientSocket;
     int nBind, nListen;
     int nFoo = 1;
-    int b;
+    //int b;
     socklen_t nTmp;
     struct sockaddr_in stAddr, stClientAddr;
     /* address structure */
