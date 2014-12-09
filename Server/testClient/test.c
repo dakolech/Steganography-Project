@@ -8,8 +8,14 @@
 #include <strings.h>
 #include <arpa/inet.h>
 #include "generate.h"
+#include <sys/sendfile.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define BUFSIZE 10000
+#define FILE_TO_SEND "plik2.pdf"
 
 char *server = "127.0.0.1";	/* adres IP pętli zwrotnej */
 char *protocol = "tcp";
@@ -40,6 +46,79 @@ int main ()
 		exit (EXIT_FAILURE);
 	}
 
+    char file_size[256];
+	struct stat file_stat;
+	int sent_bytes = 0;
+	int fd;
+	int offset;
+    int remain_data;
+
+	fd = open(FILE_TO_SEND, O_RDONLY);
+    if (fd == -1)
+    {
+            fprintf(stderr, "Error opening file --> %s", strerror(errno));
+
+            exit(EXIT_FAILURE);
+    }
+
+    /* Get file stats */
+    if (fstat(fd, &file_stat) < 0)
+    {
+            fprintf(stderr, "Error fstat --> %s", strerror(errno));
+
+            exit(EXIT_FAILURE);
+    }
+
+    fprintf(stdout, "File Size: \n%d bytes\n", file_stat.st_size);
+
+    sprintf(file_size, "%d", file_stat.st_size);
+
+    write(sck, file_size, 256);
+
+    char buffer[1024] = "";
+
+
+    while (1) {
+	    // Read data into buffer.  We may not have enough to fill up buffer, so we
+	    // store how many bytes were actually read in bytes_read.
+	    int bytes_read = read(fd, buffer, sizeof(buffer));
+	    if (bytes_read == 0) // We're done reading from the file
+	        break;
+
+	    if (bytes_read < 0) {
+	        // handle errors
+	    }
+	    
+
+	    // You need a loop for the write, because not all of the data may be written
+	    // in one call; write will return how many bytes were written. p keeps
+	    // track of where in the buffer we are, while we decrement bytes_read
+	    // to keep track of how many bytes are left to write.
+	    void *p = buffer;
+	    while (bytes_read > 0) {
+	        int bytes_written = write(sck, p, bytes_read);
+	        if (bytes_written <= 0) {
+	            // handle errors
+	        }
+	        bytes_read -= bytes_written;
+	        p += bytes_written;
+
+	    }
+	}
+    /*
+    offset = 0;
+    remain_data = file_stat.st_size;
+    /* Sending file data *//* 
+    while (((sent_bytes = sendfile(sck, fd, &offset, BUFSIZ)) > 0) && (remain_data > 0))
+    {
+            fprintf(stdout, "1. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
+            remain_data -= sent_bytes;
+            fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
+    }
+    */
+
+    
+
 	
     char sentence[1024];
 
@@ -51,9 +130,12 @@ int main ()
     char verb2[10]= "LOVES";
     char verb3[10]= "HATES";
 
+
     generateSentence(id, key, verb, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, 1024);
+
+    //sleep(2);
 
     generateSentence(id2, key, verb2, sentence);
     printf("%s\n", sentence);
