@@ -1,15 +1,14 @@
+require 'add_new_contact_window'
 require '../helper/main_window_helper'
 
 class MainWindow < Shoes
     url '/main',    :show
 
     def show
-        @that = self
+        MainWindowHelper::init
         window height: 500, width: 600, resizable: false do
-            @messenger = stack width: '70%', height: 400, scroll: true do
-                    20.times { inscription 'This is a messenger' }
-            end
-            @side_bar = stack width: '30%' do
+            @messenger = stack width: '65%', height: 400, scroll: true
+            @side_bar = stack width: '35%' do
                 stack height: 400, scroll: true do
                     friends = MainWindowHelper::load_friends
                     friends.each do |friend|
@@ -39,17 +38,41 @@ class MainWindow < Shoes
                 end
             end
             stack width: '100%', margin_top: 4, margin_left: 4, margin_right: 4 do
-                edit_box width: '100%', height: 60
+                @message_box = edit_box width: '100%', height: 60
                 flow do
-                    @actions = [{name: 'Send', method: :send},
-                                {name: 'Logout', method: :logout},
-                                {name: 'Add new contact', method: :add}]
-                    @actions.each do |action|
-                        button action[:name], margin_top: 2,
-                                        width: "#{100.0/@actions.length}%" do
-                            MainWindowHelper::send(action[:method].to_s)
+                    @actions = {send:
+                                    {name: 'Send',
+                                     fun: lambda do
+                                         MainWindowHelper::send
+                                         @messenger.append { inscription @message_box.text } unless @message_box.text == ''
+                                         @message_box.text = ''
+                                         @messenger.scroll_top = @messenger.scroll_max
+                                     end
+                                    }, 
+                                logout: 
+                                    {name: 'Logout',
+                                     fun: lambda do
+                                         exit
+                                     end
+                                    },
+                                add:
+                                    {name: 'Add new contact',
+                                     fun: lambda do
+                                        puts 'Visiting add_contact'
+                                        visit '/add_contact'
+                                        close
+                                     end
+                                    }
+                    }
+                    @actions.each_value do |value|
+                        value[:button] = button value[:name], margin_top: 2, width: "#{100/@actions.length}%" do
+                            value[:fun].call
                         end
                     end
+                    #every(5) do
+                    #    @messenger.append { para MainWindowHelper::logout }
+                    #    @messenger.scroll_top = @messenger.scroll_max 
+                    #end
                 end
             end
         end

@@ -1,14 +1,20 @@
+require '../app'
+
 module MainWindowHelper
     def MainWindowHelper.load_friends
         list = File.readlines('../data/friends')
         list.map!  { |l| l.strip.split(';') }
     end
-    
-    def MainWindowHelper.add
-        puts 'Add method'
+
+    def MainWindowHelper.init
+        @app = App.new   
+    end
+
+    def MainWindowHelper.send
+        @app.send
     end
 
     def MainWindowHelper.logout
-        puts 'Logout method'
+        @app.logout
     end
 end

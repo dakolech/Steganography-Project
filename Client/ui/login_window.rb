@@ -1,4 +1,5 @@
 require 'main_window'
+require 'add_new_contact_window'
 
 class LoginWindow < Shoes
     url '/',        :show
