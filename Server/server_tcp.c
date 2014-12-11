@@ -1,25 +1,54 @@
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <time.h>
-#include <pthread.h>
+#include "libraries.h"
+#include "generate.h"
+#include "decode.h"
+#include "sendRecv.h"
 
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
+#define MAINKEY "BEZLITOSNY2"
 
 void *client_loop(void *arg) {
-    printf("[server] POCZĄTEK wątku client_loop\n");
-    char buffer[1024] = "";
+    //printf("[server] POCZĄTEK wątku client_loop\n");
+    char buffer[BUFSIZ] = "";
+    char id[4] = "";
+    char pass[4] = "";
+    char destination[4] = "";
     int sck = *((int*) arg);
 
+    recvFileSizeAndFile("plik.pdf", sck);
+
+    sendFileSizeAndFile("plik.pdf", sck); 
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s 1\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, id));
+    printf("%s\n", id);    
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s 2\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, pass));
+    printf("%s\n", pass);
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s 3\n", buffer);
+
+    printf("%d\n", decodeSentence(buffer, MAINKEY, destination));
+    printf("%s\n", destination);
+
+    read (sck, buffer, BUFSIZ);
+
+
+
+    //while ((rcvd = read (sck, buffer2, sizeof(buffer2))) > 0);
+
+/*
+    decodeSentence(buffer, MAINKEY, id);*/
+
+    //while(rcvd = recv(sck, buffer, 1024, 0))
+	//    send(sck, buffer, rcvd, 0);
+/*
     FILE *fp = fopen("send.txt", "r");
     int f_block_sz = 0;
     while ((f_block_sz = fread(buffer, sizeof(char), 1024, fp)) > 0) {
@@ -29,7 +58,7 @@ void *client_loop(void *arg) {
         }
         bzero(buffer, 1024);
     }
-    fclose(fp);
+    fclose(fp);*/
     close(sck);
     printf("[server] KONIEC wątku client_loop\n");
     pthread_exit(NULL);
@@ -39,7 +68,7 @@ int main(int argc, char* argv[]) {
     int nSocket, nClientSocket;
     int nBind, nListen;
     int nFoo = 1;
-    int b;
+    //int b;
     socklen_t nTmp;
     struct sockaddr_in stAddr, stClientAddr;
     /* address structure */
