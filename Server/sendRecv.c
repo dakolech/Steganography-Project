@@ -23,9 +23,9 @@ int sendFileSizeAndFile(char * fileName, int sck) {
             exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout, "File Size: \n%d bytes\n", file_stat.st_size);
+    fprintf(stdout, "File Size: \n%jd bytes\n", file_stat.st_size);
 
-    sprintf(file_size, "%d", file_stat.st_size);
+    sprintf(file_size, "%jd", file_stat.st_size);
 
     write(sck, file_size, BUFSIZ);
 
@@ -92,8 +92,10 @@ int recvFileSizeAndFile(char * fileName, int sck) {
     {
             fwrite(buffer, sizeof(char), len, received_file);
             remain_data -= len;
-            fprintf(stdout, "Receive %d bytes and we hope :- %d bytes\n", len, remain_data);
+            //fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
     }
     fclose(received_file);
+
+    return 0;
 
 }
