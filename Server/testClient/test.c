@@ -1,6 +1,8 @@
 #include "libraries.h"
 #include "generate.h"
+#include "decode.h"
 #include "sendRecv.h"
+
 
 #define BUFSIZE 10000
 #define FILE_TO_SEND "plik2.pdf"
