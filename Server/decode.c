@@ -1,3 +1,4 @@
+#include "libraries.h"
 #include "decode.h"
 
 int decodeSentence(char * sentence, char * key, char * output) {
@@ -44,10 +45,10 @@ int decodeSentence(char * sentence, char * key, char * output) {
 
    output[3] = sentence[i+1];
 
-   int letter_in_output = 0;
-   for(letter_in_output; letter_in_output<4; letter_in_output++) {
-      int letter_in_key = 0;
-      for(letter_in_key; letter_in_key<10; letter_in_key++) {
+   int letter_in_output;
+   for(letter_in_output = 0; letter_in_output<4; letter_in_output++) {
+      int letter_in_key;
+      for(letter_in_key = 0; letter_in_key<10; letter_in_key++) {
          if (output[letter_in_output] == key[letter_in_key]) {
             char dig = (char)(((int)'0')+letter_in_key);
             output[letter_in_output] = dig;
