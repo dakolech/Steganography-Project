@@ -1,3 +1,4 @@
+#include "libraries.h"
 #include "decode.h"
 
 int decodeSentence(char * sentence, char * key, char * output) {
