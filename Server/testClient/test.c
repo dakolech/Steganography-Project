@@ -52,20 +52,38 @@ int main ()
     char verb[10]= "LIKES";
     char verb2[10]= "LOVES";
     char verb3[10]= "HATES";
-    char buffer[BUFSIZ] = "";
+    //char buffer[BUFSIZ] = "";
+
+    generateVerbSentence("IS", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("ARE", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("HAVE", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("HAS", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("WAS", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("WERE", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("HADNT", sentence);
+    printf("%s\n", sentence);
+    generateVerbSentence("HAD", sentence);
+    printf("%s\n", sentence);
 
 
-    generateSentence(id, key, verb, sentence);
+
+    generateNumberSentence(id, key, verb, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 
     //sleep(2);
 
-    generateSentence(id2, key, verb2, sentence);
+    generateNumberSentence(id2, key, verb2, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 
-    generateSentence(id3, key, verb3, sentence);
+    generateNumberSentence(id3, key, verb3, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 

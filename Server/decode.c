@@ -1,7 +1,7 @@
 #include "libraries.h"
 #include "decode.h"
 
-int decodeSentence(char * sentence, char * key, char * output) {
+int decodeNumberSentence(char * sentence, char * key, char * output) {
 
    int number_in_key = key[10] - '0';
 

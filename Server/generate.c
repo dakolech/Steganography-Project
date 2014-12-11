@@ -44,7 +44,7 @@ void generateName(int n, char letter, char * file_name, char * name) {
 }
 
 
-void generateSentence(char * id, char * key_in, char * verb, char * sentence)
+void generateNumberSentence(char * id, char * key_in, char * verb, char * sentence)
 {
    //char * id = argv[1];
    int idArray[4];
@@ -108,3 +108,134 @@ void generateSentence(char * id, char * key_in, char * verb, char * sentence)
    strcat (sentence, "\0");
 
 }
+
+void randomAnimal(char * output) {
+   randomInFile("data/animals.txt", output);
+}
+
+void randomAdjective(char * output) {
+   randomInFile("data/adjectives.txt", output);
+}
+
+void randomBodyPart(char * output) {
+   randomInFile("data/bodyparts.txt", output);
+}
+
+
+void randomInFile(char * fileName, char * output) {
+
+   int zarodek, len;
+   zarodek= time(NULL);
+   srand(zarodek); 
+   char line[25];
+   FILE *fp;
+ 
+   fp = fopen(fileName,"r"); // read mode
+ 
+   if( fp == NULL ) {
+
+      perror("Error while opening the file.\n");
+      exit(EXIT_FAILURE);
+   }
+ 
+   int count = 0, count2 = 0;
+   while( fgets(line, 25,fp) ){
+      count++;
+   }
+   count=rand()%count;
+ 
+   fclose(fp);
+
+   fp = fopen(fileName,"r");
+   while( fgets(line, 25,fp) ){
+      len = strlen(line);
+      if( line[len-1] == '\n' )
+         line[len-1] = 0;
+      count2++;
+      if(count2==count){
+         strcpy(output, line);
+         break;
+      }
+   }
+}
+
+void connectThreeWords(char * firstWord, char * secondWord, char * thirdWord, char * output) {
+   strcpy (output, firstWord);
+   strcat (output, " ");
+   strcat (output, secondWord);
+   strcat (output, " ");
+   strcat (output, thirdWord);
+}
+
+
+int generateVerbSentence(char * verb, char * sentence) {
+
+   char firstWord[25];
+   char thirdWord[25];
+
+   if (verb[0] == 'I') {
+
+      randomAnimal(firstWord);
+      randomAdjective(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+      
+      return 1;
+
+   } else if (verb[0] == 'A') {
+
+      randomAnimal(firstWord);
+      strcat (firstWord, "S");
+      randomAdjective(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 2;
+
+   } else if (verb[2] == 'V') {
+      strcpy (firstWord, "I");
+      randomBodyPart(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 3;
+      
+   } else if (verb[0] == 'H' && verb[2] == 'S') {
+      randomAnimal(firstWord);
+      randomBodyPart(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 4;
+      
+   } else if (verb[0] == 'W' && verb[2] == 'S') {
+      randomAnimal(firstWord);
+      randomAdjective(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 5;
+      
+   } else if (verb[2] == 'R') {
+      randomAnimal(firstWord);
+      strcat (firstWord, "S");
+      randomAdjective(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 6;
+      
+   } else if (verb[3] == 'N') {
+      randomAnimal(firstWord);
+      randomBodyPart(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 7;
+      
+   } else if (verb[0] == 'H' && verb[2] == 'D') {
+      randomAnimal(firstWord);
+      randomBodyPart(thirdWord);
+      connectThreeWords(firstWord, verb, thirdWord, sentence);
+
+      return 8;
+      
+   } 
+
+   return -1;
+
+}
+
