@@ -45,12 +45,12 @@ int main ()
 	
     char sentence[BUFSIZ];
 
-    char id[4]="1234";
-    char id2[4]="2468";
-    char id3[4]="1357";
+    char id[4]="4567";
+    char pass[4]="8961";
+    char id3[4]="4567";
     char key[11]= "BEZLITOSNY2";
-    char verb[10]= "LIKES";
-    char verb2[10]= "LOVES";
+    char verb[10]= "LOVES";
+    char verb2[10]= "LIKES";
     char verb3[10]= "HATES";
     //char buffer[BUFSIZ] = "";
 
@@ -82,7 +82,7 @@ int main ()
 
     //sleep(2);
 
-    generateNumberSentence(id2, key, verb2, sentence);
+    generateNumberSentence(pass, key, verb2, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 
