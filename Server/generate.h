@@ -4,4 +4,8 @@
 #include <time.h>
 
 void generateName(int n, char letter, char * file_name, char * name);
-void generateSentence(char * id, char * key_in, char * verb, char * sentence);
+void generateNumberSentence(char * id, char * key_in, char * verb, char * sentence);
+int generateVerbSentence(char * verb, char * sentence);
+void randomInFile(char * fileName, char * output);
+void randomAnimal(char * output);
+void connectThreeWords(char * firstWord, char * secondWord, char * thirdWord, char * output);
