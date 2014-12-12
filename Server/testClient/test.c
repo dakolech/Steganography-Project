@@ -54,13 +54,15 @@ int main ()
     char verb3[10]= "HATES";
     //char buffer[BUFSIZ] = "";
 
-    generateVerbSentence("IS", sentence);
+    /*generateVerbSentence("IS", sentence);
+    printf("%d\n", decodeVerbSentence(sentence));
     printf("%s\n", sentence);
     generateVerbSentence("ARE", sentence);
     printf("%s\n", sentence);
     generateVerbSentence("HAVE", sentence);
     printf("%s\n", sentence);
     generateVerbSentence("HAS", sentence);
+    printf("%d\n", decodeVerbSentence(sentence));
     printf("%s\n", sentence);
     generateVerbSentence("WAS", sentence);
     printf("%s\n", sentence);
@@ -70,6 +72,7 @@ int main ()
     printf("%s\n", sentence);
     generateVerbSentence("HAD", sentence);
     printf("%s\n", sentence);
+    printf("%d\n", decodeVerbSentence(sentence));*/
 
 
 
