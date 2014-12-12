@@ -22,19 +22,19 @@ void *client_loop(void *arg) {
     read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
 
-    printf("%d\n", decodeSentence(buffer, MAINKEY, id));
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, id));
     printf("%s\n", id);    
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
 
-    printf("%d\n", decodeSentence(buffer, MAINKEY, pass));
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, pass));
     printf("%s\n", pass);
 
     read (sck, buffer, BUFSIZ);
     printf("%s 3\n", buffer);
 
-    printf("%d\n", decodeSentence(buffer, MAINKEY, destination));
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
     printf("%s\n", destination);
 
     read (sck, buffer, BUFSIZ);
@@ -44,7 +44,7 @@ void *client_loop(void *arg) {
     //while ((rcvd = read (sck, buffer2, sizeof(buffer2))) > 0);
 
 /*
-    decodeSentence(buffer, MAINKEY, id);*/
+    decodeNumberSentence(buffer, MAINKEY, id);*/
 
     //while(rcvd = recv(sck, buffer, 1024, 0))
 	//    send(sck, buffer, rcvd, 0);

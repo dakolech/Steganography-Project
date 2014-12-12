@@ -1,2 +1,3 @@
 
-int decodeSentence(char * sentence, char * key, char * output);
+int decodeNumberSentence(char * sentence, char * key, char * output);
+int decodeVerbSentence(char * sentence);
