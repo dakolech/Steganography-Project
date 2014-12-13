@@ -12,6 +12,8 @@ module MainWindowHelper
 
     def MainWindowHelper.add_friend(name, id)
         raise InvalidID.new unless /\A\d{4}\z/ === id
+        @list.each { |el| raise DuplicateName.new unless el[0] != name }
+
         @list << [name, id]
     end
 

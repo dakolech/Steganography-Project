@@ -36,7 +36,8 @@ Shoes.app title: 'Steganography Project' do
                 flow do
                     @actions = {on_send:            {name: 'Send', fun: lambda { @app.on_send }},
                                 on_logout:          {name: 'Logout', fun: lambda { @app.on_logout}},
-                                on_add_new_contact: {name: 'Add new contact', fun: lambda { add_new_contact }}
+                                on_add_new_contact: {name: 'Add new contact', fun: lambda { add_new_contact }},
+                                on_options:         {name: 'Options', fun: lambda { options }},
                     }
                     @actions.each do |key, value|
                         value[:button] = button value[:name], margin_top: 2, width: "#{100/@actions.length}%" do
@@ -53,7 +54,7 @@ Shoes.app title: 'Steganography Project' do
     end
 
     def add_new_contact
-        window width: 300, height: 150 do
+        window width: 300, height: 160, title: 'Add new contact' do
             flow margin_left: 10, margin_right: 10, margin_top: 5 do
                 stack width: '40%' do
                     para 'Friend\'s name:', size: 10
@@ -64,15 +65,27 @@ Shoes.app title: 'Steganography Project' do
                     @contact_id_edit = edit_line width: '100%'
 
                     @contact_add_button = button 'Add', width: '100%', margin_top: 3 do
-                        MainWindowHelper::add_friend @contact_name_edit.text, @contact_id_edit.text
-                        owner.friends
-                        close
+                        begin
+                            MainWindowHelper::add_friend @contact_name_edit.text, @contact_id_edit.text
+                            owner.friends
+                            close
+                        rescue AddNewContactError => e
+                            @exception_message.text = e.message
+                            @exception_message.show
+                        end
                     end
                     button 'Cancel', width: '100%', margin_top: 3 do
                         close
                     end
+                    @exception_message = inscription stroke: red, hidden: true
                 end
             end
+        end
+    end
+
+    def options
+        window width: 300, height: 150, title: 'Options' do
+
         end
     end
 
