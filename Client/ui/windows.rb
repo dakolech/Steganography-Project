@@ -32,12 +32,14 @@ Shoes.app title: 'Steganography Project' do
             @side_bar = stack width: '35%', height: 400, scroll: true
             friends
             stack width: '100%', margin_top: 4, margin_left: 4, margin_right: 4 do
-                @message_box = edit_box width: '100%', height: 60
+                @message_box = edit_box width: '100%', height: 60 do |mb|
+                    mb.text = '' if mb.text == "\n"
+                    @messenger.scroll_top = @messenger.scroll_max
+                end
                 flow do
-                    @actions = {on_send:            {name: 'Send', fun: lambda { @app.on_send }},
+                    @actions = {on_options:         {name: 'Options', fun: lambda { options }},
                                 on_logout:          {name: 'Logout', fun: lambda { @app.on_logout}},
                                 on_add_new_contact: {name: 'Add new contact', fun: lambda { add_new_contact }},
-                                on_options:         {name: 'Options', fun: lambda { options }},
                     }
                     @actions.each do |key, value|
                         value[:button] = button value[:name], margin_top: 2, width: "#{100/@actions.length}%" do
@@ -46,6 +48,11 @@ Shoes.app title: 'Steganography Project' do
                     end
                     every(5) do
                         @app.check_new_messages
+                    end
+                    keypress do |k|
+                        if k == "\n"
+                            @app.on_send
+                        end
                     end
                 end
             end

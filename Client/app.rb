@@ -16,7 +16,7 @@ class App
 
     def check_new_messages
         @messenger.app do
-            @messenger.append { para 'Test metody every(5)' }
+            @messenger.append { inscription 'Test metody every(5)' }
             @messenger.scroll_top = @messenger.scroll_max
         end
     end

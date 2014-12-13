@@ -11,7 +11,7 @@ end
 class InvalidID < AddNewContactError
     attr_reader :message
     def initialize
-        @message = 'Given ID is not a number'
+        @message = 'Not valid ID'
     end
 end
 
