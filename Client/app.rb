@@ -1,18 +1,25 @@
 class App
-    def initialize
-        @counter = 0
+    def initialize(messenger, message_box)
+        @messenger = messenger
+        @message_box = message_box
     end
 
-    def send
-       @counter += 1
-       "Counter: #{@counter}"
+    def on_send
+        @messenger.app do
+            @messenger.append { inscription @message_box.text } unless @message_box.text == ''
+            @message_box.text = ''
+            @messenger.scroll_top = @messenger.scroll_max
+        end
     end
 
-    def add_new_contact
-        puts 'Test add method'
+    def check_new_messages
+        @messenger.app do
+            @messenger.append { para 'Test metody every(5)' }
+            @messenger.scroll_top = @messenger.scroll_max
+        end
     end
 
-    def logout
-        'Test logout method'
+    def on_logout
+        exit
     end
 end

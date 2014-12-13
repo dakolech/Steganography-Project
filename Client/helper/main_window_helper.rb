@@ -1,20 +1,10 @@
-require '../app'
-
 module MainWindowHelper
-    def MainWindowHelper.load_friends
+    def MainWindowHelper.get_friends
+        @list ||= load_friends_from_file
+    end
+
+    def MainWindowHelper.load_friends_from_file
         list = File.readlines('../data/friends')
         list.map!  { |l| l.strip.split(';') }
-    end
-
-    def MainWindowHelper.init
-        @app = App.new   
-    end
-
-    def MainWindowHelper.send
-        @app.send
-    end
-
-    def MainWindowHelper.logout
-        @app.logout
     end
 end
