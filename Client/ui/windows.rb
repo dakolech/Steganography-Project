@@ -85,7 +85,26 @@ Shoes.app title: 'Steganography Project' do
 
     def options
         window width: 300, height: 150, title: 'Options' do
-
+            stack do
+                inscription 'Server IP: '
+                flow margin_left: 50 do
+                    edit_line width: 40
+                    inscription '.'
+                    edit_line width: 40
+                    inscription '.'
+                    edit_line width: 40
+                    inscription '.'
+                    edit_line width: 40
+                end
+            end
+            flow margin_left: 5, margin_right: 5 do
+                button 'Apply', width: '50%' do
+                    puts 'Server IP changed'
+                end
+                button 'Cancel', width: '50%' do
+                    close
+                end
+            end
         end
     end
 
@@ -94,7 +113,7 @@ Shoes.app title: 'Steganography Project' do
             friends = MainWindowHelper::get_friends
             friends.each do |friend|
                 flow margin_top: 2, margin_bottom: 2 do
-                    @friends_stack = stack width: '80%' do
+                    @friends_stack = stack width: '70%' do
                         leave do |f|
                             f.clear { inscription friend[0] }
                         end
@@ -106,10 +125,20 @@ Shoes.app title: 'Steganography Project' do
                         end
                         inscription friend[0]
                     end
-                    stack width: '20%' do
+                    stack width: '15%' do
                         leave { |f| f.clear }
                         hover do |f|
                             f.clear do
+                                f.background rgb(180, 180, 180)
+                                inscription 'Edit', underline: 'single'
+                            end
+                        end
+                    end
+                    stack width: '15%' do
+                        leave { |f| f.clear }
+                        hover do |f|
+                            f.clear do
+                                f.background rgb(180, 180, 180)
                                 inscription 'Del', underline: 'single'
                             end
                         end
