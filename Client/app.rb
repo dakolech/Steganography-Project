@@ -1,10 +1,28 @@
+require '../helper/main_window_helper'
+
 class App
-	attr_accessor :test_proc
-	
-	def run
-		Thread.new do
-			puts "App.run was executed"
-			@test_proc.call
-		end
-	end
+    def initialize(messenger, message_box)
+        @messenger = messenger
+        @message_box = message_box
+    end
+
+    def on_send
+        @messenger.app do
+            @messenger.append { inscription @message_box.text } unless @message_box.text == ''
+            @message_box.text = ''
+            @messenger.scroll_top = @messenger.scroll_max
+        end
+    end
+
+    def check_new_messages
+        @messenger.app do
+            @messenger.append { para 'Test metody every(5)' }
+            @messenger.scroll_top = @messenger.scroll_max
+        end
+    end
+
+    def on_logout
+        MainWindowHelper::save_friends
+        exit
+    end
 end
