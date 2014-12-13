@@ -1,4 +1,5 @@
 require '../app'
+require '../helper/main_window_helper'
 
 Shoes.app title: 'Steganography Project' do
     def login
@@ -28,11 +29,8 @@ Shoes.app title: 'Steganography Project' do
         clear
         flow do
             @messenger = stack width: '65%', height: 400, scroll: true
-            @side_bar = stack width: '35%' do
-                stack height: 400, scroll: true do
-                    friends
-                end
-            end
+            @side_bar = stack width: '35%', height: 400, scroll: true
+            friends
             stack width: '100%', margin_top: 4, margin_left: 4, margin_right: 4 do
                 @message_box = edit_box width: '100%', height: 60
                 flow do
@@ -66,6 +64,7 @@ Shoes.app title: 'Steganography Project' do
                     @contact_id_edit = edit_line width: '100%'
 
                     @contact_add_button = button 'Add', width: '100%', margin_top: 3 do
+                        MainWindowHelper::add_friend @contact_name_edit.text, @contact_id_edit.text
                         owner.friends
                         close
                     end
@@ -78,27 +77,28 @@ Shoes.app title: 'Steganography Project' do
     end
 
     def friends
-        puts 'Reloaded'
-        friends = MainWindowHelper::get_friends
-        friends.each do |friend|
-            flow margin_top: 2, margin_bottom: 2 do
-                @friends_stack = stack width: '80%' do
-                    leave do |f|
-                        f.clear { inscription friend[0] }
-                    end
-                    hover do |f|
-                        f.clear do
-                            f.background rgb(180, 180, 180)
-                            inscription friend[0]
+        @side_bar.clear do
+            friends = MainWindowHelper::get_friends
+            friends.each do |friend|
+                flow margin_top: 2, margin_bottom: 2 do
+                    @friends_stack = stack width: '80%' do
+                        leave do |f|
+                            f.clear { inscription friend[0] }
                         end
+                        hover do |f|
+                            f.clear do
+                                f.background rgb(180, 180, 180)
+                                inscription friend[0]
+                            end
+                        end
+                        inscription friend[0]
                     end
-                    inscription friend[0]
-                end
-                stack width: '20%' do
-                    leave { |f| f.clear }
-                    hover do |f|
-                        f.clear do
-                            inscription 'Del', underline: 'single'
+                    stack width: '20%' do
+                        leave { |f| f.clear }
+                        hover do |f|
+                            f.clear do
+                                inscription 'Del', underline: 'single'
+                            end
                         end
                     end
                 end

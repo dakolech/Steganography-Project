@@ -1,3 +1,5 @@
+require '../helper/main_window_helper'
+
 class App
     def initialize(messenger, message_box)
         @messenger = messenger
@@ -20,6 +22,7 @@ class App
     end
 
     def on_logout
+        MainWindowHelper::save_friends
         exit
     end
 end
