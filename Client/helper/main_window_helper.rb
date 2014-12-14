@@ -1,4 +1,4 @@
-require '../exceptions'
+require '../class/exceptions'
 
 module MainWindowHelper
     def MainWindowHelper.get_friends
@@ -7,7 +7,7 @@ module MainWindowHelper
 
     def MainWindowHelper.load_friends_from_file
         list = File.readlines('../data/friends')
-        list.map!  { |l| l.strip.split(';') }
+        list.map! { |l| l.strip.split(';') }
     end
 
     def MainWindowHelper.add_friend(name, id)

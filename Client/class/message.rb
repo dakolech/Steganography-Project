@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'oily_png'
-
-require './exceptions'
+require 'exceptions'
 
 class Message
     attr_accessor :text, :ip_dest

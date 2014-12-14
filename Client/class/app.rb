@@ -1,4 +1,5 @@
 require '../helper/main_window_helper'
+require '../helper/option_helper'
 
 class App
     def initialize(messenger, message_box)
@@ -23,6 +24,7 @@ class App
 
     def on_logout
         MainWindowHelper::save_friends
+        OptionHelper::save_options
         exit
     end
 end

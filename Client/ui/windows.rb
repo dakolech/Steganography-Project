@@ -1,5 +1,7 @@
-require '../app'
+require '../class/app'
+require '../helper/button_helper'
 require '../helper/main_window_helper'
+require '../helper/option_helper'
 
 Shoes.app title: 'Steganography Project' do
     def login
@@ -38,7 +40,7 @@ Shoes.app title: 'Steganography Project' do
                 end
                 flow do
                     @actions = {on_options:         {name: 'Options', fun: lambda { options }},
-                                on_logout:          {name: 'Logout', fun: lambda { @app.on_logout}},
+                                on_logout:          {name: 'Logout', fun: lambda { @app.on_logout }},
                                 on_add_new_contact: {name: 'Add new contact', fun: lambda { add_new_contact }},
                     }
                     @actions.each do |key, value|
@@ -46,9 +48,9 @@ Shoes.app title: 'Steganography Project' do
                             value[:fun].call
                         end
                     end
-                    every(5) do
-                        @app.check_new_messages
-                    end
+                    #every(5) do
+                    #    @app.check_new_messages
+                    #end
                     keypress do |k|
                         @app.on_send if k == "\n"
                     end
@@ -90,21 +92,20 @@ Shoes.app title: 'Steganography Project' do
 
     def options
         window width: 300, height: 160, title: 'Options' do
+            options = OptionHelper::get_options
             stack do
                 inscription 'Server IP: '
                 flow margin_left: 50 do
-                    check_number = lambda { |e| e.text = '' unless e.text =~ /^\d+$/ }
-                    edit_line width: 40 do |e| check_number.call(e) end
-                    inscription '.'
-                    edit_line width: 40 do |e| check_number.call(e) end
-                    inscription '.'
-                    edit_line width: 40 do |e| check_number.call(e) end
-                    inscription '.'
-                    edit_line width: 40 do |e| check_number.call(e) end
+                    check_number = lambda { |e| e.text = '' unless e.text =~ /^\d{1,3}$/ }
+                    @server_ip = []
+                    (0..3).each do |i|
+                        @server_ip << (edit_line options[:server_ip][i], width: 40 do |e| check_number.call(e) end)
+                        inscription '.' unless i == 3
+                    end
                 end
                 flow do
                     inscription "Folder with images:\n"
-                    @folder_name = inscription "\tSome example folder"
+                    @folder_name = inscription "#{options[:folder_with_images]}"
                     button 'Browse...', right: 5 do
                         dir = ask_open_folder
                         dir.slice!('/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/')
@@ -114,7 +115,8 @@ Shoes.app title: 'Steganography Project' do
             end
             flow margin: [5, 5, 5, 0] do
                 button 'Apply', width: '50%' do
-                    puts 'Server IP changed'
+                    OptionHelper::change_options @server_ip, @folder_name
+                    close
                 end
                 button 'Cancel', width: '50%' do
                     close
@@ -129,33 +131,18 @@ Shoes.app title: 'Steganography Project' do
             friends.each do |friend|
                 flow margin: [0, 2, 0, 2] do
                     @friends_stack = stack width: '70%' do
-                        leave do |f|
-                            f.clear { inscription friend[0] }
-                        end
-                        hover do |f|
-                            f.clear do
-                                f.background rgb(180, 180, 180)
-                                inscription friend[0]
-                            end
-                        end
-                        inscription friend[0]
-                    end
-                    stack width: '15%' do
-                        leave { |f| f.clear }
-                        hover do |f|
-                            f.clear do
-                                f.background rgb(180, 180, 180)
-                                inscription 'Edit', underline: 'single'
-                            end
+                        ButtonHelper::get_name_button friend[0], self do
+                            puts "New conversation with #{friend[0]}"
                         end
                     end
-                    stack width: '15%' do
-                        leave { |f| f.clear }
-                        hover do |f|
-                            f.clear do
-                                f.background rgb(180, 180, 180)
-                                inscription 'Del', underline: 'single'
-                            end
+                    @edit_stack = stack width: '15%' do
+                        ButtonHelper::get_control_button 'Edit', self do
+                            puts "Edit friend #{friend[0]}"
+                        end
+                    end
+                    @del_stack = stack width: '15%' do
+                        ButtonHelper::get_control_button 'Del', self do
+                            puts "Really delete friend #{friend[0]} from list?"
                         end
                     end
                 end
