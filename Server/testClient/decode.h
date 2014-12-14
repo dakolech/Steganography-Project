@@ -1,1 +1,1 @@
-/home/dako/University/Steganography-Project/Server/decode.h
+../decode.h

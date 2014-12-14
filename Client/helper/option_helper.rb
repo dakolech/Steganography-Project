@@ -20,6 +20,8 @@ module OptionHelper
     end
 
     def OptionHelper.save_options
+        # na wypadek niezainicjalizowanej zmiennej @options
+        @options = get_options
         @options[:server_ip] = @options[:server_ip].join('.')
         File.open('../data/config', 'w') do |f|
             @options.each do |key, value|

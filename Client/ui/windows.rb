@@ -3,6 +3,10 @@ require '../helper/button_helper'
 require '../helper/main_window_helper'
 require '../helper/option_helper'
 
+Shoes.setup do
+    gem 'oily_png'
+end
+
 Shoes.app title: 'Steganography Project' do
     def login
         flow margin: 10 do

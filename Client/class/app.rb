@@ -1,5 +1,6 @@
 require '../helper/main_window_helper'
 require '../helper/option_helper'
+require_relative 'message'
 
 class App
     def initialize(messenger, message_box)
@@ -9,7 +10,10 @@ class App
 
     def on_send
         @messenger.app do
-            @messenger.append { inscription @message_box.text } unless @message_box.text == ''
+            @msg = Message.new(text: @message_box.text, ip_dest: '127.0.0.1')
+            @msg.encode
+
+            @messenger.append { inscription @msg.decode } unless @message_box.text == ''
             @message_box.text = ''
             @messenger.scroll_top = @messenger.scroll_max
         end

@@ -1,1 +1,1 @@
-/home/dako/University/Steganography-Project/Server/sendRecv.c
+../sendRecv.c
