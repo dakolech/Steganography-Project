@@ -3,7 +3,7 @@ require '../helper/main_window_helper'
 
 Shoes.app title: 'Steganography Project' do
     def login
-        flow margin_left: 10, margin_right: 10, margin_top: 5 do
+        flow margin: 10 do
             stack width: '100%', height: '65%' do
                 subtitle 'Sign in is required!', align: 'center', margin_top: '60%'
             end
@@ -31,7 +31,7 @@ Shoes.app title: 'Steganography Project' do
             @messenger = stack width: '65%', height: 400, scroll: true
             @side_bar = stack width: '35%', height: 400, scroll: true
             friends
-            stack width: '100%', margin_top: 4, margin_left: 4, margin_right: 4 do
+            stack width: '100%', margin: 4 do
                 @message_box = edit_box width: '100%', height: 60 do |mb|
                     mb.text = '' if mb.text == "\n"
                     @messenger.scroll_top = @messenger.scroll_max
@@ -50,9 +50,7 @@ Shoes.app title: 'Steganography Project' do
                         @app.check_new_messages
                     end
                     keypress do |k|
-                        if k == "\n"
-                            @app.on_send
-                        end
+                        @app.on_send if k == "\n"
                     end
                 end
             end
@@ -61,8 +59,8 @@ Shoes.app title: 'Steganography Project' do
     end
 
     def add_new_contact
-        window width: 300, height: 160, title: 'Add new contact' do
-            flow margin_left: 10, margin_right: 10, margin_top: 5 do
+        window width: 300, height: 155, title: 'Add new contact' do
+            flow margin: [10, 0, 10, 0] do
                 stack width: '40%' do
                     para 'Friend\'s name:', size: 10
                     para 'ID:', size: 10
@@ -91,20 +89,30 @@ Shoes.app title: 'Steganography Project' do
     end
 
     def options
-        window width: 300, height: 150, title: 'Options' do
+        window width: 300, height: 160, title: 'Options' do
             stack do
                 inscription 'Server IP: '
                 flow margin_left: 50 do
-                    edit_line width: 40
+                    check_number = lambda { |e| e.text = '' unless e.text =~ /^\d+$/ }
+                    edit_line width: 40 do |e| check_number.call(e) end
                     inscription '.'
-                    edit_line width: 40
+                    edit_line width: 40 do |e| check_number.call(e) end
                     inscription '.'
-                    edit_line width: 40
+                    edit_line width: 40 do |e| check_number.call(e) end
                     inscription '.'
-                    edit_line width: 40
+                    edit_line width: 40 do |e| check_number.call(e) end
+                end
+                flow do
+                    inscription "Folder with images:\n"
+                    @folder_name = inscription "\tSome example folder"
+                    button 'Browse...', right: 5 do
+                        dir = ask_open_folder
+                        dir.slice!('/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/')
+                        @folder_name.text = "\t" + dir
+                    end
                 end
             end
-            flow margin_left: 5, margin_right: 5 do
+            flow margin: [5, 5, 5, 0] do
                 button 'Apply', width: '50%' do
                     puts 'Server IP changed'
                 end
@@ -119,7 +127,7 @@ Shoes.app title: 'Steganography Project' do
         @side_bar.clear do
             friends = MainWindowHelper::get_friends
             friends.each do |friend|
-                flow margin_top: 2, margin_bottom: 2 do
+                flow margin: [0, 2, 0, 2] do
                     @friends_stack = stack width: '70%' do
                         leave do |f|
                             f.clear { inscription friend[0] }
