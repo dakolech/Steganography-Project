@@ -1,6 +1,6 @@
 require '../class/app'
 require '../helper/button_helper'
-require '../helper/main_window_helper'
+require '../helper/friends_helper'
 require '../helper/option_helper'
 
 Shoes.setup do
@@ -64,7 +64,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
                 end
             end
             @app = App.new @messenger, @message_box
-            set_active_friend MainWindowHelper::get_friends.keys[0]
+            set_active_friend FriendsHelper::get_friends.keys[0]
         end
     end
 
@@ -87,9 +87,9 @@ Shoes.app title: 'Steganography Project', resizable: false do
                     button 'Apply', width: '100%', margin_top: 3 do
                         begin
                             if user_name.nil?
-                                MainWindowHelper::add_friend @contact_name_edit.text, @contact_id_edit.text
+                                FriendsHelper::add_friend @contact_name_edit.text, @contact_id_edit.text
                             else
-                                MainWindowHelper::edit_friend @contact_name_edit.text, @contact_id_edit.text, user_name
+                                FriendsHelper::edit_friend @contact_name_edit.text, @contact_id_edit.text, user_name
                             end
                             owner.friends
                             close
@@ -144,7 +144,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
 
     def friends
         @side_bar.clear do
-            friends_list = MainWindowHelper::get_friends
+            friends_list = FriendsHelper::get_friends
             friends_list.each do |friend, id|
                 flow margin: [0, 0, 0, 4] do
                     @friends_stack = stack width: '70%' do
@@ -161,7 +161,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
                     @del_stack = stack width: '15%' do
                         ButtonHelper::get_control_button 'Del', self do
                             if confirm "Really delete friend #{friend} from contacts?"
-                                MainWindowHelper::delete_friend(friend)
+                                FriendsHelper::delete_friend(friend)
                                 friends
                             end
                         end

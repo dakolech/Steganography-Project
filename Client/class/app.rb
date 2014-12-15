@@ -1,4 +1,4 @@
-require '../helper/main_window_helper'
+require '../helper/friends_helper'
 require '../helper/option_helper'
 require_relative 'message'
 
@@ -27,7 +27,7 @@ class App
     end
 
     def on_logout
-        MainWindowHelper::save_friends
+        FriendsHelper::save_friends
         OptionHelper::save_options
         exit
     end

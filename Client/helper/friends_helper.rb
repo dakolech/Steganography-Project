@@ -1,18 +1,18 @@
 require '../class/exceptions'
 
-module MainWindowHelper
-    def MainWindowHelper.get_friends
+module FriendsHelper
+    def FriendsHelper.get_friends
         @list ||= load_friends_from_file
     end
 
-    def MainWindowHelper.load_friends_from_file
+    def FriendsHelper.load_friends_from_file
         list = File.readlines('../data/friends')
         list.map! { |l| l.strip.split(';') }
         list = list.to_h
         list
     end
 
-    def MainWindowHelper.add_friend(name, id)
+    def FriendsHelper.add_friend(name, id)
         raise InvalidID.new unless /\A\d{4}\z/ === id
         @list.each { |n, i| raise DuplicateName.new unless n != name }
         @list.each { |n, i| raise DuplicateID.new   unless i != id   }
@@ -20,16 +20,16 @@ module MainWindowHelper
         @list[name] = id
     end
 
-    def MainWindowHelper.edit_friend(name, id, old_name)
+    def FriendsHelper.edit_friend(name, id, old_name)
         delete_friend(old_name)
         add_friend(name, id)
     end
 
-    def MainWindowHelper.delete_friend(name)
+    def FriendsHelper.delete_friend(name)
         @list.delete(name)
     end
 
-    def MainWindowHelper.save_friends
+    def FriendsHelper.save_friends
         @list = @list.to_a
         @list.collect! do |el|
             el.join(';')
