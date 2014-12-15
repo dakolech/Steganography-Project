@@ -9,6 +9,7 @@ module MainWindowHelper
         list = File.readlines('../data/friends')
         list.map! { |l| l.strip.split(';') }
         list = list.to_h
+        list
     end
 
     def MainWindowHelper.add_friend(name, id)

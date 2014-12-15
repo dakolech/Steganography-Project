@@ -64,13 +64,14 @@ Shoes.app title: 'Steganography Project', resizable: false do
                 end
             end
             @app = App.new @messenger, @message_box
+            set_active_friend MainWindowHelper::get_friends.keys[0]
         end
     end
 
     def contact_action(mode = {})
         if mode[:action] == :edit
-            user_name = mode[:user][0]
-            user_id   = mode[:user][1]
+            user_name = mode[:user]
+            user_id = mode[:id]
         end
 
         window width: 300, height: 155, title: 'Add new contact' do
@@ -144,32 +145,36 @@ Shoes.app title: 'Steganography Project', resizable: false do
     def friends
         @side_bar.clear do
             friends_list = MainWindowHelper::get_friends
-            friends_list.each do |friend|
+            friends_list.each do |friend, id|
                 flow margin: [0, 0, 0, 4] do
                     @friends_stack = stack width: '70%' do
-                        ButtonHelper::get_name_button friend[0], self do
-                            @conversation_with.clear do
-                                background "#B4B4B4"
-                                para strong(friend[0]), stroke: darkslategray
-                            end
+                        ButtonHelper::get_name_button friend, self do
+                            set_active_friend friend
                         end
                     end
                     @edit_stack = stack width: '15%' do
                         ButtonHelper::get_control_button 'Edit', self do
-                            contact_action action: :edit, user: friend
-                            puts "Edit friend #{friend[0]}"
+                            contact_action action: :edit, user: friend, id: id
+                            puts "Edit friend #{friend}"
                         end
                     end
                     @del_stack = stack width: '15%' do
                         ButtonHelper::get_control_button 'Del', self do
-                            if confirm "Really delete friend #{friend[0]} from contacts?"
-                                MainWindowHelper::delete_friend(friend[0])
+                            if confirm "Really delete friend #{friend} from contacts?"
+                                MainWindowHelper::delete_friend(friend)
                                 friends
                             end
                         end
                     end
                 end
             end
+        end
+    end
+
+    def set_active_friend(friend)
+        @conversation_with.clear do
+            background "#B4B4B4"
+            para strong(friend), stroke: darkslategray
         end
     end
 
