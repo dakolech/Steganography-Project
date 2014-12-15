@@ -3,13 +3,13 @@ require 'oily_png'
 require_relative 'exceptions'
 
 class Message
-    attr_accessor :text, :ip_dest
+    attr_accessor :image
 
     def initialize(properties = {})
         filename = properties[:filename] || '../images/cat_small.png'
 
-        @text  = properties[:text] || 'Some default text'
-        @image = ChunkyPNG::Image.from_file(filename)
+        @text  = properties[:text]  || 'Some default text'
+        @image = properties[:image] || ChunkyPNG::Image.from_file(filename)
         raise ImageTooSmall.new unless @image.width*@image.height > Image::TIMES_LARGER*@text.length
 
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
