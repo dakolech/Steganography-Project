@@ -62,16 +62,16 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 
    strncpy(verb, &sentence[first_letter_of_verb], last_letter_of_verb-first_letter_of_verb+1);
 
-   if (strcmp("LIKES", verb) == 0)
-      return 1;
+   if (strcmp("LOVES", verb) == 0) 
+      return 1;//login
 
-   if (strcmp("LOVES", verb) == 0)
-      return 2;
+   if (strcmp("LIKES", verb) == 0)
+      return 2;//pass
 
    if (strcmp("HATES", verb) == 0)
-      return 3;
+      return 3;//destination
 
-   printf("%s\n", verb);
+   //printf("%s\n", verb);
 
    //printf("%d\n", first_letter_of_verb);
    //printf("%d\n", last_letter_of_verb);

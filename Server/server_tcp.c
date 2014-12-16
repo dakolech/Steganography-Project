@@ -2,10 +2,18 @@
 #include "generate.h"
 #include "decode.h"
 #include "sendRecv.h"
+#include "users.h"
 
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
 #define MAINKEY "BEZLITOSNY2"
+
+void endLoop(int sck, char * message) {
+    close(sck);
+
+    printf("%s\n", message);
+    pthread_exit(NULL);
+} 
 
 void *client_loop(void *arg) {
     //printf("[server] POCZĄTEK wątku client_loop\n");
@@ -14,6 +22,7 @@ void *client_loop(void *arg) {
     char pass[4] = "";
     char destination[4] = "";
     int sck = *((int*) arg);
+    char loginSentence[25] = "";
 
     recvFileSizeAndFile("plik.pdf", sck);
 
@@ -21,23 +30,39 @@ void *client_loop(void *arg) {
 
     read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
-
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, id));
+    if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
+        endLoop(sck, "Incorrect verb in login");
+    
     printf("%s\n", id);    
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
+    if (decodeNumberSentence(buffer, MAINKEY, pass) != 2)
+        endLoop(sck, "Incorrect verb in password");
 
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, pass));
     printf("%s\n", pass);
 
-    read (sck, buffer, BUFSIZ);
-    printf("%s 3\n", buffer);
+    if ( checkUserLoginPass(id, pass) == 0) {
+        printf("Succes logging\n");
 
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
-    printf("%s\n", destination);
+        generateVerbSentence("IS", loginSentence);
+        write(sck, loginSentence, BUFSIZ);
 
-    read (sck, buffer, BUFSIZ);
+        read (sck, buffer, BUFSIZ);
+        printf("%s 3\n", buffer);
+
+        printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
+        printf("%s\n", destination);
+
+        read (sck, buffer, BUFSIZ);
+
+    } else {
+        generateVerbSentence("ARE", loginSentence);
+        write(sck, loginSentence, BUFSIZ);
+        endLoop(sck, "Login or password is incorrect");
+    }
+
+    
 
 
 

@@ -59,7 +59,7 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 
 	    }
 	}
-
+    //fclose(fd);
 	return 0;	
 }
 
