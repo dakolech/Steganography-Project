@@ -38,4 +38,28 @@ int checkUserLoginPass(char * login, char * pass) {
 	return -1;
 }
 
+int countFilesInDirectory(char * id) {
+	int file_count = 0;
+	DIR * dir;
+	struct dirent * entry;
 
+	char path[25] = "images/";
+	strcat (path, id);
+
+	if ((dir = opendir (path)) != NULL) {
+		while ((entry = readdir(dir)) != NULL) {
+		    if (entry->d_type == DT_REG) { /* If the entry is a regular file */
+		         file_count++;
+		    }
+		}
+	} else {
+      /* could not open directory */
+      perror ("");
+      //return EXIT_FAILURE;
+    }
+
+	closedir(dir);
+
+	return file_count;
+
+}

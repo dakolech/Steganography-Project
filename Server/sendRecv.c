@@ -99,3 +99,23 @@ int recvFileSizeAndFile(char * fileName, int sck) {
     return 0;
 
 }
+
+int sendImages (char * id, int howMany, int sck) {
+    DIR *dir;
+    struct dirent *ent;
+    char path[25] = "images/";
+    strcat (path, id);
+    
+    if ((dir = opendir ("path")) != NULL) {
+      /* print all the files and directories within directory */
+      while ((ent = readdir (dir)) != NULL && howMany > 0) {
+        howMany--;
+        printf ("File: %s\n", ent->d_name);
+      }
+      closedir (dir);
+    } else {
+      /* could not open directory */
+      perror ("");
+      //return EXIT_FAILURE;
+    }
+}

@@ -23,6 +23,7 @@ void *client_loop(void *arg) {
     char destination[4] = "";
     int sck = *((int*) arg);
     char loginSentence[25] = "";
+    char imagesSentence[25] = "";
 
     recvFileSizeAndFile("plik.pdf", sck);
 
@@ -47,6 +48,18 @@ void *client_loop(void *arg) {
 
         generateVerbSentence("IS", loginSentence);
         write(sck, loginSentence, BUFSIZ);
+
+        int howManyImagesToSend = countFilesInDirectory(id);
+        printf("%d Images to send\n", howManyImagesToSend);
+
+        if (howManyImagesToSend > 0) {
+            generateVerbSentence("have", imagesSentence);
+            write(sck, imagesSentence, BUFSIZ);
+
+            sendImages(id, howManyImagesToSend, sck);
+        }
+
+        
 
         read (sck, buffer, BUFSIZ);
         printf("%s 3\n", buffer);
