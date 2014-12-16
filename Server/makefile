@@ -1,9 +1,9 @@
 all: server_tcp
 
-server_tcp: server_tcp.o decode.o generate.o sendRecv.o
-	gcc -Wall server_tcp.o decode.o generate.o sendRecv.o -o server_tcp -lpthread
+server_tcp: server_tcp.o decode.o generate.o sendRecv.o users.o
+	gcc -Wall server_tcp.o decode.o generate.o sendRecv.o users.o -o server_tcp -lpthread
 	
-server_tcp.o: server_tcp.c decode.h generate.h libraries.h sendRecv.h
+server_tcp.o: server_tcp.c decode.h generate.h libraries.h sendRecv.h users.h
 	gcc -Wall -c server_tcp.c -o server_tcp.o -lpthread
 
 decode.o: decode.c decode.h libraries.h
@@ -14,3 +14,6 @@ generate.o: generate.c generate.h
 
 sendRecv.o: sendRecv.c sendRecv.h libraries.h
 	gcc -Wall -c sendRecv.c -o sendRecv.o
+
+users.o: users.c users.h libraries.h
+	gcc -Wall -c users.c -o users.o
