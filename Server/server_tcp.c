@@ -22,28 +22,11 @@ void *client_loop(void *arg) {
     char pass[4] = "";
     char destination[4] = "";
     int sck = *((int*) arg);
+    char loginSentence[25] = "";
 
     recvFileSizeAndFile("plik.pdf", sck);
 
     sendFileSizeAndFile("plik.pdf", sck); 
-
-    read (sck, buffer, BUFSIZ);
-    printf("%s 3\n", buffer);
-
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
-    printf("%s\n", destination);
-
-    read (sck, buffer, BUFSIZ);
-    printf("%s 3\n", buffer);
-
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
-    printf("%s\n", destination);
-
-    read (sck, buffer, BUFSIZ);
-    printf("%s 3\n", buffer);
-
-    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
-    printf("%s\n", destination);
 
     read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
@@ -62,6 +45,9 @@ void *client_loop(void *arg) {
     if ( checkUserLoginPass(id, pass) == 0) {
         printf("Succes logging\n");
 
+        generateVerbSentence("IS", loginSentence);
+        write(sck, loginSentence, BUFSIZ);
+
         read (sck, buffer, BUFSIZ);
         printf("%s 3\n", buffer);
 
@@ -71,6 +57,8 @@ void *client_loop(void *arg) {
         read (sck, buffer, BUFSIZ);
 
     } else {
+        generateVerbSentence("ARE", loginSentence);
+        write(sck, loginSentence, BUFSIZ);
         endLoop(sck, "Login or password is incorrect");
     }
 

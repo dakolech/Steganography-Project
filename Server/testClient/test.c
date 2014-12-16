@@ -46,13 +46,13 @@ int main ()
     char sentence[BUFSIZ];
 
     char id[4]="4567";
-    char pass[4]="2468";
+    char pass[4]="8961";
     char id3[4]="4567";
     char key[11]= "BEZLITOSNY2";
     char verb[10]= "LOVES";
     char verb2[10]= "LIKES";
     char verb3[10]= "HATES";
-    //char buffer[BUFSIZ] = "";
+    char buffer[BUFSIZ] = "";
 
     /*generateVerbSentence("IS", sentence);
     printf("%d\n", decodeVerbSentence(sentence));
@@ -86,9 +86,17 @@ int main ()
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 
-    generateNumberSentence(id3, key, verb3, sentence);
-    printf("%s\n", sentence);
-    write(sck, sentence, BUFSIZ);
+    read (sck, buffer, BUFSIZ);
+    printf("%s 2\n", buffer);
+    if (decodeVerbSentence(buffer) == 1) {
+        printf("%s\n", "Correct login");
+
+        generateNumberSentence(id3, key, verb3, sentence);
+        printf("%s\n", sentence);
+        write(sck, sentence, BUFSIZ);
+
+    } else if (decodeVerbSentence(buffer) == 2) 
+        printf("%s\n", "Incorrect login");
 
     //read (sck, buffer, BUFSIZ);
 
