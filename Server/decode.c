@@ -71,7 +71,7 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
    if (strcmp("HATES", verb) == 0)
       return 3;//destination
 
-   printf("%s\n", verb);
+   //printf("%s\n", verb);
 
    //printf("%d\n", first_letter_of_verb);
    //printf("%d\n", last_letter_of_verb);

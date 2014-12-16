@@ -28,6 +28,24 @@ void *client_loop(void *arg) {
     sendFileSizeAndFile("plik.pdf", sck); 
 
     read (sck, buffer, BUFSIZ);
+    printf("%s 3\n", buffer);
+
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
+    printf("%s\n", destination);
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s 3\n", buffer);
+
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
+    printf("%s\n", destination);
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s 3\n", buffer);
+
+    printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
+    printf("%s\n", destination);
+
+    read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
         endLoop(sck, "Incorrect verb in login");

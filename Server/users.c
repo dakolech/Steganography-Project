@@ -22,8 +22,10 @@ int checkUserLoginPass(char * login, char * pass) {
 		len = strlen(line);
 		if( line[len-1] == '\n' )
 			line[len-1] = 0;
-		if (searchPass == 1 && strcmp(pass,line) == 0 && count%2 == 0)
+		if (searchPass == 1 && strcmp(pass,line) == 0 && count%2 == 0) {
+			fclose(fp);
 			return 0;
+		}
 		else
 			searchPass = 0;
 

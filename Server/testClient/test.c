@@ -46,7 +46,7 @@ int main ()
     char sentence[BUFSIZ];
 
     char id[4]="4567";
-    char pass[4]="8961";
+    char pass[4]="2468";
     char id3[4]="4567";
     char key[11]= "BEZLITOSNY2";
     char verb[10]= "LOVES";
