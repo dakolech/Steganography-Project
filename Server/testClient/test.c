@@ -87,9 +87,17 @@ int main ()
     write(sck, sentence, BUFSIZ);
 
     read (sck, buffer, BUFSIZ);
-    printf("%s 2\n", buffer);
+    printf("%s\n", buffer);
     if (decodeVerbSentence(buffer) == 1) {
         printf("%s\n", "Correct login");
+
+        while(1) {
+            read (sck, buffer, BUFSIZ);
+            printf("%s\n", buffer);
+            if (decodeVerbSentence(buffer) == 4)
+                break;
+            recvFileSizeAndFile("plik4.jpg", sck); 
+        }
 
         generateNumberSentence(id3, key, verb3, sentence);
         printf("%s\n", sentence);

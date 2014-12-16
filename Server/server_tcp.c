@@ -52,12 +52,17 @@ void *client_loop(void *arg) {
         int howManyImagesToSend = countFilesInDirectory(id);
         printf("%d Images to send\n", howManyImagesToSend);
 
-        if (howManyImagesToSend > 0) {
-            generateVerbSentence("have", imagesSentence);
+        while (howManyImagesToSend > 0) {
+            generateVerbSentence("HAVE", imagesSentence);
+            printf("%s\n", imagesSentence);
             write(sck, imagesSentence, BUFSIZ);
-
-            sendImages(id, howManyImagesToSend, sck);
+            sendImage(id, sck);
+            howManyImagesToSend--;
         }
+
+        generateVerbSentence("HAS", imagesSentence);
+        printf("%s\n", imagesSentence);
+        write(sck, imagesSentence, BUFSIZ);
 
         
 
