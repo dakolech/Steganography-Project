@@ -21,3 +21,10 @@ class DuplicateName < AddNewContactError
         @message = 'Duplicate friend name'
     end
 end
+
+class DuplicateID < AddNewContactError
+    attr_reader :message
+    def initialize
+        @message = 'Many friends with same ID'
+    end
+end

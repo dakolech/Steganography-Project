@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 require 'oily_png'
-
-require './exceptions'
+require_relative 'exceptions'
 
 class Message
-    attr_accessor :text, :ip_dest
+    attr_accessor :image
 
     def initialize(properties = {})
-        filename = properties[:filename] || 'images/cat_small.png'
+        filename = properties[:filename] || '../images/cat_small.png'
 
-        @text  = properties[:text] || 'Some default text'
-        @image = ChunkyPNG::Image.from_file(filename)
+        @text  = properties[:text]  || 'Some default text'
+        @image = properties[:image] || ChunkyPNG::Image.from_file(filename)
         raise ImageTooSmall.new unless @image.width*@image.height > Image::TIMES_LARGER*@text.length
 
         @ip_dest = properties[:ip_dest]  || '127.0.0.1'
@@ -98,16 +97,16 @@ class Message
         end
 end
 
-begin
-    msg = Message.new(text: 'Tajna wiadomosc', ip_dest: '127.0.0.1', filename: 'images/cat_small.png')
-    msg.encode
-    puts msg.decode
-
-    'Zażółć'.each_byte do |byte|
-        puts byte
-    end
-
-    #msg.save
-rescue ImageTooSmall => e
-    puts e.message
-end
+#~ begin
+    #~ msg = Message.new(text: 'Tajna wiadomosc', ip_dest: '127.0.0.1', filename: '../images/cat_small.png')
+    #~ msg.encode
+    #~ puts msg.decode
+#~
+    #~ 'Zażółć'.each_byte do |byte|
+        #~ puts byte
+    #~ end
+#~
+    #~ #msg.save
+#~ rescue ImageTooSmall => e
+    #~ puts e.message
+#~ end

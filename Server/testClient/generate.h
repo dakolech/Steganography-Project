@@ -1,1 +1,1 @@
-/home/dako/University/Steganography-Project/Server/generate.h
+../generate.h
