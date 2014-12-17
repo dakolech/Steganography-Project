@@ -12,15 +12,17 @@ class App
     end
 
     def on_send
+        message = ''
         @messenger.app do
-            @msg = Message.new(text: @message_box.text, ip_dest: '127.0.0.1')
+            message = @message_box.text
+            @msg = Message.new(text: message, ip_dest: '127.0.0.1')
             @msg.encode
-            @conversations[@active_friend].add_message :I, @message_box.text
 
-            @messenger.append { inscription @msg.decode } unless @message_box.text == ''
+            @messenger.append { inscription @msg.decode } unless message == ''
             @message_box.text = ''
             @messenger.scroll_top = @messenger.scroll_max
         end
+        @conversations[@active_friend].add_message :I, message
     end
 
     def check_new_messages
@@ -28,13 +30,11 @@ class App
         @messenger.app do
             @messenger.append { inscription message }
             @messenger.scroll_top = @messenger.scroll_max
-            @conversations[@active_friend].add_message :you, message
         end
+        @conversations[@active_friend].add_message :you, message
     end
 
     def on_logout
-        p @conversations
-
         FriendsHelper::save_friends
         OptionHelper::save_options
         exit
@@ -45,13 +45,10 @@ class App
         @active_friend = friend
 
         messages = @conversations[@active_friend].messages
-        p messages
-
         @messenger.app do
             @messenger.clear
-
             messages.each do |m|
-                @messenger.append { inscription 'Success' }
+                @messenger.append { inscription m[:text] }
             end
         end
     end

@@ -2,7 +2,7 @@ class Conversation
     attr_reader :messages
 
     def initialize
-        @messages = [{who: :I, text: 'Test message'}]
+        @messages = []
     end
 
     def add_message(fromWhom, message)
