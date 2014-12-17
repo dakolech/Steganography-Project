@@ -7,4 +7,15 @@
 !/Client/images/cat_big.png
 !/Client/images/cat_small.png
 
+
 Pytania
+
+*.o
+*.c~
+.gitignore
+server_tcp
+test
+.gitignore~
+Support/*
+
+

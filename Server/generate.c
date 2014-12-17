@@ -1,4 +1,5 @@
 #include "generate.h"
+#include "decode.h"
 
 void generateName(int n, char letter, char * file_name, char * name) {
 
@@ -37,10 +38,12 @@ void generateName(int n, char letter, char * file_name, char * name) {
          count2++;
          if(count2==count){
             strcpy(name, line);
+            strcat(name, "\0");
+            fclose(fp);
             break;
          }
       }
-   }
+   }   
 }
 
 
@@ -107,6 +110,11 @@ void generateNumberSentence(char * id, char * key_in, char * verb, char * senten
    strcat (sentence, " ");
    strcat (sentence, "\0");
 
+   char test[4] = "";
+
+   decodeNumberSentence(sentence, key_in, test);
+   if (strcmp(id,test) != 0)
+      generateNumberSentence(id, key_in, verb, sentence);
 }
 
 void randomAnimal(char * output) {
@@ -154,9 +162,11 @@ void randomInFile(char * fileName, char * output) {
       count2++;
       if(count2==count){
          strcpy(output, line);
+         fclose(fp);
          break;
       }
    }
+
 }
 
 void connectThreeWords(char * firstWord, char * secondWord, char * thirdWord, char * output) {
