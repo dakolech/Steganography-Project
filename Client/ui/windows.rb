@@ -176,6 +176,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
             background "#B4B4B4"
             para strong(friend), stroke: darkslategray
         end
+        @app.begin_conversation friend
     end
 
     login
