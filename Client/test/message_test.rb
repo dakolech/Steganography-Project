@@ -2,7 +2,7 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/colorize'
 
-require_relative '../message'
+require_relative '../class/message'
 
 describe Message do
 
@@ -17,7 +17,7 @@ describe Message do
 
             # Check 'em all!
             dummy_text.each do |message|
-                msg = Message.new(text: message)
+                msg = Message.new(text: message, filename: 'images/cat_small.png')
                 msg.encode
                 msg.decode.must_equal message
             end
