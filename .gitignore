@@ -10,6 +10,7 @@
 
 Pytania
 
+../Server/*.o
 *.o
 *.c~
 .gitignore

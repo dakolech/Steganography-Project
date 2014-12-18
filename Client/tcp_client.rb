@@ -3,14 +3,25 @@ require 'socket'        # Sockets are in standard library
 hostname = 'localhost'
 port = 1234
 
-def receive_file
-    s = TCPSocket.open(hostname, port)
-    f = File.new('received.txt', 'w+')
-    while line = s.gets                # Read lines from the socket
-        f.write(line)
-    end
+s = TCPSocket.open(hostname, port)
+puts '---BEGIN OF CLIENT CONNECTION---'
 
-    f.close
-    s.close               # Close the socket when done
+begin
+    s.puts 'GAIL HATCHER LOVES GROVER BEST'
+    sleep(0.1)
+    s.puts 'CONCETTA BOYER LIKES GROVER SNELL'
+    answer = s.gets
+    puts answer
+
+    if answer.include?('IS')
+        puts 'Login successful'
+        s.puts 'GAIL HATCHER HATES GROVER BEST'
+    else
+        puts 'Login failed'
+    end
+rescue Errno::EPIPE
+    puts 'Connection broken'
 end
 
+puts '---END OF CLIENT CONNECTION---'
+s.close                 # Close the socket when done
