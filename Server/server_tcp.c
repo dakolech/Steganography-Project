@@ -33,7 +33,7 @@ void *client_loop(void *arg) {
     printf("%s\n", id);
 
     generateVerbSentence("USE", loginSentence);
-    write(sck, loginSentence, BUFSIZ);
+    write(sck, loginSentence, sizeof(loginSentence));
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
@@ -46,9 +46,9 @@ void *client_loop(void *arg) {
         printf("Succes logging\n");
 
         generateVerbSentence("IS", loginSentence);
-        write(sck, loginSentence, BUFSIZ);
+        write(sck, loginSentence, sizeof(loginSentence));
 
-        /*int howManyImagesToSend = countFilesInDirectory(id);
+        int howManyImagesToSend = countFilesInDirectory(id);
         printf("%d Images to send\n", howManyImagesToSend);
 
         while (howManyImagesToSend > 0) {
@@ -71,7 +71,7 @@ void *client_loop(void *arg) {
         printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
         printf("%s\n", destination);
 
-        read (sck, buffer, BUFSIZ);*/
+        read (sck, buffer, BUFSIZ);
 
     } else {
         generateVerbSentence("ARE", loginSentence);
@@ -101,6 +101,7 @@ void *client_loop(void *arg) {
         bzero(buffer, 1024);
     }
     fclose(fp);*/
+    sleep(1);
     close(sck);
     printf("[server] KONIEC wątku client_loop\n");
     pthread_exit(NULL);

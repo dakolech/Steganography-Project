@@ -14,13 +14,12 @@ describe 'login to server with id and pass' do
             sock = TCPSocket.open(hostname, port)
 
             sock.puts "GAIL HATCHER LOVES GROVER BEST"
-            sleep(0.1)
+            sock.gets
             sock.puts "CONCETTA BOYER LIKES GROVER SNELL"
 
             answer = sock.gets
             answer.must_include('IS')
 
-            sleep(0.5)
             sock.close
         end
     end

@@ -8,9 +8,7 @@ puts '---BEGIN OF CLIENT CONNECTION---'
 
 begin
     s.puts "GAIL HATCHER LOVES GROVER BEST"
-    sleep(0.1)
     puts "Potwierdzenie chęci logowania: " + s.gets
-    sleep(0.1)
     s.puts "CONCETTA BOYER LIKES GROVER SNELL"
     answer = s.gets
     puts "Potwierdzenie zalogowania: " + answer
