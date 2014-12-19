@@ -34,7 +34,10 @@ void *client_loop(void *arg) {
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
         endLoop(sck, "Incorrect verb in login");
     
-    printf("%s\n", id);    
+    printf("%s\n", id);
+
+    generateVerbSentence("USE", loginSentence);
+    write(sck, loginSentence, BUFSIZ);    
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);

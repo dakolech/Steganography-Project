@@ -74,6 +74,9 @@ int main ()
     printf("%s\n", sentence);
     printf("%d\n", decodeVerbSentence(sentence));*/
 
+    /*generateVerbSentence("USE", sentence);
+    printf("%s\n", sentence);
+    printf("%d\n", decodeVerbSentence(sentence));*/
 
 
     generateNumberSentence(id, key, verb, sentence);
@@ -81,6 +84,9 @@ int main ()
     write(sck, sentence, BUFSIZ);
 
     //sleep(2);
+
+    read (sck, buffer, BUFSIZ);
+    printf("%s\n", buffer);
 
     generateNumberSentence(pass, key, verb2, sentence);
     printf("%s\n", sentence);

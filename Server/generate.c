@@ -241,8 +241,17 @@ int generateVerbSentence(char * verb, char * sentence) {
       randomBodyPart(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 8;
-      
+      return 8;     
+
+   } else if (verb[0] == 'U') {
+      char verb1[25] = "";
+      randomAnimal(firstWord);
+      strcpy(verb1, verb);
+      strcat (verb1, "S");
+      randomBodyPart(thirdWord);
+      connectThreeWords(firstWord, verb1, thirdWord, sentence);
+
+      return 9;      
    } 
 
    return -1;
