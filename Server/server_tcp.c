@@ -34,7 +34,10 @@ void *client_loop(void *arg) {
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
         endLoop(sck, "Incorrect verb in login");
     
-    printf("%s\n", id);    
+    printf("%s\n", id);
+
+    generateVerbSentence("USE", loginSentence);
+    write(sck, loginSentence, BUFSIZ);    
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
@@ -52,12 +55,17 @@ void *client_loop(void *arg) {
         int howManyImagesToSend = countFilesInDirectory(id);
         printf("%d Images to send\n", howManyImagesToSend);
 
-        if (howManyImagesToSend > 0) {
-            generateVerbSentence("have", imagesSentence);
+        while (howManyImagesToSend > 0) {
+            generateVerbSentence("HAVE", imagesSentence);
+            printf("%s\n", imagesSentence);
             write(sck, imagesSentence, BUFSIZ);
-
-            sendImages(id, howManyImagesToSend, sck);
+            sendImage(id, sck);
+            howManyImagesToSend--;
         }
+
+        generateVerbSentence("HAS", imagesSentence);
+        printf("%s\n", imagesSentence);
+        write(sck, imagesSentence, BUFSIZ);
 
         
 
