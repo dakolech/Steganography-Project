@@ -99,3 +99,36 @@ int recvFileSizeAndFile(char * fileName, int sck) {
     return 0;
 
 }
+
+int sendImage (char * id, int sck) {
+    DIR *dir;
+    struct dirent *ent;
+    char path[25] = "images/";
+    char fileName[25] = "images/";
+    strcat (path, id);
+    strcat (fileName, id);
+    strcat (fileName, "/");
+    printf ("path: %s\n", path);
+    
+    if ((dir = opendir (path)) != NULL) {
+      /* print all the files and directories within directory */
+      while ((ent = readdir (dir)) != NULL) {
+        if (ent->d_type == DT_REG) {
+            printf ("File: %s\n", ent->d_name);
+            strcat(fileName, ent->d_name);
+            printf ("File: %s\n", fileName);
+            sendFileSizeAndFile(fileName, sck);
+            if( remove(fileName) != 0 )
+                perror("Error deleting file");
+            else
+                printf ("File successfully deleted\n");
+        }
+      }
+      closedir (dir);
+    } else {
+      /* could not open directory */
+      perror ("");
+      //return EXIT_FAILURE;
+    }
+    return 0;
+}
