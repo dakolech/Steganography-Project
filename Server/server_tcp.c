@@ -13,7 +13,7 @@ void endLoop(int sck, char * message) {
 
     printf("%s\n", message);
     pthread_exit(NULL);
-} 
+}
 
 void *client_loop(void *arg) {
     //printf("[server] POCZĄTEK wątku client_loop\n");
@@ -25,19 +25,15 @@ void *client_loop(void *arg) {
     char loginSentence[25] = "";
     char imagesSentence[25] = "";
 
-    recvFileSizeAndFile("plik.pdf", sck);
-
-    sendFileSizeAndFile("plik.pdf", sck); 
-
     read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
         endLoop(sck, "Incorrect verb in login");
-    
+
     printf("%s\n", id);
 
     generateVerbSentence("USE", loginSentence);
-    write(sck, loginSentence, BUFSIZ);    
+    write(sck, loginSentence, BUFSIZ);
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
@@ -52,7 +48,7 @@ void *client_loop(void *arg) {
         generateVerbSentence("IS", loginSentence);
         write(sck, loginSentence, BUFSIZ);
 
-        int howManyImagesToSend = countFilesInDirectory(id);
+        /*int howManyImagesToSend = countFilesInDirectory(id);
         printf("%d Images to send\n", howManyImagesToSend);
 
         while (howManyImagesToSend > 0) {
@@ -67,7 +63,7 @@ void *client_loop(void *arg) {
         printf("%s\n", imagesSentence);
         write(sck, imagesSentence, BUFSIZ);
 
-        
+
 
         read (sck, buffer, BUFSIZ);
         printf("%s 3\n", buffer);
@@ -75,7 +71,7 @@ void *client_loop(void *arg) {
         printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
         printf("%s\n", destination);
 
-        read (sck, buffer, BUFSIZ);
+        read (sck, buffer, BUFSIZ);*/
 
     } else {
         generateVerbSentence("ARE", loginSentence);
@@ -83,7 +79,7 @@ void *client_loop(void *arg) {
         endLoop(sck, "Login or password is incorrect");
     }
 
-    
+
 
 
 
