@@ -7,11 +7,11 @@ s = TCPSocket.open(hostname, port)
 puts '---BEGIN OF CLIENT CONNECTION---'
 
 begin
-    s.puts "GAIL HATCHER LOVES GROVER BEST\0"
-    sleep(0.1)
-    s.puts "CONCETTA BOYER LIKES GROVER SNELL\0"
+    s.puts "GAIL HATCHER LOVES GROVER BEST"
+    puts "Potwierdzenie chęci logowania: " + s.gets
+    s.puts "CONCETTA BOYER LIKES GROVER SNELL"
     answer = s.gets
-    puts answer
+    puts "Potwierdzenie zalogowania: " + answer
 
     if answer.include?('IS')
         puts 'Login successful'

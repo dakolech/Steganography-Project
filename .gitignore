@@ -10,7 +10,8 @@
 
 Pytania
 
-../Server/*.o
+Server/*.o
+Server/testClient/*.o
 *.o
 *.c~
 .gitignore
@@ -19,4 +20,7 @@ test
 .gitignore~
 Support/*
 
-
+*.cbp
+*.depend
+bin/
+*.pdf

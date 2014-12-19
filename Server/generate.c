@@ -7,18 +7,18 @@ void generateName(int n, char letter, char * file_name, char * name) {
 
    int zarodek, len;
    zarodek= time(NULL);
-   srand(zarodek); 
+   srand(zarodek);
    char line[25];
    FILE *fp;
- 
+
    fp = fopen(file_name,"r"); // read mode
- 
+
    if( fp == NULL ) {
 
       perror("Error while opening the file.\n");
       exit(EXIT_FAILURE);
    }
- 
+
    int count = 0, count2 = 0;
    while( fgets(line, 25,fp) ){
       if(line[n]==letter) {
@@ -26,7 +26,7 @@ void generateName(int n, char letter, char * file_name, char * name) {
       }
    }
    count=rand()%count;
- 
+
    fclose(fp);
 
    fp = fopen(file_name,"r");
@@ -43,7 +43,7 @@ void generateName(int n, char letter, char * file_name, char * name) {
             break;
          }
       }
-   }   
+   }
 }
 
 
@@ -53,7 +53,7 @@ void generateNumberSentence(char * id, char * key_in, char * verb, char * senten
    int idArray[4];
    int i;
    for(i=0; i<4; i++)
-      idArray[i] = id[i] - '0';   
+      idArray[i] = id[i] - '0';
 
 
    char key[11];
@@ -108,7 +108,7 @@ void generateNumberSentence(char * id, char * key_in, char * verb, char * senten
    strcat (sentence, " ");
    strcat (sentence, name4);
    strcat (sentence, " ");
-   strcat (sentence, "\0");
+   strcat (sentence, "\n");
 
    char test[4] = "";
 
@@ -134,24 +134,24 @@ void randomInFile(char * fileName, char * output) {
 
    int zarodek, len;
    zarodek= time(NULL);
-   srand(zarodek); 
+   srand(zarodek);
    char line[25];
    FILE *fp;
- 
+
    fp = fopen(fileName,"r"); // read mode
- 
+
    if( fp == NULL ) {
 
       perror("Error while opening the file.\n");
       exit(EXIT_FAILURE);
    }
- 
+
    int count = 0, count2 = 0;
    while( fgets(line, 25,fp) ){
       count++;
    }
    count=rand()%count;
- 
+
    fclose(fp);
 
    fp = fopen(fileName,"r");
@@ -175,6 +175,7 @@ void connectThreeWords(char * firstWord, char * secondWord, char * thirdWord, ch
    strcat (output, secondWord);
    strcat (output, " ");
    strcat (output, thirdWord);
+   strcat (output, "\n");
 }
 
 
@@ -188,7 +189,7 @@ int generateVerbSentence(char * verb, char * sentence) {
       randomAnimal(firstWord);
       randomAdjective(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
-      
+
       return 1;
 
    } else if (verb[0] == 'A') {
@@ -206,21 +207,21 @@ int generateVerbSentence(char * verb, char * sentence) {
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
       return 3;
-      
+
    } else if (verb[0] == 'H' && verb[2] == 'S') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
       return 4;
-      
+
    } else if (verb[0] == 'W' && verb[2] == 'S') {
       randomAnimal(firstWord);
       randomAdjective(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
       return 5;
-      
+
    } else if (verb[2] == 'R') {
       randomAnimal(firstWord);
       strcat (firstWord, "S");
@@ -228,20 +229,20 @@ int generateVerbSentence(char * verb, char * sentence) {
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
       return 6;
-      
+
    } else if (verb[3] == 'N') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
       return 7;
-      
+
    } else if (verb[0] == 'H' && verb[2] == 'D') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
       connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 8;     
+      return 8;
 
    } else if (verb[0] == 'U') {
       char verb1[25] = "";
@@ -251,8 +252,8 @@ int generateVerbSentence(char * verb, char * sentence) {
       randomBodyPart(thirdWord);
       connectThreeWords(firstWord, verb1, thirdWord, sentence);
 
-      return 9;      
-   } 
+      return 9;
+   }
 
    return -1;
 
