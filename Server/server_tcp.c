@@ -23,6 +23,7 @@ void *client_loop(void *arg) {
     char destination[4] = "";
     int sck = *((int*) arg);
     char loginSentence[25] = "";
+    char imagesSentence[25] = "";
 
     recvFileSizeAndFile("plik.pdf", sck);
 
@@ -33,7 +34,10 @@ void *client_loop(void *arg) {
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
         endLoop(sck, "Incorrect verb in login");
     
-    printf("%s\n", id);    
+    printf("%s\n", id);
+
+    generateVerbSentence("USE", loginSentence);
+    write(sck, loginSentence, BUFSIZ);    
 
     read (sck, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
@@ -47,6 +51,23 @@ void *client_loop(void *arg) {
 
         generateVerbSentence("IS", loginSentence);
         write(sck, loginSentence, BUFSIZ);
+
+        int howManyImagesToSend = countFilesInDirectory(id);
+        printf("%d Images to send\n", howManyImagesToSend);
+
+        while (howManyImagesToSend > 0) {
+            generateVerbSentence("HAVE", imagesSentence);
+            printf("%s\n", imagesSentence);
+            write(sck, imagesSentence, BUFSIZ);
+            sendImage(id, sck);
+            howManyImagesToSend--;
+        }
+
+        generateVerbSentence("HAS", imagesSentence);
+        printf("%s\n", imagesSentence);
+        write(sck, imagesSentence, BUFSIZ);
+
+        
 
         read (sck, buffer, BUFSIZ);
         printf("%s 3\n", buffer);
