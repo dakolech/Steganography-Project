@@ -1,10 +1,10 @@
 class SentenceEncoder
     def initialize
-        @firstnames = File.readlines('../data/generate/popular-both-first.txt').each { |l| l.strip! }
-        @lastnames  = File.readlines('../data/generate/popular-last.txt').each       { |l| l.strip! }
-        @adjectives = File.readlines('../data/generate/adjectives.txt').each         { |l| l.strip! }
-        @animals    = File.readlines('../data/generate/animals.txt').each            { |l| l.strip! }
-        @bodyparts  = File.readlines('../data/generate/bodyparts.txt').each          { |l| l.strip! }
+        @firstnames = File.readlines('data/generate/popular-both-first.txt').each { |l| l.strip! }
+        @lastnames  = File.readlines('data/generate/popular-last.txt').each       { |l| l.strip! }
+        @adjectives = File.readlines('data/generate/adjectives.txt').each         { |l| l.strip! }
+        @animals    = File.readlines('data/generate/animals.txt').each            { |l| l.strip! }
+        @bodyparts  = File.readlines('data/generate/bodyparts.txt').each          { |l| l.strip! }
     end
 
     def generate(options = {})
@@ -46,14 +46,3 @@ class SentenceEncoder
 
         end
 end
-
-s = SentenceEncoder.new
-puts s.generate(verb: :is)
-puts s.generate(verb: :are)
-puts s.generate(verb: :have)
-puts s.generate(verb: :has)
-puts s.generate(verb: :was)
-puts s.generate(verb: :were)
-puts s.generate(verb: :hadnt)
-puts s.generate(verb: :had)
-puts s.generate(verb: :use)
