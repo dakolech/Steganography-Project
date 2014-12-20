@@ -2,6 +2,7 @@ require '../helper/friends_helper'
 require '../helper/option_helper'
 require_relative 'message'
 require_relative 'conversation'
+#require_relative 'connection'
 
 class App
     def initialize(messenger, message_box)
@@ -11,11 +12,15 @@ class App
         @conversations = {}
     end
 
+    def on_login
+        #@connection = Connection.new
+    end
+
     def on_send
         message = ''
         @messenger.app do
             message = @message_box.text
-            @msg = Message.new(text: message, ip_dest: '127.0.0.1')
+            @msg = Message.new(text: message, ip_dest: OptionHelper::get_options[:server_ip])
             @msg.encode
 
             @messenger.append { inscription @msg.decode } unless message == ''

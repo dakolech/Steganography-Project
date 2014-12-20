@@ -8,23 +8,30 @@ end
 class AddNewContactError < StandardError
 end
 
-class InvalidID < AddNewContactError
-    attr_reader :message
-    def initialize
-        @message = 'Not valid ID'
+    class InvalidID < AddNewContactError
+        attr_reader :message
+        def initialize
+            @message = 'Not valid ID'
+        end
     end
-end
 
-class DuplicateName < AddNewContactError
-    attr_reader :message
-    def initialize
-        @message = 'Duplicate friend name'
+    class DuplicateName < AddNewContactError
+        attr_reader :message
+        def initialize
+            @message = 'Duplicate friend name'
+        end
     end
-end
 
-class DuplicateID < AddNewContactError
+    class DuplicateID < AddNewContactError
+        attr_reader :message
+        def initialize
+            @message = 'Many friends with same ID'
+        end
+    end
+
+class ConnectionError < StandardError
     attr_reader :message
-    def initialize
-        @message = 'Many friends with same ID'
+    def initialize(message)
+        @message = "Exception of class 'ConnectionError' raised: " + message
     end
 end
