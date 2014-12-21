@@ -2,18 +2,21 @@ require '../helper/friends_helper'
 require '../helper/option_helper'
 require_relative 'message'
 require_relative 'conversation'
-#require_relative 'connection'
+require_relative 'connection'
 
 class App
-    def initialize(messenger, message_box)
-        @messenger = messenger
-        @message_box = message_box
-
+    def initialize
         @conversations = {}
     end
 
-    def on_login
-        #@connection = Connection.new
+    def set_message_stuff(messenger, message_box)
+        @messenger = messenger
+        @message_box = message_box
+    end
+
+    def on_login(id, pass)
+        @connection = Connection.new(OptionHelper::get_options[:server_ip].join('.'), 1234)
+        @connection.log_in(id, pass)
     end
 
     def on_send
@@ -40,6 +43,7 @@ class App
     end
 
     def on_logout
+        @connection.close unless @connection.nil?
         FriendsHelper::save_friends
         OptionHelper::save_options
         exit

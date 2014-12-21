@@ -7,6 +7,17 @@ class SentenceDecoder
         return verb_sentence(sentence) if !sentence.nil?
     end
 
+    def validate(answer, type)
+        case type
+        when :id_answer
+            answer.include?('USE')
+        when :pass_answer
+            answer.include?('IS')
+        else
+            false
+        end
+    end
+
     private
 
         def number_sentence(key, sentence)
@@ -26,6 +37,3 @@ class SentenceDecoder
             sentence.split(' ')[1].downcase.to_sym
         end
 end
-
-s = SentenceDecoder.new
-p s.decode(key: 'BEZLITOSNY2', sentence: 'GAIL HATCHER LOVES GROVER BEST')

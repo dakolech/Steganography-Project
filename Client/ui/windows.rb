@@ -22,9 +22,11 @@ Shoes.app title: 'Steganography Project', resizable: false do
                 @id_edit = edit_line width: '100%'
                 @pass_edit = edit_line width: '100%', secret: true
 
-                @login_button = button 'Login', width: '100%', margin_top: 3
-                @login_button.click do
-                    main
+                @app = App.new
+                @login_button = button 'Login', width: '100%', margin_top: 3 do
+                    if @app.on_login(@id_edit.text, @pass_edit.text)
+                        main
+                    end
                 end
             end
             stack width: '20%'
@@ -63,7 +65,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
                     end
                 end
             end
-            @app = App.new @messenger, @message_box
+            @app.set_message_stuff @messenger, @message_box
             set_active_friend FriendsHelper::get_friends.keys[0]
         end
     end
