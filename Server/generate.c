@@ -184,6 +184,7 @@ int generateVerbSentence(char * verb, char * sentence) {
    char firstWord[25];
    char thirdWord[25];
 
+    // IS
    if (verb[0] == 'I') {
 
       randomAnimal(firstWord);
@@ -192,6 +193,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 1;
 
+    // ARE
    } else if (verb[0] == 'A') {
 
       randomAnimal(firstWord);
@@ -201,6 +203,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 2;
 
+    // HAVE
    } else if (verb[2] == 'V') {
       strcpy (firstWord, "I");
       randomBodyPart(thirdWord);
@@ -208,6 +211,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 3;
 
+    // HAS
    } else if (verb[0] == 'H' && verb[2] == 'S') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
@@ -215,6 +219,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 4;
 
+    // WAS
    } else if (verb[0] == 'W' && verb[2] == 'S') {
       randomAnimal(firstWord);
       randomAdjective(thirdWord);
@@ -222,6 +227,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 5;
 
+    // WERE
    } else if (verb[2] == 'R') {
       randomAnimal(firstWord);
       strcat (firstWord, "S");
@@ -230,6 +236,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 6;
 
+    // HADNT
    } else if (verb[3] == 'N') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
@@ -237,6 +244,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 7;
 
+    // HAD
    } else if (verb[0] == 'H' && verb[2] == 'D') {
       randomAnimal(firstWord);
       randomBodyPart(thirdWord);
@@ -244,6 +252,7 @@ int generateVerbSentence(char * verb, char * sentence) {
 
       return 8;
 
+    // USE
    } else if (verb[0] == 'U') {
       char verb1[25] = "";
       randomAnimal(firstWord);
