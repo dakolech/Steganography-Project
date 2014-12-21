@@ -10,11 +10,10 @@ class SentenceEncoder
     def generate(options = {})
         id  = options[:id]
         key = options[:key]
-
         verb = options[:verb]
 
+        return number_sentence(id, key, verb) if !id.nil? and !key.nil?
         return verb_sentence(verb) if !verb.nil?
-        return number_sentence(id, key) if !id.nil? and !key.nil?
     end
 
     private
@@ -42,7 +41,11 @@ class SentenceEncoder
             end
         end
 
-        def number_sentence(id, key)
+        def number_sentence(id, key, verb)
+            puts find_name(2, 'Z', @firstnames)
+        end
 
+        def find_name(n, letter, file)
+            file.find { |name| name[n] == letter }
         end
 end
