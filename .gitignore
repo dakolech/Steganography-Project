@@ -10,11 +10,17 @@
 
 Pytania
 
+Server/*.o
+Server/server_tcp
+Server/testClient/*.o
 *.o
 *.c~
-.gitignore
 server_tcp
 .gitignore~
 Support/*
 
-
+*.cbp
+*.depend
+*.layout
+bin/
+*.pdf

@@ -36,13 +36,6 @@ int main ()
 		exit (EXIT_FAILURE);
 	}
 
-
-    sendFileSizeAndFile(FILE_TO_SEND, sck); 
-
-    recvFileSizeAndFile("plik4.pdf", sck); 
-
-
-	
     char sentence[BUFSIZ];
 
     char id[4]="4567";
@@ -74,6 +67,9 @@ int main ()
     printf("%s\n", sentence);
     printf("%d\n", decodeVerbSentence(sentence));*/
 
+    /*generateVerbSentence("USE", sentence);
+    printf("%s\n", sentence);
+    printf("%d\n", decodeVerbSentence(sentence));*/
 
 
     generateNumberSentence(id, key, verb, sentence);
@@ -82,18 +78,29 @@ int main ()
 
     //sleep(2);
 
+    read (sck, buffer, BUFSIZ);
+    printf("%s\n", buffer);
+
     generateNumberSentence(pass, key, verb2, sentence);
     printf("%s\n", sentence);
     write(sck, sentence, BUFSIZ);
 
     read (sck, buffer, BUFSIZ);
-    printf("%s 2\n", buffer);
+    printf("%s\n", buffer);
     if (decodeVerbSentence(buffer) == 1) {
         printf("%s\n", "Correct login");
 
+        /*while(1) {
+            read (sck, buffer, BUFSIZ);
+            printf("%s\n", buffer);
+            if (decodeVerbSentence(buffer) == 4)
+                break;
+            recvFileSizeAndFile("plik4.jpg", sck); 
+        }
+
         generateNumberSentence(id3, key, verb3, sentence);
         printf("%s\n", sentence);
-        write(sck, sentence, BUFSIZ);
+        write(sck, sentence, BUFSIZ);*/
 
     } else if (decodeVerbSentence(buffer) == 2) 
         printf("%s\n", "Incorrect login");

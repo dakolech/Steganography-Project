@@ -133,9 +133,13 @@ int decodeVerbSentence(char * sentence) {
       
    } else if (verb[0] == 'H' && verb[2] == 'D') {
       
-      return 8;
+      return 8; 
+
+   } else if (verb[0] == 'U') {
       
-   } 
+      return 9;      
+   }  
+
 
    return -1;
 
