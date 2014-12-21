@@ -10,24 +10,25 @@ end
 Shoes.app title: 'Steganography Project', resizable: false do
     def login
         flow margin: 10 do
-            stack width: '100%', height: '65%' do
+            stack width: '100%', height: '60%' do
                 subtitle 'Sign in is required!', align: 'center', margin_top: '60%'
             end
             stack width: '20%'
-            stack width: '20%', height: 100 do
+            stack width: '20%', height: 80 do
                 para 'Your ID:', size: 10
                 para 'Password:', size: 10
             end
-            stack width: '40%', height: 100 do
+            stack width: '40%', height: 140 do
                 @id_edit = edit_line width: '100%'
                 @pass_edit = edit_line width: '100%', secret: true
 
                 @app = App.new
                 @login_button = button 'Login', width: '100%', margin_top: 3 do
-                    if @app.on_login(@id_edit.text, @pass_edit.text)
+                    if @app.on_login(@id_edit.text, @pass_edit.text, @login_status)
                         main
                     end
                 end
+                @login_status = stack width: '100%', hidden: true
             end
             stack width: '20%'
         end

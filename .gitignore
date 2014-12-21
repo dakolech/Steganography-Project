@@ -14,9 +14,7 @@ Server/*.o
 Server/testClient/*.o
 *.o
 *.c~
-.gitignore
 server_tcp
-test
 .gitignore~
 Support/*
 

@@ -32,6 +32,6 @@ end
 class ConnectionError < StandardError
     attr_reader :message
     def initialize(message)
-        @message = "Exception of class 'ConnectionError' raised: " + message
+        @message = 'ConnectionError: ' + message
     end
 end
