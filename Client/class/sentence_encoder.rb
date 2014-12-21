@@ -42,7 +42,15 @@ class SentenceEncoder
         end
 
         def number_sentence(id, key, verb)
-            puts find_name(2, 'Z', @firstnames)
+            pos = key[-1].to_i
+
+            letters = Array.new(id.length) { |i| key[id[i].to_i] }
+            names = Array.new(id.length) do |i|
+                file = if i%2 == 0 then @firstnames else @lastnames end
+                find_name(pos, letters[i], file)
+            end
+
+            names[0] + ' ' + names[1] + " #{verb.to_s.upcase} " + names[2] + ' ' + names[3]
         end
 
         def find_name(n, letter, file)
