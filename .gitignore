@@ -14,7 +14,6 @@ Pytania
 *.c~
 .gitignore
 server_tcp
-test
 .gitignore~
 Support/*
 
