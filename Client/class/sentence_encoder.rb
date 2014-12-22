@@ -1,10 +1,12 @@
 class SentenceEncoder
+    PROJECT_PATH = File.expand_path('../../', __FILE__)
+
     def initialize
-        @firstnames = File.readlines('../data/generate/popular-both-first.txt').each { |l| l.strip! }
-        @lastnames  = File.readlines('../data/generate/popular-last.txt').each       { |l| l.strip! }
-        @adjectives = File.readlines('../data/generate/adjectives.txt').each         { |l| l.strip! }
-        @animals    = File.readlines('../data/generate/animals.txt').each            { |l| l.strip! }
-        @bodyparts  = File.readlines('../data/generate/bodyparts.txt').each          { |l| l.strip! }
+        @firstnames = File.readlines(PROJECT_PATH + 'data/generate/popular-both-first.txt').each { |l| l.strip! }
+        @lastnames  = File.readlines(PROJECT_PATH + 'data/generate/popular-last.txt').each       { |l| l.strip! }
+        @adjectives = File.readlines(PROJECT_PATH + 'data/generate/adjectives.txt').each         { |l| l.strip! }
+        @animals    = File.readlines(PROJECT_PATH + 'data/generate/animals.txt').each            { |l| l.strip! }
+        @bodyparts  = File.readlines(PROJECT_PATH + 'data/generate/bodyparts.txt').each          { |l| l.strip! }
     end
 
     def generate(options = {})

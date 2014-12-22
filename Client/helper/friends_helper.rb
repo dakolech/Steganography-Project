@@ -9,7 +9,7 @@ module FriendsHelper
         list = File.readlines('../data/friends')
         list.map! { |l| l.strip.split(';') }
         list = list.to_h
-        list
+        list.sort.to_h
     end
 
     def FriendsHelper.add_friend(name, id)
