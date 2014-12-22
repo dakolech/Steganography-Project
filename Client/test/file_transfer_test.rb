@@ -21,11 +21,15 @@ describe 'sending and recieving file from server' do
         #@sock.puts @encoder.generate(id: '8961', key: 'BEZLITOSNY2', verb: :likes)
         #@sock.gets
 
-        file_to_send = '../images/changed.png'
+        file_to_send = 'images/changed.png'
+        @sock.puts File.size(file_to_send)
+        File.open(file_to_send) do |f|
+            @sock.puts f.read
+        end
     end
 
     after do
-        unless sock.close.nil?
+        unless @sock.close.nil?
             @sock.close
         end
     end
