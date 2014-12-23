@@ -1,49 +1,57 @@
 #include "libraries.h"
-#include "generate.h"
+#include "encode.h"
 #include "decode.h"
 #include "sendRecv.h"
 #include "users.h"
+#include "connection.h"
+#include "errors.h"
 
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
-#define MAINKEY "BEZLITOSNY2"
 
-void endLoop(int sck, char * message) {
-    close(sck);
+void *client_loop2(void *arg) {
+    int socket = *((int*)arg);
 
-    printf("%s\n", message);
-    pthread_exit(NULL);
+    printf("[BEGIN CLIENT LOOP] socket: %d\n", socket);
+    int status = conn_log_user(socket);
+    if (status == Success) {
+        printf("Success\n");
+    } else {
+        error_handle(status);
+    }
+    printf("[END CLIENT LOOP] socket: %d\n", socket);
 }
 
 void *client_loop(void *arg) {
-    //printf("[server] POCZĄTEK wątku client_loop\n");
     char buffer[BUFSIZ] = "";
     char id[4] = "";
     char pass[4] = "";
     char destination[4] = "";
-    int sck = *((int*) arg);
+    int socket = *((int*) arg);
     char loginSentence[25] = "";
     char imagesSentence[25] = "";
 
-    recvFileSizeAndFile("plik.png", sck);
+    printf("[BEGIN CLIENT LOOP] socket: %d", socket);
 
-    sendFileSizeAndFile("plik.png", sck);
-    printf("Receive and Send file completed\n");
+    /*recvFileSizeAndFile("plik.png", socket);
 
-    read (sck, buffer, BUFSIZ);
+    sendFileSizeAndFile("plik.png", socket);
+    printf("Receive and Send file completed\n");*/
+
+    /*read (socket, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
-        endLoop(sck, "Incorrect verb in login");
+        endLoop(socket, "Incorrect verb in login");
 
     printf("%s\n", id);
 
     generateVerbSentence("USE", loginSentence);
-    write(sck, loginSentence, sizeof(loginSentence));
+    write(socket, loginSentence, sizeof(loginSentence));
 
-    read (sck, buffer, BUFSIZ);
+    read (socket, buffer, BUFSIZ);
     printf("%s 2\n", buffer);
     if (decodeNumberSentence(buffer, MAINKEY, pass) != 2)
-        endLoop(sck, "Incorrect verb in password");
+        endLoop(socket, "Incorrect verb in password");
 
     printf("%s\n", pass);
 
@@ -51,7 +59,7 @@ void *client_loop(void *arg) {
         printf("Succes logging\n");
 
         generateVerbSentence("IS", loginSentence);
-        write(sck, loginSentence, sizeof(loginSentence));
+        write(socket, loginSentence, sizeof(loginSentence));
 
         int howManyImagesToSend = countFilesInDirectory(id);
         printf("%d Images to send\n", howManyImagesToSend);
@@ -59,57 +67,35 @@ void *client_loop(void *arg) {
         while (howManyImagesToSend > 0) {
             generateVerbSentence("HAVE", imagesSentence);
             printf("%s\n", imagesSentence);
-            write(sck, imagesSentence, BUFSIZ);
-            sendImage(id, sck);
+            write(socket, imagesSentence, BUFSIZ);
+            sendImage(id, socket);
             howManyImagesToSend--;
         }
 
         generateVerbSentence("HAS", imagesSentence);
         printf("%s\n", imagesSentence);
-        write(sck, imagesSentence, BUFSIZ);
+        write(socket, imagesSentence, BUFSIZ);
 
 
 
-        read (sck, buffer, BUFSIZ);
+        read (socket, buffer, BUFSIZ);
         printf("%s 3\n", buffer);
 
         printf("%d\n", decodeNumberSentence(buffer, MAINKEY, destination));
         printf("%s\n", destination);
 
-        read (sck, buffer, BUFSIZ);
+        read (socket, buffer, BUFSIZ);
 
     } else {
         generateVerbSentence("ARE", loginSentence);
-        write(sck, loginSentence, BUFSIZ);
-        endLoop(sck, "Login or password is incorrect");
+        write(socket, loginSentence, BUFSIZ);
+        endLoop(socket, "Login or password is incorrect");
     }
 
-
-
-
-
-    //while ((rcvd = read (sck, buffer2, sizeof(buffer2))) > 0);
-
-/*
-    decodeNumberSentence(buffer, MAINKEY, id);*/
-
-    //while(rcvd = recv(sck, buffer, 1024, 0))
-	//    send(sck, buffer, rcvd, 0);
-/*
-    FILE *fp = fopen("send.txt", "r");
-    int f_block_sz = 0;
-    while ((f_block_sz = fread(buffer, sizeof(char), 1024, fp)) > 0) {
-        if (send(sck, buffer, f_block_sz, 0) < 0) {
-            printf("[server] ERROR: Failed to send file %s.\n", "send.txt");
-            break;
-        }
-        bzero(buffer, 1024);
-    }
-    fclose(fp);*/
     sleep(1);
-    close(sck);
+    close(socket);
     printf("[server] KONIEC wątku client_loop\n");
-    pthread_exit(NULL);
+    pthread_exit(NULL);*/
 }
 
 int main(int argc, char* argv[]) {
@@ -152,7 +138,7 @@ int main(int argc, char* argv[]) {
         }
 
         pthread_t id;
-        pthread_create(&id, NULL, client_loop, &nClientSocket);
+        pthread_create(&id, NULL, client_loop2, &nClientSocket);
     }
     close(nSocket);
     return(0);

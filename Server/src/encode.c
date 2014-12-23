@@ -1,4 +1,4 @@
-#include "generate.h"
+#include "encode.h"
 #include "decode.h"
 
 void generateName(int n, char letter, char * file_name, char * name) {
