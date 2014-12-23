@@ -1,0 +1,147 @@
+# depslib dependency file v1.0
+1419010587 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/decode.c
+	"libraries.h"
+	"decode.h"
+
+1419010587 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/libraries.h
+	<unistd.h>
+	<sys/types.h>
+	<sys/wait.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<signal.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<arpa/inet.h>
+	<time.h>
+	<pthread.h>
+	<errno.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<dirent.h>
+
+1418506072 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/decode.h
+
+1419020923 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/generate.c
+	"generate.h"
+	"decode.h"
+
+1418506072 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/generate.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1419010587 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/sendRecv.c
+	"libraries.h"
+	"sendRecv.h"
+
+1419010587 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/sendRecv.h
+
+1419021273 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/server_tcp.c
+	"libraries.h"
+	"generate.h"
+	"decode.h"
+	"sendRecv.h"
+	"users.h"
+
+1419010587 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/users.h
+
+1419010587 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/users.c
+	"libraries.h"
+	"users.h"
+
+1419275492 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/decode.c
+	"libraries.h"
+	"decode.h"
+
+1419369720 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/libraries.h
+	<unistd.h>
+	<sys/types.h>
+	<sys/wait.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<signal.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<arpa/inet.h>
+	<time.h>
+	<pthread.h>
+	<errno.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<dirent.h>
+
+1419369731 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/decode.h
+
+1419194890 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/generate.c
+	"generate.h"
+	"decode.h"
+
+1419369725 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/generate.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1419295025 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.c
+	"libraries.h"
+	"sendRecv.h"
+
+1419369713 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.h
+
+1419371877 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/client_actions.c
+	"client_actions.h"
+	"decode.h"
+	"encode.h"
+	"libraries.h"
+	"errors.h"
+	"users.h"
+
+1419369738 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/client_actions.h
+
+1419369725 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/encode.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
+1419372082 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/errors.h
+
+1419371455 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/encode.c
+	"encode.h"
+	"decode.h"
+
+1419369703 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/users.h
+
+1419373083 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
+	"libraries.h"
+	"encode.h"
+	"decode.h"
+	"sendRecv.h"
+	"users.h"
+	"connection.h"
+	"errors.h"
+
+1419194890 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/users.c
+	"libraries.h"
+	"users.h"
+
+1419372306 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/errors.c
+	"errors.h"
+	<stdio.h>
+
+1419374366 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.c
+	"connection.h"
+	"decode.h"
+	"encode.h"
+	"libraries.h"
+	"errors.h"
+	"users.h"
+
+1419372465 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.h
+

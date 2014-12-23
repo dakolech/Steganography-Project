@@ -19,8 +19,5 @@ server_tcp
 .gitignore~
 Support/*
 
-*.cbp
-*.depend
-*.layout
 bin/
 *.pdf
