@@ -9,22 +9,18 @@ require_relative '../class/sentence_decoder'
 
 describe 'login to server with id and pass' do
 
-    before do
-        @encoder = SentenceEncoder.new
-        @decoder = SentenceDecoder.new
-    end
-
     it 'should log in to server with proper data' do
+        encoder = SentenceEncoder.new
+        decoder = SentenceDecoder.new
         (1..100).each do |i|
             sock = TCPSocket.open('localhost', 1234)
-
-            sock.puts @encoder.generate(id: '4567', key: 'BEZLITOSNY2', verb: :loves)
+            sock.puts encoder.generate(id: '4567', key: 'BEZLITOSNY2', verb: :loves)
             sleep(0.1)
-            sock.gets
-            sock.puts @encoder.generate(id: '8961', key: 'BEZLITOSNY2', verb: :likes)
-            sock.gets
+            decoder.validate(sock.gets, :id_answer).must_equal true
+            sock.puts encoder.generate(id: '8961', key: 'BEZLITOSNY2', verb: :likes)
+            decoder.validate(sock.gets, :pass_answer).must_equal true
 
-            unless sock.close.nil?
+            unless sock.nil?
                 sock.close
             end
         end
