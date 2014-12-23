@@ -3,7 +3,7 @@
 
 int sendFileSizeAndFile(char * fileName, int sck) {
 
-	char file_size[256];
+	char file_size[32];
 	struct stat file_stat;
 	int fd;
 
@@ -25,12 +25,11 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 
     fprintf(stdout, "File Size: \n%jd bytes\n", file_stat.st_size);
 
-    sprintf(file_size, "%jd", file_stat.st_size);
+    sprintf(file_size, "%jd\n", file_stat.st_size);
 
-    write(sck, file_size, BUFSIZ);
+    write(sck, file_size, strlen(file_size));
 
     char buffer[BUFSIZ] = "";
-
 
     while (1) {
 	    // Read data into buffer.  We may not have enough to fill up buffer, so we
@@ -42,7 +41,7 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 	    if (bytes_read < 0) {
 	        // handle errors
 	    }
-	    
+
 
 	    // You need a loop for the write, because not all of the data may be written
 	    // in one call; write will return how many bytes were written. p keeps
@@ -59,8 +58,8 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 
 	    }
 	}
-    //fclose(fd);
-	return 0;	
+    close(fd);
+	return 0;
 }
 
 int recvFileSizeAndFile(char * fileName, int sck) {
@@ -109,7 +108,7 @@ int sendImage (char * id, int sck) {
     strcat (fileName, id);
     strcat (fileName, "/");
     printf ("path: %s\n", path);
-    
+
     if ((dir = opendir (path)) != NULL) {
       /* print all the files and directories within directory */
       while ((ent = readdir (dir)) != NULL) {

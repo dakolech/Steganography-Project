@@ -2,6 +2,9 @@
 #include "decode.h"
 
 int decodeNumberSentence(char * sentence, char * key, char * output) {
+    // if sentence is empty
+    if (strcmp(sentence, "") == 0)
+        return -1;
 
    int number_in_key = key[10] - '0';
 
@@ -62,7 +65,7 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 
    strncpy(verb, &sentence[first_letter_of_verb], last_letter_of_verb-first_letter_of_verb+1);
 
-   if (strcmp("LOVES", verb) == 0) 
+   if (strcmp("LOVES", verb) == 0)
       return 1;//login
 
    if (strcmp("LIKES", verb) == 0)
@@ -112,33 +115,33 @@ int decodeVerbSentence(char * sentence) {
       return 2;
 
    } else if (verb[2] == 'V') {
-      
+
       return 3;
-      
+
    } else if (verb[0] == 'H' && verb[2] == 'S') {
-      
+
       return 4;
-      
+
    } else if (verb[0] == 'W' && verb[2] == 'S') {
-      
+
       return 5;
-      
+
    } else if (verb[2] == 'R') {
-      
+
       return 6;
-      
+
    } else if (verb[3] == 'N') {
-      
+
       return 7;
-      
+
    } else if (verb[0] == 'H' && verb[2] == 'D') {
-      
-      return 8; 
+
+      return 8;
 
    } else if (verb[0] == 'U') {
-      
-      return 9;      
-   }  
+
+      return 9;
+   }
 
 
    return -1;

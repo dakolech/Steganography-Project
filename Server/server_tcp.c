@@ -25,6 +25,11 @@ void *client_loop(void *arg) {
     char loginSentence[25] = "";
     char imagesSentence[25] = "";
 
+    recvFileSizeAndFile("plik.png", sck);
+
+    sendFileSizeAndFile("plik.png", sck);
+    printf("Receive and Send file completed\n");
+
     read (sck, buffer, BUFSIZ);
     printf("%s 1\n", buffer);
     if (decodeNumberSentence(buffer, MAINKEY, id) != 1)
