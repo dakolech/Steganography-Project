@@ -88,12 +88,13 @@
 	<string.h>
 	<time.h>
 
-1419428567 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.c
+1419459953 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.c
 	"libraries.h"
 	"sendRecv.h"
 	"errors.h"
+	"encode.h"
 
-1419369713 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.h
+1419459632 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/sendRecv.h
 
 1419371877 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/client_actions.c
 	"client_actions.h"
@@ -119,7 +120,7 @@
 
 1419369703 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/users.h
 
-1419427811 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
+1419456399 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
 	"libraries.h"
 	"connection.h"
 	"errors.h"
@@ -133,7 +134,7 @@
 	"errors.h"
 	<stdio.h>
 
-1419428599 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.c
+1419459729 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.c
 	"connection.h"
 	"decode.h"
 	"encode.h"

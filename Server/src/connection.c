@@ -21,8 +21,9 @@ struct LogStatus conn_log_user(int socket) {
     }
 
     generateVerbSentence("USE", tempSentence);
-    write(socket, tempSentence, sizeof(tempSentence));
+    write(socket, tempSentence, strlen(tempSentence));
 
+    strcpy(buffer, "");
     read(socket, buffer, sizeof(buffer));
     if (decodeNumberSentence(buffer, MAINKEY, pass) != 2) {
         logStatus.status = LogErrorBadVerbPass;
@@ -31,10 +32,10 @@ struct LogStatus conn_log_user(int socket) {
 
     if (checkUserLoginPass(logStatus.user_id, pass) == 0) {
         generateVerbSentence("IS", tempSentence);
-        write(socket, tempSentence, sizeof(tempSentence));
+        write(socket, tempSentence, strlen(tempSentence));
     } else {
         generateVerbSentence("ARE", tempSentence);
-        write(socket, tempSentence, sizeof(tempSentence));
+        write(socket, tempSentence, strlen(tempSentence));
 
         logStatus.status = LogErrorBadPass;
         return logStatus;
@@ -48,18 +49,15 @@ void conn_send_all_images_to_user(int socket, char *id) {
     char imagesSentence[50];
 
     int howManyImagesToSend = countFilesInDirectory(id);
-    if (howManyImagesToSend != Success) {
+    if (howManyImagesToSend == DirErrorCouldntOpen) {
         error_handle(howManyImagesToSend);
         return;
     }
 
-    //printf("%d Images to send\n", howManyImagesToSend);
+    printf("\t%d Images to send\n", howManyImagesToSend);
 
     while (howManyImagesToSend > 0) {
-        generateVerbSentence("HAVE", imagesSentence);
-        //printf("%s\n", imagesSentence);
-        write(socket, imagesSentence, sizeof(imagesSentence));
-        int statusSendingFile = sendImage(id, socket);
+        int statusSendingFile = sendImages(id, socket);
         if (statusSendingFile != Success) {
             error_handle(statusSendingFile);
             break;
@@ -68,6 +66,9 @@ void conn_send_all_images_to_user(int socket, char *id) {
     }
 
     generateVerbSentence("HAS", imagesSentence);
-    //printf("%s\n", imagesSentence);
-    write(socket, imagesSentence, sizeof(imagesSentence));
+    write(socket, imagesSentence, strlen(imagesSentence));
+}
+
+void conn_wait_for_requests(int socket, char *id) {
+    conn_send_all_images_to_user(socket, id);
 }

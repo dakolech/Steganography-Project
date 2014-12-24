@@ -2,28 +2,16 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/colorize'
 
-require 'socket'        # Sockets are in standard library
+require_relative '../class/connection'
 
-require_relative '../class/sentence_encoder'
-require_relative '../class/sentence_decoder'
+describe Connection do
 
-describe 'login to server with id and pass' do
+    it 'should log in to server and receive images' do
+        test_connection = Connection.new('localhost', 1234)
+        test_connection.log_in('4567', '8961').must_equal true
+        test_connection.download_messages_from_server
 
-    it 'should log in to server with proper data' do
-        encoder = SentenceEncoder.new
-        decoder = SentenceDecoder.new
-        (1..100).each do |i|
-            sock = TCPSocket.open('localhost', 1234)
-            sock.puts encoder.generate(id: '4567', key: 'BEZLITOSNY2', verb: :loves)
-            sleep(0.1)
-            decoder.validate(sock.gets, :id_answer).must_equal true
-            sock.puts encoder.generate(id: '8961', key: 'BEZLITOSNY2', verb: :likes)
-            decoder.validate(pass_answer, :pass_answer).must_equal true
-
-            unless sock.nil?
-                sock.close
-            end
-        end
+        test_connection.close
     end
 
 end

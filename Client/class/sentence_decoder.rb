@@ -13,9 +13,15 @@ class SentenceDecoder
             answer.include?('USE')
         when :pass_answer
             answer.include?('IS')
+        when :has_messages
+            answer.include?('HAVE') or answer.include?('HAS')
         else
             false
         end
+    end
+
+    def has_messages?(answer)
+       answer.include?('HAVE')
     end
 
     private

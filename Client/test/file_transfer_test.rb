@@ -13,7 +13,7 @@ describe 'sending and recieving file from server' do
         @sock = TCPSocket.open('localhost', 1234)
     end
 
-    it 'should send%receive file from server' do
+    it 'should send&receive file from server' do
         file_to_send = 'images/changed.png'
         @sock.puts File.size(file_to_send)
         sleep(0.1)

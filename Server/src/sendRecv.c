@@ -1,6 +1,7 @@
 #include "libraries.h"
 #include "sendRecv.h"
 #include "errors.h"
+#include "encode.h"
 
 int sendFileSizeAndFile(char * fileName, int sck) {
 
@@ -100,27 +101,27 @@ int recvFileSizeAndFile(char * fileName, int sck) {
 
 }
 
-int sendImage (char * id, int sck) {
+int sendImages (char * id, int socket) {
     DIR *dir;
     struct dirent *ent;
-    char path[25] = "images/";
-    char fileName[25] = "images/";
+    char path[25] = "images/", fileName[25], tempSentence[50];
+
     strcat (path, id);
-    strcat (fileName, id);
-    strcat (fileName, "/");
+    strcat (path, "/");
 
     if ((dir = opendir (path)) != NULL) {
         /* print all the files and directories within directory */
         while ((ent = readdir (dir)) != NULL) {
             if (ent->d_type == DT_REG) {
-                printf ("File: %s\n", ent->d_name);
+                generateVerbSentence("HAVE", tempSentence);
+                write(socket, tempSentence, strlen(tempSentence));
+
+                strcpy(fileName, path);
                 strcat(fileName, ent->d_name);
                 printf ("File: %s\n", fileName);
-                sendFileSizeAndFile(fileName, sck);
+                sendFileSizeAndFile(fileName, socket);
                 if (remove(fileName) != 0)
                     return FileErrorCouldntDelete;
-                else
-                    printf ("File successfully deleted\n");
             }
         }
         closedir (dir);

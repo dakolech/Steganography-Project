@@ -6,4 +6,4 @@ struct LogStatus {
 };
 
 struct LogStatus conn_log_user(int socket);
-void conn_send_all_images_to_user(int socket, char *id);
+void conn_wait_for_requests();

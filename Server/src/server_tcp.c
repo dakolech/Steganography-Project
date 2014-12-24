@@ -11,8 +11,7 @@ void *client_loop2(void *arg) {
     printf("[BEGIN CLIENT LOOP] socket: %d\n", socket);
     struct LogStatus logStatus = conn_log_user(socket);
     if (logStatus.status == Success) {
-        conn_send_all_images_to_user(socket, logStatus.user_id);
-
+        conn_wait_for_requests(socket, logStatus.user_id);
     } else {
         error_handle(logStatus.status);
     }
@@ -133,7 +132,7 @@ int main(int argc, char* argv[]) {
 
     while(1) {
         nClientSocket = accept(nSocket, (struct sockaddr*)&stClientAddr, &nTmp);
-        printf("%s: [server] [connection from %s]\n", argv[0], inet_ntoa((struct in_addr)stClientAddr.sin_addr));
+        //printf("[connection from %s]\n", inet_ntoa((struct in_addr)stClientAddr.sin_addr));
         if (nClientSocket < 0) {
             fprintf(stderr, "%s: Can't create a connection's socket.\n", argv[0]);
             exit(1);
