@@ -30,7 +30,7 @@ struct LogStatus conn_log_user(int socket) {
         return logStatus;
     }
 
-    if (checkUserLoginPass(logStatus.user_id, pass) == 0) {
+    if (checkUserLoginPass(logStatus.user_id, pass) == Success) {
         generateVerbSentence("IS", tempSentence);
         write(socket, tempSentence, strlen(tempSentence));
     } else {
@@ -71,4 +71,10 @@ void conn_send_all_images_to_user(int socket, char *id) {
 
 void conn_wait_for_requests(int socket, char *id) {
     conn_send_all_images_to_user(socket, id);
+
+    while (1) {
+        char request[50];
+        read(socket, request, sizeof(request));
+
+    }
 }

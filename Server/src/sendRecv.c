@@ -25,7 +25,7 @@ int sendFileSizeAndFile(char * fileName, int sck) {
             exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout, "File Size: \n%jd bytes\n", file_stat.st_size);
+    printf("\tFile Size: %jd bytes\n", file_stat.st_size);
 
     sprintf(file_size, "%jd\n", file_stat.st_size);
 
@@ -118,7 +118,7 @@ int sendImages (char * id, int socket) {
 
                 strcpy(fileName, path);
                 strcat(fileName, ent->d_name);
-                printf ("File: %s\n", fileName);
+                printf ("\tFile: %s\n", fileName);
                 sendFileSizeAndFile(fileName, socket);
                 if (remove(fileName) != 0)
                     return FileErrorCouldntDelete;

@@ -108,39 +108,39 @@ int decodeVerbSentence(char * sentence) {
 
    if (verb[0] == 'I') {
 
-      return 1;
+      return IS;
 
    } else if (verb[0] == 'A') {
 
-      return 2;
+      return ARE;
 
    } else if (verb[2] == 'V') {
 
-      return 3;
+      return HAVE;
 
    } else if (verb[0] == 'H' && verb[2] == 'S') {
 
-      return 4;
+      return HAS;
 
    } else if (verb[0] == 'W' && verb[2] == 'S') {
 
-      return 5;
+      return WAS;
 
    } else if (verb[2] == 'R') {
 
-      return 6;
+      return WERE;
 
    } else if (verb[3] == 'N') {
 
-      return 7;
+      return HADNT;
 
    } else if (verb[0] == 'H' && verb[2] == 'D') {
 
-      return 8;
+      return HAD;
 
    } else if (verb[0] == 'U') {
 
-      return 9;
+      return USE;
    }
 
 

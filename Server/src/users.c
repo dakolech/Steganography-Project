@@ -25,7 +25,7 @@ int checkUserLoginPass(char * login, char * pass) {
 			line[len-1] = 0;
 		if (searchPass == 1 && strcmp(pass,line) == 0 && count%2 == 0) {
 			fclose(fp);
-			return 0;
+			return Success;
 		}
 		else
 			searchPass = 0;
