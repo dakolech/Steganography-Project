@@ -35,26 +35,34 @@
 		<Linker>
 			<Add option="-lpthread" />
 		</Linker>
-		<Unit filename="decode.c">
+		<Unit filename="src/connection.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="decode.h" />
-		<Unit filename="generate.c">
+		<Unit filename="src/connection.h" />
+		<Unit filename="src/decode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="generate.h" />
-		<Unit filename="libraries.h" />
-		<Unit filename="sendRecv.c">
+		<Unit filename="src/decode.h" />
+		<Unit filename="src/encode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sendRecv.h" />
-		<Unit filename="server_tcp.c">
+		<Unit filename="src/encode.h" />
+		<Unit filename="src/errors.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="users.c">
+		<Unit filename="src/errors.h" />
+		<Unit filename="src/libraries.h" />
+		<Unit filename="src/sendRecv.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="users.h" />
+		<Unit filename="src/sendRecv.h" />
+		<Unit filename="src/server_tcp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/users.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/users.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

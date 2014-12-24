@@ -1,8 +1,4 @@
 #include "libraries.h"
-#include "encode.h"
-#include "decode.h"
-#include "sendRecv.h"
-#include "users.h"
 #include "connection.h"
 #include "errors.h"
 
@@ -13,13 +9,19 @@ void *client_loop2(void *arg) {
     int socket = *((int*)arg);
 
     printf("[BEGIN CLIENT LOOP] socket: %d\n", socket);
-    int status = conn_log_user(socket);
-    if (status == Success) {
-        printf("Success\n");
+    struct LogStatus logStatus = conn_log_user(socket);
+    if (logStatus.status == Success) {
+        conn_send_all_images_to_user(socket, logStatus.user_id);
+
     } else {
-        error_handle(status);
+        error_handle(logStatus.status);
     }
+
+    sleep(1);
+    close(socket);
+
     printf("[END CLIENT LOOP] socket: %d\n", socket);
+    pthread_exit(NULL);
 }
 
 void *client_loop(void *arg) {

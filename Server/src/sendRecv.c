@@ -1,5 +1,6 @@
 #include "libraries.h"
 #include "sendRecv.h"
+#include "errors.h"
 
 int sendFileSizeAndFile(char * fileName, int sck) {
 
@@ -107,27 +108,24 @@ int sendImage (char * id, int sck) {
     strcat (path, id);
     strcat (fileName, id);
     strcat (fileName, "/");
-    printf ("path: %s\n", path);
 
     if ((dir = opendir (path)) != NULL) {
-      /* print all the files and directories within directory */
-      while ((ent = readdir (dir)) != NULL) {
-        if (ent->d_type == DT_REG) {
-            printf ("File: %s\n", ent->d_name);
-            strcat(fileName, ent->d_name);
-            printf ("File: %s\n", fileName);
-            sendFileSizeAndFile(fileName, sck);
-            if( remove(fileName) != 0 )
-                perror("Error deleting file");
-            else
-                printf ("File successfully deleted\n");
+        /* print all the files and directories within directory */
+        while ((ent = readdir (dir)) != NULL) {
+            if (ent->d_type == DT_REG) {
+                printf ("File: %s\n", ent->d_name);
+                strcat(fileName, ent->d_name);
+                printf ("File: %s\n", fileName);
+                sendFileSizeAndFile(fileName, sck);
+                if (remove(fileName) != 0)
+                    return FileErrorCouldntDelete;
+                else
+                    printf ("File successfully deleted\n");
+            }
         }
-      }
-      closedir (dir);
+        closedir (dir);
     } else {
-      /* could not open directory */
-      perror ("");
-      //return EXIT_FAILURE;
+        return DirErrorCouldntOpen;
     }
-    return 0;
+    return Success;
 }

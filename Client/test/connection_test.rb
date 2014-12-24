@@ -18,7 +18,7 @@ describe 'login to server with id and pass' do
             sleep(0.1)
             decoder.validate(sock.gets, :id_answer).must_equal true
             sock.puts encoder.generate(id: '8961', key: 'BEZLITOSNY2', verb: :likes)
-            decoder.validate(sock.gets, :pass_answer).must_equal true
+            decoder.validate(pass_answer, :pass_answer).must_equal true
 
             unless sock.nil?
                 sock.close
