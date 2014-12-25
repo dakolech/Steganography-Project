@@ -7,6 +7,7 @@ require_relative 'connection'
 class App
     def initialize
         @conversations = {}
+        @unreaded_messages = Set.new
     end
 
     def set_message_stuff(messenger, message_box)
@@ -57,7 +58,9 @@ class App
         new_messages = @connection.download_messages_from_server
         unless new_messages.nil?
             add_new_messages_to_conversation new_messages
+            return true
         end
+        false
     end
 
     def on_logout
@@ -80,6 +83,10 @@ class App
         end
     end
 
+    def have_unreaded(friend)
+        @unreaded_messages.include?(friend)
+    end
+
     private
 
         def add_new_messages_to_conversation(messages)
@@ -87,6 +94,8 @@ class App
             messages.each do |m|
                 friend_name = friends.key(m[:from])
                 @conversations[friend_name].add_message(:you, m[:text])
+                @unreaded_messages << friend_name
+
                 if friend_name == @active_friend
                     @messenger.app do
                         @messenger.append { inscription m[:text] }
@@ -94,7 +103,6 @@ class App
                     end
                 end
             end
-            p @conversations
         end
 
 end
