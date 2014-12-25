@@ -15,6 +15,8 @@ class SentenceDecoder
             answer.include?('IS')
         when :has_messages
             answer.include?('HAVE') or answer.include?('HAS')
+        when :dest_answer
+            answer.include?('HADNT') or answer.include?('HAD')
         else
             false
         end
@@ -22,6 +24,10 @@ class SentenceDecoder
 
     def has_messages?(answer)
        answer.include?('HAVE')
+    end
+
+    def proper_destination?(answer)
+        answer.include?('HADNT')
     end
 
     private

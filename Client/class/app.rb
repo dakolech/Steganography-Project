@@ -44,10 +44,10 @@ class App
         message = ''
         @messenger.app do
             message = @message_box.text
-            @msg = Message.new(text: message, ip_dest: OptionHelper::get_options[:server_ip])
-            @msg.encode
+            status = @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
+            puts "Status wysylania wiadomosci " + status
 
-            @messenger.append { inscription @msg.decode } unless message == ''
+            @messenger.append { inscription message }
             @message_box.text = ''
             @messenger.scroll_top = @messenger.scroll_max
         end

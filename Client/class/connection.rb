@@ -43,7 +43,7 @@ class Connection
             answer = @socket.gets
             unless @sentence_decoder.validate(answer, :has_messages)
                 puts "Wadliwa odpowiedz: " + answer
-                raise ConnectionError.new 'Bad anser from server when asking if user has messages'
+                raise ConnectionError.new 'Bad answer from server when asking if user has messages'
             end
 
             break unless @sentence_decoder.has_messages?(answer)
@@ -51,6 +51,22 @@ class Connection
             i += 1
         end
         decode_images
+    end
+
+    def send_message_to_server(message, dest_id)
+        begin
+            return false unless prepare_server_for_sending_image(dest_id)
+            prepare_message(message, '../images/cat_small.png')
+
+            @socket.puts File.size('../images/to_send.png')
+            sleep(0.1)
+            File.open('../images/to_send.png') do |f|
+                @sock.print f.read
+            end
+        rescue ConnectionError => ce
+            puts ce.message
+            return false
+        end
     end
 
     def close
@@ -91,5 +107,29 @@ class Connection
             end
             image_file_paths.sort!
             image_file_paths
+        end
+
+        def prepare_server_for_sending_image(dest_id)
+            send_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :were)
+            @socket.puts send_sentence
+
+            sleep(0.1)
+            dest_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', id: dest_id, verb: :hates)
+            @socket.puts dest_sentence
+
+            answer = @socket.gets
+            unless @sentence_decoder.validate(answer, :dest_answer)
+                puts "Wadliwa odpowiedz: " + answer
+                raise ConnectionError.new 'Bad answer from server when trying to send dest id'
+            end
+
+            return false unless @sentence_decoder.proper_destination?(answer)
+            true
+        end
+
+        def prepare_message(message, file)
+            msg = Message.new(text: message, sender: @id, filename: file)
+            msg.encode
+            msg.save
         end
 end

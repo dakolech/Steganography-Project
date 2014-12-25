@@ -64,7 +64,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
                         end
                     end
                     keypress do |k|
-                        @app.on_send if k == "\n"
+                        @app.on_send if k == "\n" and @message_box.text != ''
                     end
                 end
             end
