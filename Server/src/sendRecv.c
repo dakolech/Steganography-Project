@@ -80,11 +80,9 @@ int recvFileSizeAndFile(char * fileName, int sck) {
 
 
     received_file = fopen(fileName, "w");
-    if (received_file == NULL)
-    {
-            fprintf(stderr, "Failed to open file foo --> %s\n", strerror(errno));
-
-            exit(EXIT_FAILURE);
+    if (received_file == NULL) {
+        fprintf(stderr, "Failed to open file foo --> %s\n", strerror(errno));
+        return FileErrorCouldntOpen;
     }
 
     remain_data = file_size;
@@ -97,14 +95,14 @@ int recvFileSizeAndFile(char * fileName, int sck) {
     }
     fclose(received_file);
 
-    return 0;
+    return Success;
 
 }
 
 int sendImages (char * id, int socket) {
     DIR *dir;
     struct dirent *ent;
-    char path[25] = "images/", fileName[25], tempSentence[50];
+    char path[50] = "images/", fileName[50], tempSentence[50];
 
     strcat (path, id);
     strcat (path, "/");

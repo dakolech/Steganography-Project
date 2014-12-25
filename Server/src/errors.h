@@ -8,8 +8,11 @@
 
 #define DirErrorCouldntOpen           -4
 
-#define FileErrorCouldntDelete        -5
+#define FileErrorCouldntOpen          -5
+#define FileErrorCouldntDelete        -6
 
-#define InvalidVerb                   -6
+#define InvalidVerb                   -7
+
+#define InvalidImageDestination       -8
 
 void error_handle(int status);

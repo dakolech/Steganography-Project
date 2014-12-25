@@ -69,6 +69,43 @@ void conn_send_all_images_to_user(int socket, char *id) {
     write(socket, imagesSentence, strlen(imagesSentence));
 }
 
+void conn_generate_file_name_to_store(char *id, char *fileName) {
+    char path[50] = "images/";
+    strcat(path, id);
+    strcat(path, "/");
+
+    unsigned int unixTime = (unsigned)time(NULL);
+    char timestamp[15];
+    sprintf(timestamp, "%u", unixTime);
+
+    strcat(path, timestamp);
+    strcat(path, ".png");
+
+    strcpy(fileName, path);
+}
+
+int conn_receive_image_from_user(int socket, char *id) {
+    char buffer[50], dest[5], fileName[50];
+
+    read(socket, buffer, sizeof(buffer));
+    if (decodeNumberSentence(buffer, MAINKEY, dest) != 3) {
+        generateVerbSentence("HAD", buffer);
+        write(socket, buffer, strlen(buffer));
+
+        return InvalidImageDestination;
+    }
+
+    generateVerbSentence("HADNT", buffer);
+    write(socket, buffer, strlen(buffer));
+
+    conn_generate_file_name_to_store(id, fileName);
+    int status = recvFileSizeAndFile(fileName, socket);
+    if (status == Success)
+        return Success;
+    else
+        return status;
+}
+
 void conn_handle_event(int event, int socket, char *id) {
     switch (event) {
         case WAS:
@@ -79,6 +116,7 @@ void conn_handle_event(int event, int socket, char *id) {
         case WERE:
             // klient chce wysłać obrazek
             printf("Klient chce wysłać obrazek!\n");
+            conn_receive_image_from_user(socket, id);
             break;
     }
 }

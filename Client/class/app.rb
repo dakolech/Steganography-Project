@@ -45,7 +45,7 @@ class App
         @messenger.app do
             message = @message_box.text
             status = @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
-            puts "Status wysylania wiadomosci " + status
+            puts "Status wysylania wiadomosci: " + status
 
             @messenger.append { inscription message }
             @message_box.text = ''
