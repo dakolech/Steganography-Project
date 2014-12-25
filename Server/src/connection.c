@@ -69,12 +69,29 @@ void conn_send_all_images_to_user(int socket, char *id) {
     write(socket, imagesSentence, strlen(imagesSentence));
 }
 
-void conn_wait_for_requests(int socket, char *id) {
-    conn_send_all_images_to_user(socket, id);
+void conn_handle_event(int event, int socket, char *id) {
+    switch (event) {
+        case WAS:
+            // klient chce zaległe obrazki
+            printf("Klient chce odebrać zaległe obrazki!\n");
+            conn_send_all_images_to_user(socket, id);
+            break;
+        case WERE:
+            // klient chce wysłać obrazek
+            printf("Klient chce wysłać obrazek!\n");
+            break;
+    }
+}
 
+void conn_wait_for_requests(int socket, char *id) {
+    char request[50];
     while (1) {
-        char request[50];
         read(socket, request, sizeof(request));
 
+        int event = decodeVerbSentence(request);
+        if (event != InvalidVerb)
+            conn_handle_event(event, socket, id);
+        else
+            error_handle(InvalidVerb);
     }
 }

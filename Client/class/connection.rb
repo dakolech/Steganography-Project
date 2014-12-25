@@ -33,8 +33,8 @@ class Connection
     end
 
     def download_messages_from_server
-        #receive_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :was)
-        #@socket.puts receive_sentence
+        receive_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :was)
+        @socket.puts receive_sentence
 
         i = 0
         loop do

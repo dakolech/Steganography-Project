@@ -10,8 +10,7 @@
 
 Pytania
 
-Server/*.o
-Server/server_tcp
+Server/images/
 Server/testClient/*.o
 *.o
 *.c~

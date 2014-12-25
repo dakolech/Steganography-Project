@@ -13,5 +13,8 @@ void error_handle(int status) {
         case LogErrorBadPass:
             fprintf(stderr, "Incorrect ID or password\n");
             break;
+        case InvalidVerb:
+            fprintf(stderr, "Invalid verb used in request\n");
+            break;
     }
 }

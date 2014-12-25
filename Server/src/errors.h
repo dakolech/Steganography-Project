@@ -10,4 +10,6 @@
 
 #define FileErrorCouldntDelete        -5
 
+#define InvalidVerb                   -6
+
 void error_handle(int status);

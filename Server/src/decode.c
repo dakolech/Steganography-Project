@@ -1,5 +1,6 @@
 #include "libraries.h"
 #include "decode.h"
+#include "errors.h"
 
 int decodeNumberSentence(char * sentence, char * key, char * output) {
     // if sentence is empty
@@ -84,6 +85,9 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 }
 
 int decodeVerbSentence(char * sentence) {
+    if (strlen(sentence) < 3)
+        return InvalidVerb;
+
    int i=0;
    while (1) {
       i++;
@@ -106,44 +110,15 @@ int decodeVerbSentence(char * sentence) {
 
    //printf("%s\n", verb);
 
-   if (verb[0] == 'I') {
+   if (strcmp(verb, "IS")    == 0) return IS;
+   if (strcmp(verb, "ARE")   == 0) return ARE;
+   if (strcmp(verb, "HAVE")  == 0) return HAVE;
+   if (strcmp(verb, "HAS")   == 0) return HAS;
+   if (strcmp(verb, "WAS")   == 0) return WAS;
+   if (strcmp(verb, "WERE")  == 0) return WERE;
+   if (strcmp(verb, "HADNT") == 0) return HADNT;
+   if (strcmp(verb, "HAD")   == 0) return HAD;
+   if (strcmp(verb, "USE")   == 0) return USE;
 
-      return IS;
-
-   } else if (verb[0] == 'A') {
-
-      return ARE;
-
-   } else if (verb[2] == 'V') {
-
-      return HAVE;
-
-   } else if (verb[0] == 'H' && verb[2] == 'S') {
-
-      return HAS;
-
-   } else if (verb[0] == 'W' && verb[2] == 'S') {
-
-      return WAS;
-
-   } else if (verb[2] == 'R') {
-
-      return WERE;
-
-   } else if (verb[3] == 'N') {
-
-      return HADNT;
-
-   } else if (verb[0] == 'H' && verb[2] == 'D') {
-
-      return HAD;
-
-   } else if (verb[0] == 'U') {
-
-      return USE;
-   }
-
-
-   return -1;
-
+   return InvalidVerb;
 }

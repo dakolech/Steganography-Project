@@ -11,6 +11,7 @@ describe Connection do
         test_connection.log_in('4567', '8961').must_equal true
         test_connection.download_messages_from_server
 
+        sleep(1)
         test_connection.close
     end
 
