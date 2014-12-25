@@ -1,3 +1,4 @@
+require 'find'
 require '../helper/friends_helper'
 require '../helper/option_helper'
 require_relative 'message'
@@ -54,12 +55,17 @@ class App
     end
 
     def check_new_messages
-        message = 'Test metody every(5)'
-        @messenger.app do
-            @messenger.append { inscription message }
-            @messenger.scroll_top = @messenger.scroll_max
+        new_messages = @connection.download_messages_from_server
+        unless new_messages.nil?
+            p new_messages
         end
-        @conversations[@active_friend].add_message :you, message
+
+        #message = 'Test metody every(5)'
+        #@messenger.app do
+        #    @messenger.append { inscription message }
+        #    @messenger.scroll_top = @messenger.scroll_max
+        #end
+        #@conversations[@active_friend].add_message :you, message
     end
 
     def on_logout

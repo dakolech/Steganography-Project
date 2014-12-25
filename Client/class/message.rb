@@ -9,17 +9,17 @@ class Message
         filename = properties[:filename] || '../images/cat_small.png'
 
         @text  = properties[:text]  || 'Some default text'
-        @image = properties[:image] || ChunkyPNG::Image.from_file(filename)
+        @image = ChunkyPNG::Image.from_file(filename)
         raise ImageTooSmall.new unless @image.width*@image.height > Image::TIMES_LARGER*@text.length
 
-        @ip_dest = properties[:ip_dest]  || '127.0.0.1'
-        @key = 0
+        @sender = properties[:sender]
         @occupied_pixels = Set.new
     end
 
     def encode
         @key = Random.srand.to_s.slice(0..8).to_i
         encode_key
+        encode_sender
 
         Random.srand @key
         @text.each_char.with_index do |char, index|
@@ -41,8 +41,12 @@ class Message
         return str
     end
 
+    def from?
+        decode_sender
+    end
+
     def save
-        @image.save('images/changed.png')
+        @image.save('../images/to_send.png')
     end
 
     private
@@ -80,6 +84,22 @@ class Message
             return str
         end
 
+        def encode_sender
+            @sender.each_char.with_index do |char, i|
+                encode_letter(@image.width - i%2 - 1, @image.height - i/2 - 1, char)
+            end
+        end
+
+        def decode_sender
+            str = ''
+            (0..1).each do |i|
+                (0..1).each do |j|
+                    str += decode_letter(@image.width - j - 1, @image.height - i - 1)
+                end
+            end
+            return str
+        end
+
         def encode_letter(x, y, letter)
             byte = letter.bytes.first
             magic  = (byte & 0xE0) << 19
@@ -98,15 +118,12 @@ class Message
 end
 
 #~ begin
-    #~ msg = Message.new(text: 'Tajna wiadomosc', ip_dest: '127.0.0.1', filename: '../images/cat_small.png')
+    #~ msg = Message.new(text: 'Pierwsza wiadomosc', sender: '1234', filename: '../images/cat_small.png')
     #~ msg.encode
-    #~ puts msg.decode
+    #~ puts "Odkodowano wiadomosc: " + msg.decode
+    #~ puts "Odkodowano nadawce: " + msg.from?
 #~
-    #~ 'Zażółć'.each_byte do |byte|
-        #~ puts byte
-    #~ end
-#~
-    #~ #msg.save
+    #~ msg.save
 #~ rescue ImageTooSmall => e
     #~ puts e.message
 #~ end

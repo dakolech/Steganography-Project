@@ -91,6 +91,7 @@ void conn_wait_for_requests(int socket, char *id) {
         read(socket, request, sizeof(request));
 
         int event = decodeVerbSentence(request);
+        printf("\tRequest: %s\n", request);
         if (event != InvalidVerb)
             if (event != BELONG)
                 conn_handle_event(event, socket, id);

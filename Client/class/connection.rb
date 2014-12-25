@@ -48,6 +48,7 @@ class Connection
             download_message(i)
             i += 1
         end
+        decode_images unless i == 0
     end
 
     def close
@@ -68,5 +69,24 @@ class Connection
             dest_file = File.open(received_file, 'w+b')
             dest_file.print data
             dest_file.close
+        end
+
+        def decode_images
+            new_messages = []
+            find_my_images.each do |image|
+                msg = Message.new(filename: image)
+                new_messages << {from: msg.from?, text: msg.decode}
+            end
+            new_messages
+        end
+
+        def find_my_images
+            image_file_paths = []
+            Find.find('../images/') do |path|
+                image_file_paths << path if path =~ /\.{2}\/images\/#{@id}.*\.png$/
+            end
+            image_file_paths.sort!
+
+            p image_file_paths
         end
 end

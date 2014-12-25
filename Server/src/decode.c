@@ -85,7 +85,7 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 }
 
 int decodeVerbSentence(char * sentence) {
-    if (strlen(sentence) < 3)
+    if (strlen(sentence) < 3 || sentence[0] == '\n')
         return InvalidVerb;
 
    int i=0;

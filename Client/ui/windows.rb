@@ -58,9 +58,9 @@ Shoes.app title: 'Steganography Project', resizable: false do
                             value[:fun].call
                         end
                     end
-                    #every(5) do
-                    #    @app.check_new_messages
-                    #end
+                    every(5) do
+                        @app.check_new_messages
+                    end
                     keypress do |k|
                         @app.on_send if k == "\n"
                     end
