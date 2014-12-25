@@ -1,8 +1,10 @@
 require 'socket'
+require 'find'
 
 require_relative 'exceptions'
 require_relative 'sentence_encoder'
 require_relative 'sentence_decoder'
+require_relative 'message'
 
 class Connection
     attr_reader :host, :port
@@ -48,7 +50,7 @@ class Connection
             download_message(i)
             i += 1
         end
-        decode_images unless i == 0
+        decode_images
     end
 
     def close
@@ -61,7 +63,7 @@ class Connection
     private
 
         def download_message(number)
-            received_file = "images/#{@id}_#{number.to_s}.png"
+            received_file = "../images/#{@id}_#{number.to_s}.png"
             received_file_size = @socket.gets.to_i
             puts 'Received file size: ' + received_file_size.to_s
             data = @socket.read(received_file_size)
@@ -75,7 +77,9 @@ class Connection
             new_messages = []
             find_my_images.each do |image|
                 msg = Message.new(filename: image)
+                puts 'Decoding image: ' + image
                 new_messages << {from: msg.from?, text: msg.decode}
+                File.delete(image)
             end
             new_messages
         end
@@ -86,7 +90,6 @@ class Connection
                 image_file_paths << path if path =~ /\.{2}\/images\/#{@id}.*\.png$/
             end
             image_file_paths.sort!
-
-            p image_file_paths
+            image_file_paths
         end
 end

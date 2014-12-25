@@ -12,7 +12,7 @@ class Message
         @image = ChunkyPNG::Image.from_file(filename)
         raise ImageTooSmall.new unless @image.width*@image.height > Image::TIMES_LARGER*@text.length
 
-        @sender = properties[:sender]
+        @sender = properties[:sender] || ''
         @occupied_pixels = Set.new
     end
 
@@ -30,7 +30,7 @@ class Message
     end
 
     def decode
-        decode_key
+        @key = decode_key.to_i
         Random.srand @key
 
         str = ''
@@ -118,7 +118,7 @@ class Message
 end
 
 #~ begin
-    #~ msg = Message.new(text: 'Pierwsza wiadomosc', sender: '1234', filename: '../images/cat_small.png')
+    #~ msg = Message.new(text: 'Pierwsza wiadomosc', sender: '0123', filename: '../images/cat_small.png')
     #~ msg.encode
     #~ puts "Odkodowano wiadomosc: " + msg.decode
     #~ puts "Odkodowano nadawce: " + msg.from?
