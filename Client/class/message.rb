@@ -26,6 +26,8 @@ class Message
             x, y = find_next_pixel
             encode_letter(x, y, char)
         end
+        x, y = find_next_pixel
+        encode_letter(x, y, "\0")
         @occupied_pixels.clear
     end
 
@@ -34,9 +36,11 @@ class Message
         Random.srand @key
 
         str = ''
-        @text.length.times do
+        loop do
             x, y = find_next_pixel
-            str += decode_letter(x, y)
+            letter = decode_letter(x, y)
+            break if letter == "\0"
+            str += letter
         end
         return str
     end
