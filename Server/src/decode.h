@@ -9,6 +9,7 @@
 #define WERE            7
 #define HADNT           8
 #define HAD             9
+#define BELONG         10
 
 int decodeNumberSentence(char * sentence, char * key, char * output);
 int decodeVerbSentence(char * sentence);

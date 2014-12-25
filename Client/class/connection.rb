@@ -51,6 +51,9 @@ class Connection
     end
 
     def close
+        logout_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :belongs)
+        @socket.puts logout_sentence
+
         @socket.close
     end
 

@@ -115,13 +115,14 @@
 
 1419463923 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/errors.h
 
-1419371455 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/encode.c
+1419506802 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/encode.c
 	"encode.h"
 	"decode.h"
+	"errors.h"
 
 1419369703 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/users.h
 
-1419465673 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
+1419465870 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
 	"libraries.h"
 	"connection.h"
 	"errors.h"

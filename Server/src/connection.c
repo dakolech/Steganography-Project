@@ -85,12 +85,17 @@ void conn_handle_event(int event, int socket, char *id) {
 
 void conn_wait_for_requests(int socket, char *id) {
     char request[50];
-    while (1) {
+    int running = 1;
+
+    while (running) {
         read(socket, request, sizeof(request));
 
         int event = decodeVerbSentence(request);
         if (event != InvalidVerb)
-            conn_handle_event(event, socket, id);
+            if (event != BELONG)
+                conn_handle_event(event, socket, id);
+            else
+                running = 0;
         else
             error_handle(InvalidVerb);
     }

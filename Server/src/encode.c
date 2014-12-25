@@ -1,5 +1,6 @@
 #include "encode.h"
 #include "decode.h"
+#include "errors.h"
 
 void generateName(int n, char letter, char * file_name, char * name) {
 
@@ -178,93 +179,80 @@ void connectThreeWords(char * firstWord, char * secondWord, char * thirdWord, ch
    strcat (output, "\n");
 }
 
-
 int generateVerbSentence(char * verb, char * sentence) {
 
    char firstWord[25];
    char thirdWord[25];
 
-    // IS
-   if (verb[0] == 'I') {
+    if (strcmp(verb, "USE") == 0) {
+        char newVerb[5];
+        randomAnimal(firstWord);
+        strcpy(newVerb, verb);
+        strcat (newVerb, "S");
+        randomBodyPart(thirdWord);
+        connectThreeWords(firstWord, newVerb, thirdWord, sentence);
 
-      randomAnimal(firstWord);
-      randomAdjective(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
+        return USE;
+    }
+    if (strcmp(verb, "IS") == 0) {
+        randomAnimal(firstWord);
+        randomAdjective(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 1;
+        return IS;
+    }
+    if (strcmp(verb, "ARE") == 0) {
+        randomAnimal(firstWord);
+        strcat (firstWord, "S");
+        randomAdjective(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-    // ARE
-   } else if (verb[0] == 'A') {
+        return ARE;
+    }
+    if (strcmp(verb, "HAVE") == 0) {
+        strcpy (firstWord, "I");
+        randomBodyPart(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      randomAnimal(firstWord);
-      strcat (firstWord, "S");
-      randomAdjective(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
+        return HAVE;
+    }
+    if (strcmp(verb, "HAS") == 0) {
+        randomAnimal(firstWord);
+        randomBodyPart(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 2;
+        return HAS;
+    }
+    if (strcmp(verb, "WAS") == 0) {
+        randomAnimal(firstWord);
+        randomAdjective(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-    // HAVE
-   } else if (verb[2] == 'V') {
-      strcpy (firstWord, "I");
-      randomBodyPart(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
+        return WAS;
+    }
+    if (strcmp(verb, "WERE") == 0) {
+        randomAnimal(firstWord);
+        strcat (firstWord, "S");
+        randomAdjective(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 3;
+        return WERE;
+    }
+    if (strcmp(verb, "HADNT") == 0) {
+        randomAnimal(firstWord);
+        randomBodyPart(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-    // HAS
-   } else if (verb[0] == 'H' && verb[2] == 'S') {
-      randomAnimal(firstWord);
-      randomBodyPart(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
+        return HADNT;
+    }
+    if (strcmp(verb, "HAD") == 0) {
+        randomAnimal(firstWord);
+        randomBodyPart(thirdWord);
+        connectThreeWords(firstWord, verb, thirdWord, sentence);
 
-      return 4;
+        return HAD;
+    }
 
-    // WAS
-   } else if (verb[0] == 'W' && verb[2] == 'S') {
-      randomAnimal(firstWord);
-      randomAdjective(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
-
-      return 5;
-
-    // WERE
-   } else if (verb[2] == 'R') {
-      randomAnimal(firstWord);
-      strcat (firstWord, "S");
-      randomAdjective(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
-
-      return 6;
-
-    // HADNT
-   } else if (verb[3] == 'N') {
-      randomAnimal(firstWord);
-      randomBodyPart(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
-
-      return 7;
-
-    // HAD
-   } else if (verb[0] == 'H' && verb[2] == 'D') {
-      randomAnimal(firstWord);
-      randomBodyPart(thirdWord);
-      connectThreeWords(firstWord, verb, thirdWord, sentence);
-
-      return 8;
-
-    // USE
-   } else if (verb[0] == 'U') {
-      char verb1[25] = "";
-      randomAnimal(firstWord);
-      strcpy(verb1, verb);
-      strcat (verb1, "S");
-      randomBodyPart(thirdWord);
-      connectThreeWords(firstWord, verb1, thirdWord, sentence);
-
-      return 9;
-   }
-
-   return -1;
-
+    return InvalidVerb;
 }
 

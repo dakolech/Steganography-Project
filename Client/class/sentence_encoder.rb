@@ -22,14 +22,8 @@ class SentenceEncoder
 
         def verb_sentence(verb)
             case verb
-                when :is
-                    @animals.sample + ' IS ' + @adjectives.sample
-                when :are
-                    @animals.sample + 'S ARE ' + @adjectives.sample
-                when :have
-                    'I HAVE ' + @bodyparts.sample
-                when :has
-                    @animals.sample + ' HAS ' + @bodyparts.sample
+                when :belongs
+                    @bodyparts.sample + ' BELONGS TO ' + @animals.sample
                 when :was
                     @animals.sample + ' WAS ' + @adjectives.sample
                 when :were
@@ -38,8 +32,6 @@ class SentenceEncoder
                     @animals.sample + ' HADNT ' + @bodyparts.sample
                 when :had
                     @animals.sample + ' HAD ' + @bodyparts.sample
-                when :use
-                    @animals.sample + ' USES ' + @bodyparts.sample
             end
         end
 

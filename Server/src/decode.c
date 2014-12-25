@@ -110,15 +110,16 @@ int decodeVerbSentence(char * sentence) {
 
    //printf("%s\n", verb);
 
-   if (strcmp(verb, "IS")    == 0) return IS;
-   if (strcmp(verb, "ARE")   == 0) return ARE;
-   if (strcmp(verb, "HAVE")  == 0) return HAVE;
-   if (strcmp(verb, "HAS")   == 0) return HAS;
-   if (strcmp(verb, "WAS")   == 0) return WAS;
-   if (strcmp(verb, "WERE")  == 0) return WERE;
-   if (strcmp(verb, "HADNT") == 0) return HADNT;
-   if (strcmp(verb, "HAD")   == 0) return HAD;
-   if (strcmp(verb, "USE")   == 0) return USE;
+   //if (strcmp(verb, "IS")     == 0) return IS;
+   //if (strcmp(verb, "ARE")    == 0) return ARE;
+   //if (strcmp(verb, "HAVE")   == 0) return HAVE;
+   //if (strcmp(verb, "HAS")    == 0) return HAS;
+   if (strcmp(verb, "WAS")    == 0) return WAS;
+   if (strcmp(verb, "WERE")   == 0) return WERE;
+   //if (strcmp(verb, "HADNT")  == 0) return HADNT;
+   //if (strcmp(verb, "HAD")    == 0) return HAD;
+   //if (strcmp(verb, "USE")    == 0) return USE;
+   if (strcmp(verb, "BELONGS") == 0) return BELONG;
 
    return InvalidVerb;
 }
