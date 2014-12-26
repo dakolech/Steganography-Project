@@ -58,7 +58,7 @@
 	"decode.h"
 	"errors.h"
 
-1419369720 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/libraries.h
+1419608102 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/libraries.h
 	<unistd.h>
 	<sys/types.h>
 	<sys/wait.h>
@@ -70,7 +70,7 @@
 	<stdlib.h>
 	<string.h>
 	<arpa/inet.h>
-	<time.h>
+	<sys/time.h>
 	<pthread.h>
 	<errno.h>
 	<sys/stat.h>
@@ -122,7 +122,7 @@
 
 1419369703 /home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/users.h
 
-1419507911 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
+1419609250 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/server_tcp.c
 	"libraries.h"
 	"connection.h"
 	"errors.h"
@@ -136,7 +136,7 @@
 	"errors.h"
 	<stdio.h>
 
-1419606939 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.c
+1419608225 source:/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/Server/src/connection.c
 	"connection.h"
 	"decode.h"
 	"encode.h"

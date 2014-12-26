@@ -20,6 +20,7 @@ class Message
         @key = Random.srand.to_s.slice(0..8).to_i
         encode_key
         encode_sender
+        encode_timestamp
 
         Random.srand @key
         @text.each_char.with_index do |char, index|
@@ -49,6 +50,10 @@ class Message
         decode_sender
     end
 
+    def timestamp
+        decode_timestamp
+    end
+
     def save
         @image.save('../images/to_send.png')
     end
@@ -57,6 +62,8 @@ class Message
         module Image
             TIMES_LARGER = 50
             FREE_PIXELS = 5
+            TIMESTAMP_FIELDS = [[ 3,  0], [ 4,  0], [ 3,  1], [ 0,  3], [ 1,  3], [ 0,  4],
+                                [-1, -5], [-2, -4], [-1, -4], [-3, -3], [-2, -3], [-1, -3], [-4, -2]]
         end
 
         def find_next_pixel
@@ -104,6 +111,23 @@ class Message
             return str
         end
 
+        def encode_timestamp
+            timestamp = Time.now.to_f.to_s.sub('.', '')[0..12]
+            timestamp.each_char.with_index do |char, i|
+                field_x, field_y = get_image_field(Image::TIMESTAMP_FIELDS[i])
+                encode_letter(field_x, field_y, char)
+            end
+        end
+
+        def decode_timestamp
+            str = ''
+            Image::TIMESTAMP_FIELDS.each do |coord|
+                field_x, field_y = get_image_field(coord)
+                str += decode_letter(field_x, field_y)
+            end
+            return str
+        end
+
         def encode_letter(x, y, letter)
             byte = letter.bytes.first
             magic  = (byte & 0xE0) << 19
@@ -119,6 +143,13 @@ class Message
             blue  = (@image[x, y] & 0x00000700) >> 8
             (red | green | blue).chr
         end
+
+        def get_image_field(field)
+            arr = []
+            arr[0] = field[0] < 0 ? @image.width  + field[0] : field[0]
+            arr[1] = field[1] < 0 ? @image.height + field[1] : field[1]
+            arr
+        end
 end
 
 #~ begin
@@ -126,6 +157,7 @@ end
     #~ msg.encode
     #~ puts "Odkodowano wiadomosc: " + msg.decode
     #~ puts "Odkodowano nadawce: " + msg.from?
+    #~ puts "Znacznik czasowy: " + msg.timestamp
 #~
     #~ msg.save
 #~ rescue ImageTooSmall => e

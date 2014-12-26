@@ -5,6 +5,12 @@
 #define SERVER_PORT 1234
 #define QUEUE_SIZE 5
 
+int nSocket;
+
+void server_handle_SIGINT() {
+    close(nSocket);
+}
+
 void *client_loop(void *arg) {
     int socket = *((int*)arg);
 
@@ -24,7 +30,7 @@ void *client_loop(void *arg) {
 }
 
 int main(int argc, char* argv[]) {
-    int nSocket, nClientSocket;
+    int nClientSocket;
     int nBind, nListen;
     int nFoo = 1;
     //int b;
@@ -54,17 +60,21 @@ int main(int argc, char* argv[]) {
         fprintf(stderr, "%s: Can't set queue size.\n", argv[0]);
     }
 
+    signal(SIGINT, server_handle_SIGINT);
     while(1) {
         nClientSocket = accept(nSocket, (struct sockaddr*)&stClientAddr, &nTmp);
         if (nClientSocket < 0) {
-            fprintf(stderr, "%s: Can't create a connection's socket.\n", argv[0]);
-            exit(1);
+            if (write(nSocket, "TESTING", 8) == -1) {
+                break;
+            } else {
+                fprintf(stderr, "%s: Can't create a connection's socket.\n", argv[0]);
+                exit(1);
+            }
         }
 
         pthread_t id;
         pthread_create(&id, NULL, client_loop, &nClientSocket);
     }
 
-    close(nSocket);
-    return(0);
+    return 0;
 }

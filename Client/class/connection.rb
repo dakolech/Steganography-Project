@@ -59,7 +59,6 @@ class Connection
             prepare_message(message, '../images/cat_small.png')
 
             @socket.print File.size('../images/to_send.png')
-            sleep(0.1)
             File.open('../images/to_send.png') do |f|
                 @socket.print f.read
             end
@@ -93,10 +92,13 @@ class Connection
             new_messages = []
             find_my_images.each do |image|
                 msg = Message.new(filename: image)
-                new_messages << {from: msg.from?, text: msg.decode}
+                new_messages << {from: msg.from?, text: msg.decode, timestamp: msg.timestamp}
                 File.delete(image)
             end
-            new_messages
+
+            new_messages.sort do |x, y|
+                x[:timestamp] <=> y[:timestamp]
+            end
         end
 
         def find_my_images
@@ -112,7 +114,6 @@ class Connection
             send_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :were)
             @socket.print send_sentence + "\n\0"
 
-            sleep(0.1)
             dest_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', id: dest_id, verb: :hates)
             @socket.print dest_sentence + "\n\0"
 
