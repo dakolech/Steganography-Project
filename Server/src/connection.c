@@ -74,11 +74,16 @@ void conn_generate_file_name_to_store(char *id, char *fileName) {
     strcat(path, id);
     strcat(path, "/");
 
-    unsigned int unixTime = (unsigned)time(NULL);
-    char timestamp[15];
-    sprintf(timestamp, "%u", unixTime);
+    struct timeval unixTime;
+    gettimeofday(&unixTime, NULL);
 
-    strcat(path, timestamp);
+    char microseconds[7], seconds[20];
+    sprintf(seconds,      "%lu", (unsigned long)unixTime.tv_sec);
+    sprintf(microseconds, "%lu", (unsigned long)unixTime.tv_usec);
+
+    strcat(path, seconds);
+    strcat(path, ":");
+    strcat(path, microseconds);
     strcat(path, ".png");
 
     strcpy(fileName, path);
