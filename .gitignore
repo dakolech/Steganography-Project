@@ -10,8 +10,7 @@
 
 Pytania
 
-Server/*.o
-Server/server_tcp
+Server/images/
 Server/testClient/*.o
 *.o
 *.c~
@@ -19,8 +18,5 @@ server_tcp
 .gitignore~
 Support/*
 
-*.cbp
-*.depend
-*.layout
 bin/
 *.pdf

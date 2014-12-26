@@ -1,7 +1,11 @@
 #include "libraries.h"
 #include "decode.h"
+#include "errors.h"
 
 int decodeNumberSentence(char * sentence, char * key, char * output) {
+    // if sentence is empty
+    if (strcmp(sentence, "") == 0)
+        return -1;
 
    int number_in_key = key[10] - '0';
 
@@ -62,7 +66,7 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 
    strncpy(verb, &sentence[first_letter_of_verb], last_letter_of_verb-first_letter_of_verb+1);
 
-   if (strcmp("LOVES", verb) == 0) 
+   if (strcmp("LOVES", verb) == 0)
       return 1;//login
 
    if (strcmp("LIKES", verb) == 0)
@@ -81,6 +85,9 @@ int decodeNumberSentence(char * sentence, char * key, char * output) {
 }
 
 int decodeVerbSentence(char * sentence) {
+    if (strlen(sentence) < 3 || sentence[0] == '\n')
+        return InvalidVerb;
+
    int i=0;
    while (1) {
       i++;
@@ -103,44 +110,16 @@ int decodeVerbSentence(char * sentence) {
 
    //printf("%s\n", verb);
 
-   if (verb[0] == 'I') {
+   //if (strcmp(verb, "IS")     == 0) return IS;
+   //if (strcmp(verb, "ARE")    == 0) return ARE;
+   //if (strcmp(verb, "HAVE")   == 0) return HAVE;
+   //if (strcmp(verb, "HAS")    == 0) return HAS;
+   if (strcmp(verb, "WAS")    == 0) return WAS;
+   if (strcmp(verb, "WERE")   == 0) return WERE;
+   //if (strcmp(verb, "HADNT")  == 0) return HADNT;
+   //if (strcmp(verb, "HAD")    == 0) return HAD;
+   //if (strcmp(verb, "USE")    == 0) return USE;
+   if (strcmp(verb, "BELONGS") == 0) return BELONG;
 
-      return 1;
-
-   } else if (verb[0] == 'A') {
-
-      return 2;
-
-   } else if (verb[2] == 'V') {
-      
-      return 3;
-      
-   } else if (verb[0] == 'H' && verb[2] == 'S') {
-      
-      return 4;
-      
-   } else if (verb[0] == 'W' && verb[2] == 'S') {
-      
-      return 5;
-      
-   } else if (verb[2] == 'R') {
-      
-      return 6;
-      
-   } else if (verb[3] == 'N') {
-      
-      return 7;
-      
-   } else if (verb[0] == 'H' && verb[2] == 'D') {
-      
-      return 8; 
-
-   } else if (verb[0] == 'U') {
-      
-      return 9;      
-   }  
-
-
-   return -1;
-
+   return InvalidVerb;
 }

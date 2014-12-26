@@ -1,5 +1,6 @@
 #include "libraries.h"
 #include "users.h"
+#include "errors.h"
 
 int compareIdOrPass(char * input, char * line);
 
@@ -7,9 +8,9 @@ int checkUserLoginPass(char * login, char * pass) {
 	int len;
 	FILE *fp;
 	char line[25];
- 
+
 	fp = fopen("data/users.txt","r"); // read mode
-	 
+
 	if( fp == NULL ) {
 		perror("Error while opening the file.\n");
 		exit(EXIT_FAILURE);
@@ -24,12 +25,12 @@ int checkUserLoginPass(char * login, char * pass) {
 			line[len-1] = 0;
 		if (searchPass == 1 && strcmp(pass,line) == 0 && count%2 == 0) {
 			fclose(fp);
-			return 0;
+			return Success;
 		}
 		else
 			searchPass = 0;
 
-		if (strcmp(login,line) == 0 && count%2) 
+		if (strcmp(login,line) == 0 && count%2)
 			searchPass = 1;
 	}
 
@@ -49,17 +50,14 @@ int countFilesInDirectory(char * id) {
 	if ((dir = opendir (path)) != NULL) {
 		while ((entry = readdir(dir)) != NULL) {
 		    if (entry->d_type == DT_REG) { /* If the entry is a regular file */
-		         file_count++;
+                file_count++;
 		    }
 		}
 	} else {
-      /* could not open directory */
-      perror ("");
-      //return EXIT_FAILURE;
+        return DirErrorCouldntOpen;
     }
 
 	closedir(dir);
 
 	return file_count;
-
 }

@@ -1,9 +1,11 @@
 #include "libraries.h"
 #include "sendRecv.h"
+#include "errors.h"
+#include "encode.h"
 
 int sendFileSizeAndFile(char * fileName, int sck) {
 
-	char file_size[256];
+	char file_size[32];
 	struct stat file_stat;
 	int fd;
 
@@ -23,14 +25,13 @@ int sendFileSizeAndFile(char * fileName, int sck) {
             exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout, "File Size: \n%jd bytes\n", file_stat.st_size);
+    printf("\tFile Size: %jd bytes\n", file_stat.st_size);
 
-    sprintf(file_size, "%jd", file_stat.st_size);
+    sprintf(file_size, "%jd\n", file_stat.st_size);
 
-    write(sck, file_size, BUFSIZ);
+    write(sck, file_size, strlen(file_size));
 
     char buffer[BUFSIZ] = "";
-
 
     while (1) {
 	    // Read data into buffer.  We may not have enough to fill up buffer, so we
@@ -42,7 +43,7 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 	    if (bytes_read < 0) {
 	        // handle errors
 	    }
-	    
+
 
 	    // You need a loop for the write, because not all of the data may be written
 	    // in one call; write will return how many bytes were written. p keeps
@@ -59,8 +60,8 @@ int sendFileSizeAndFile(char * fileName, int sck) {
 
 	    }
 	}
-    //fclose(fd);
-	return 0;	
+    close(fd);
+	return 0;
 }
 
 int recvFileSizeAndFile(char * fileName, int sck) {
@@ -79,56 +80,51 @@ int recvFileSizeAndFile(char * fileName, int sck) {
 
 
     received_file = fopen(fileName, "w");
-    if (received_file == NULL)
-    {
-            fprintf(stderr, "Failed to open file foo --> %s\n", strerror(errno));
-
-            exit(EXIT_FAILURE);
+    if (received_file == NULL) {
+        fprintf(stderr, "Failed to open file foo --> %s\n", strerror(errno));
+        return FileErrorCouldntOpen;
     }
 
     remain_data = file_size;
 
-    while ((remain_data > 0) && ((len = recv(sck, buffer, BUFSIZ, 0)) > 0))
-    {
-            fwrite(buffer, sizeof(char), len, received_file);
-            remain_data -= len;
-            //fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
+    strcpy(buffer, "");
+    while ((remain_data > 0) && ((len = read(sck, buffer, sizeof(buffer))) > 0)) {
+        fwrite(buffer, sizeof(char), len, received_file);
+        remain_data -= len;
+        fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
     }
     fclose(received_file);
 
-    return 0;
+    return Success;
 
 }
 
-int sendImage (char * id, int sck) {
+int sendImages (char * id, int socket) {
     DIR *dir;
     struct dirent *ent;
-    char path[25] = "images/";
-    char fileName[25] = "images/";
+    char path[50] = "images/", fileName[50], tempSentence[50];
+
     strcat (path, id);
-    strcat (fileName, id);
-    strcat (fileName, "/");
-    printf ("path: %s\n", path);
-    
+    strcat (path, "/");
+
     if ((dir = opendir (path)) != NULL) {
-      /* print all the files and directories within directory */
-      while ((ent = readdir (dir)) != NULL) {
-        if (ent->d_type == DT_REG) {
-            printf ("File: %s\n", ent->d_name);
-            strcat(fileName, ent->d_name);
-            printf ("File: %s\n", fileName);
-            sendFileSizeAndFile(fileName, sck);
-            if( remove(fileName) != 0 )
-                perror("Error deleting file");
-            else
-                printf ("File successfully deleted\n");
+        /* print all the files and directories within directory */
+        while ((ent = readdir (dir)) != NULL) {
+            if (ent->d_type == DT_REG) {
+                generateVerbSentence("HAVE", tempSentence);
+                write(socket, tempSentence, strlen(tempSentence));
+
+                strcpy(fileName, path);
+                strcat(fileName, ent->d_name);
+                printf ("\tFile: %s\n", fileName);
+                sendFileSizeAndFile(fileName, socket);
+                if (remove(fileName) != 0)
+                    return FileErrorCouldntDelete;
+            }
         }
-      }
-      closedir (dir);
+        closedir (dir);
     } else {
-      /* could not open directory */
-      perror ("");
-      //return EXIT_FAILURE;
+        return DirErrorCouldntOpen;
     }
-    return 0;
+    return Success;
 }

@@ -58,11 +58,13 @@ Shoes.app title: 'Steganography Project', resizable: false do
                             value[:fun].call
                         end
                     end
-                    #every(5) do
-                    #    @app.check_new_messages
-                    #end
+                    every(5) do
+                        if @app.check_new_messages
+                            friends
+                        end
+                    end
                     keypress do |k|
-                        @app.on_send if k == "\n"
+                        @app.on_send if (k == "\n" and @message_box.text != '')
                     end
                 end
             end
@@ -151,7 +153,9 @@ Shoes.app title: 'Steganography Project', resizable: false do
             friends_list.each do |friend, id|
                 flow margin: [0, 0, 0, 4] do
                     @friends_stack = stack width: '70%' do
-                        ButtonHelper::get_name_button friend, self do
+                        color = @app.have_unreaded(friend) ? red : black
+
+                        ButtonHelper::get_name_button friend, self, color do
                             set_active_friend friend
                         end
                     end
@@ -180,6 +184,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
             para strong(friend), stroke: darkslategray
         end
         @app.begin_conversation friend
+        friends
     end
 
     login

@@ -7,6 +7,7 @@ require_relative 'connection'
 class App
     def initialize
         @conversations = {}
+        @unreaded_messages = Set.new
     end
 
     def set_message_stuff(messenger, message_box)
@@ -32,6 +33,7 @@ class App
         begin
             @connection = Connection.new(OptionHelper::get_options[:server_ip].join('.'), 1234)
             @connection.log_in(id, pass)
+            check_new_messages
         rescue ConnectionError => ce
             login_error.call ce.message
         rescue
@@ -43,10 +45,14 @@ class App
         message = ''
         @messenger.app do
             message = @message_box.text
-            @msg = Message.new(text: message, ip_dest: OptionHelper::get_options[:server_ip])
-            @msg.encode
+        end
 
-            @messenger.append { inscription @msg.decode } unless message == ''
+        unless @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
+            raise AppError.new "Cannot send message: Server doesnt respond"
+        end
+
+        @messenger.app do
+            @messenger.append { inscription message }
             @message_box.text = ''
             @messenger.scroll_top = @messenger.scroll_max
         end
@@ -54,12 +60,12 @@ class App
     end
 
     def check_new_messages
-        message = 'Test metody every(5)'
-        @messenger.app do
-            @messenger.append { inscription message }
-            @messenger.scroll_top = @messenger.scroll_max
+        new_messages = @connection.download_messages_from_server
+        unless new_messages.nil?
+            add_new_messages_to_conversation new_messages
+            return true
         end
-        @conversations[@active_friend].add_message :you, message
+        false
     end
 
     def on_logout
@@ -72,6 +78,7 @@ class App
     def begin_conversation(friend)
         @conversations[friend] ||= Conversation.new
         @active_friend = friend
+        @unreaded_messages.delete(friend)
 
         messages = @conversations[@active_friend].messages
         @messenger.app do
@@ -81,5 +88,28 @@ class App
             end
         end
     end
+
+    def have_unreaded(friend)
+        @unreaded_messages.include?(friend)
+    end
+
+    private
+
+        def add_new_messages_to_conversation(messages)
+            friends = FriendsHelper::get_friends
+            messages.each do |m|
+                friend_name = friends.key(m[:from])
+                @conversations[friend_name] ||= Conversation.new
+                @conversations[friend_name].add_message(:you, m[:text])
+                @unreaded_messages << friend_name
+
+                if friend_name == @active_friend
+                    @messenger.app do
+                        @messenger.append { inscription m[:text] }
+                        @messenger.scroll_top = @messenger.scroll_max
+                    end
+                end
+            end
+        end
 
 end

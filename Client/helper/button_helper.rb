@@ -1,19 +1,19 @@
 module ButtonHelper
-    def ButtonHelper.get_name_button(label, edit_stack)
+    def ButtonHelper.get_name_button(label, edit_stack, color=black)
         edit_stack.app do
             leave do |f|
-                f.clear { inscription label }
+                f.clear { inscription label, stroke: color }
             end
             hover do |f|
                 f.clear do
                     f.background rgb(180, 180, 180)
-                    inscription label
+                    inscription label, stroke: color
                 end
             end
             click do
                 yield
             end
-            inscription label
+            inscription label, stroke: color
         end
     end
 

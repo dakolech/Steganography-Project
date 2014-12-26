@@ -35,3 +35,10 @@ class ConnectionError < StandardError
         @message = 'ConnectionError: ' + message
     end
 end
+
+class AppError < StandardError
+    attr_reader :message
+    def initialize(message)
+        @message = 'Application Error: ' + message
+    end
+end

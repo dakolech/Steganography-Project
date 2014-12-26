@@ -2,26 +2,17 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/colorize'
 
-require 'socket'        # Sockets are in standard library
+require_relative '../class/connection'
 
-describe 'login to server with id and pass' do
+describe Connection do
 
-    it 'should log in to server with proper data' do
-        (1..100).each do |i|
-            hostname = 'localhost'
-            port = 1234
+    it 'should log in to server and receive images' do
+        test_connection = Connection.new('localhost', 1234)
+        test_connection.log_in('4567', '8961').must_equal true
+        test_connection.download_messages_from_server
 
-            sock = TCPSocket.open(hostname, port)
-
-            sock.puts "GAIL HATCHER LOVES GROVER BEST"
-            sock.gets
-            sock.puts "CONCETTA BOYER LIKES GROVER SNELL"
-
-            answer = sock.gets
-            answer.must_include('IS')
-
-            sock.close
-        end
+        sleep(1)
+        test_connection.close
     end
 
 end
