@@ -4,8 +4,6 @@ require 'minitest/colorize'
 
 require 'socket'        # Sockets are in standard library
 
-require_relative 'helper/connection_test_helper'
-
 describe 'sending and recieving file from server' do
 
     before do

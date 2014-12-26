@@ -58,15 +58,16 @@ class Connection
             return false unless prepare_server_for_sending_image(dest_id)
             prepare_message(message, '../images/cat_small.png')
 
-            @socket.puts File.size('../images/to_send.png')
+            @socket.print File.size('../images/to_send.png')
             sleep(0.1)
             File.open('../images/to_send.png') do |f|
-                @sock.print f.read
+                @socket.print f.read
             end
         rescue ConnectionError => ce
             puts ce.message
             return false
         end
+        return true
     end
 
     def close
@@ -81,7 +82,6 @@ class Connection
         def download_message(number)
             received_file = "../images/#{@id}_#{number.to_s}.png"
             received_file_size = @socket.gets.to_i
-            puts 'Received file size: ' + received_file_size.to_s
             data = @socket.read(received_file_size)
 
             dest_file = File.open(received_file, 'w+b')

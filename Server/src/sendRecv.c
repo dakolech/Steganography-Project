@@ -87,11 +87,11 @@ int recvFileSizeAndFile(char * fileName, int sck) {
 
     remain_data = file_size;
 
-    while ((remain_data > 0) && ((len = recv(sck, buffer, BUFSIZ, 0)) > 0))
-    {
-            fwrite(buffer, sizeof(char), len, received_file);
-            remain_data -= len;
-            //fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
+    strcpy(buffer, "");
+    while ((remain_data > 0) && ((len = read(sck, buffer, sizeof(buffer))) > 0)) {
+        fwrite(buffer, sizeof(char), len, received_file);
+        remain_data -= len;
+        fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
     }
     fclose(received_file);
 

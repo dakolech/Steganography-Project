@@ -88,17 +88,24 @@ int conn_receive_image_from_user(int socket, char *id) {
     char buffer[50], dest[5], fileName[50];
 
     read(socket, buffer, sizeof(buffer));
-    if (decodeNumberSentence(buffer, MAINKEY, dest) != 3) {
+    int decodeStatus = decodeNumberSentence(buffer, MAINKEY, dest);
+    if (decodeStatus != 3) {
+        printf("\tZły czasownik w zapytaniu, status decode: %d\n", decodeStatus);
+        printf("\tWadliwe zdanie to: %s\n", buffer);
+
         generateVerbSentence("HAD", buffer);
         write(socket, buffer, strlen(buffer));
 
         return InvalidImageDestination;
     }
 
+    printf("\tOdczytano dest_id jako: %s\n", dest);
     generateVerbSentence("HADNT", buffer);
     write(socket, buffer, strlen(buffer));
 
-    conn_generate_file_name_to_store(id, fileName);
+    conn_generate_file_name_to_store(dest, fileName);
+    printf("\tServer chce zapisać plik od klienta jako: %s\n", fileName);
+
     int status = recvFileSizeAndFile(fileName, socket);
     if (status == Success)
         return Success;
@@ -110,12 +117,12 @@ void conn_handle_event(int event, int socket, char *id) {
     switch (event) {
         case WAS:
             // klient chce zaległe obrazki
-            printf("Klient chce odebrać zaległe obrazki!\n");
+            printf("\tKlient chce odebrać zaległe obrazki!\n");
             conn_send_all_images_to_user(socket, id);
             break;
         case WERE:
             // klient chce wysłać obrazek
-            printf("Klient chce wysłać obrazek!\n");
+            printf("\tKlient chce wysłać obrazek!\n");
             conn_receive_image_from_user(socket, id);
             break;
     }
