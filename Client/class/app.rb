@@ -33,6 +33,7 @@ class App
         begin
             @connection = Connection.new(OptionHelper::get_options[:server_ip].join('.'), 1234)
             @connection.log_in(id, pass)
+            check_new_messages
         rescue ConnectionError => ce
             login_error.call ce.message
         rescue
@@ -46,7 +47,9 @@ class App
             message = @message_box.text
         end
 
-        @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
+        unless @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
+            raise AppError.new "Cannot send message: Server doesnt respond"
+        end
 
         @messenger.app do
             @messenger.append { inscription message }
