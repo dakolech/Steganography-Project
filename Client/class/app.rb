@@ -47,7 +47,6 @@ class App
         end
 
         @connection.send_message_to_server(message, FriendsHelper::get_friends[@active_friend])
-        puts "Wysłano plik z obrazkiem na serwer!"
 
         @messenger.app do
             @messenger.append { inscription message }
@@ -95,15 +94,11 @@ class App
 
         def add_new_messages_to_conversation(messages)
             friends = FriendsHelper::get_friends
-            p friends
-            p messages
             messages.each do |m|
                 friend_name = friends.key(m[:from])
-                puts "Friend name: " + friend_name
                 @conversations[friend_name] ||= Conversation.new
                 @conversations[friend_name].add_message(:you, m[:text])
                 @unreaded_messages << friend_name
-                puts "unreaded_messages ma teraz: " + friend_name
 
                 if friend_name == @active_friend
                     @messenger.app do

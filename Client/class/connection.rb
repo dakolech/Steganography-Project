@@ -23,11 +23,11 @@ class Connection
         id_sentence   = @sentence_encoder.generate(id: id,   key: 'BEZLITOSNY2', verb: :loves)
         pass_sentence = @sentence_encoder.generate(id: pass, key: 'BEZLITOSNY2', verb: :likes)
 
-        @socket.puts id_sentence
+        @socket.print id_sentence + "\n\0"
         answer = @socket.gets
         raise ConnectionError.new 'Bad ID' unless @sentence_decoder.validate(answer, :id_answer)
 
-        @socket.puts pass_sentence
+        @socket.print pass_sentence + "\n\0"
         answer = @socket.gets
         raise ConnectionError.new 'Bad password' unless @sentence_decoder.validate(answer, :pass_answer)
 
@@ -36,7 +36,7 @@ class Connection
 
     def download_messages_from_server
         receive_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :was)
-        @socket.puts receive_sentence
+        @socket.print receive_sentence + "\n\0"
 
         i = 0
         loop do
@@ -72,7 +72,7 @@ class Connection
 
     def close
         logout_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :belongs)
-        @socket.puts logout_sentence
+        @socket.print logout_sentence + "\n\0"
 
         @socket.close
     end
@@ -93,7 +93,6 @@ class Connection
             new_messages = []
             find_my_images.each do |image|
                 msg = Message.new(filename: image)
-                puts 'Decoding image: ' + image
                 new_messages << {from: msg.from?, text: msg.decode}
                 File.delete(image)
             end
@@ -111,11 +110,11 @@ class Connection
 
         def prepare_server_for_sending_image(dest_id)
             send_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', verb: :were)
-            @socket.puts send_sentence
+            @socket.print send_sentence + "\n\0"
 
             sleep(0.1)
             dest_sentence = @sentence_encoder.generate(key: 'BEZLITOSNY2', id: dest_id, verb: :hates)
-            @socket.puts dest_sentence
+            @socket.print dest_sentence + "\n\0"
 
             answer = @socket.gets
             unless @sentence_decoder.validate(answer, :dest_answer)
