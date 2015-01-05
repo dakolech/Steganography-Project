@@ -130,7 +130,7 @@ Shoes.app title: 'Steganography Project', resizable: false do
                     @folder_name = inscription "#{options[:folder_with_images]}"
                     button 'Browse...', right: 5 do
                         dir = ask_open_folder
-                        dir.slice!('/home/bartosz/Documents/Politechnika/Semestr_V/SK2/Steganography-Project/')
+                        dir.slice!(Dir.pwd[0..-3])
                         @folder_name.text = "\t" + dir
                     end
                 end

@@ -16,7 +16,7 @@ module OptionHelper
         server_ip.each_index do |i|
             @options[:server_ip][i] = server_ip[i].text
         end
-        @options[:folder_with_images] = folder_name
+        @options[:folder_with_images] = folder_name.text[1..-1]
     end
 
     def OptionHelper.save_options

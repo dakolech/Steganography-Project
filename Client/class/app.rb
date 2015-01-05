@@ -51,11 +51,8 @@ class App
             raise AppError.new "Cannot send message: Server doesnt respond"
         end
 
-        @messenger.app do
-            @messenger.append { inscription message }
-            @message_box.text = ''
-            @messenger.scroll_top = @messenger.scroll_max
-        end
+        @message_box.text = ''
+        show_message_in_messenger(message, :I)
         @conversations[@active_friend].add_message :I, message
     end
 
@@ -80,12 +77,9 @@ class App
         @active_friend = friend
         @unreaded_messages.delete(friend)
 
-        messages = @conversations[@active_friend].messages
-        @messenger.app do
-            @messenger.clear
-            messages.each do |m|
-                @messenger.append { inscription m[:text] }
-            end
+        @messenger.clear
+        @conversations[@active_friend].messages.each do |m|
+            show_message_in_messenger(m[:text], m[:who])
         end
     end
 
@@ -101,14 +95,27 @@ class App
                 friend_name = friends.key(m[:from])
                 @conversations[friend_name] ||= Conversation.new
                 @conversations[friend_name].add_message(:you, m[:text])
-                @unreaded_messages << friend_name
 
                 if friend_name == @active_friend
-                    @messenger.app do
-                        @messenger.append { inscription m[:text] }
-                        @messenger.scroll_top = @messenger.scroll_max
-                    end
+                    show_message_in_messenger(m[:text], :you)
+                else
+                    @unreaded_messages << friend_name
                 end
+            end
+        end
+
+        def show_message_in_messenger(text, from)
+            @messenger.app do
+                color = blue
+                adjust = "right"
+
+                if from == :you
+                    color = black
+                    adjust = "left"
+                end
+
+                @messenger.append { inscription text, stroke: color, align: adjust }
+                @messenger.scroll_top = @messenger.scroll_max
             end
         end
 

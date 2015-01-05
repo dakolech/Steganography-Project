@@ -12,7 +12,7 @@ class Connection
     def initialize(host, port)
         @host = host
         @port = port
-        @socket = TCPSocket.open(host, 1234)
+        @socket = TCPSocket.open(host, port)
 
         @sentence_encoder = SentenceEncoder.new
         @sentence_decoder = SentenceDecoder.new
@@ -56,10 +56,10 @@ class Connection
     def send_message_to_server(message, dest_id)
         begin
             return false unless prepare_server_for_sending_image(dest_id)
-            prepare_message(message, '../images/cat_small.png')
+            prepare_message(message, get_random_image_file)
 
-            @socket.print File.size('../images/to_send.png')
-            File.open('../images/to_send.png') do |f|
+            @socket.print File.size('../images/to_send/to_send.png')
+            File.open('../images/to_send/to_send.png') do |f|
                 @socket.print f.read
             end
         rescue ConnectionError => ce
@@ -131,5 +131,10 @@ class Connection
             msg = Message.new(text: message, sender: @id, filename: file)
             msg.encode
             msg.save
+        end
+
+        def get_random_image_file
+            files = Dir.glob('../' + OptionHelper::get_options[:folder_with_images] + '/*.png')
+            files[rand(files.length)]
         end
 end

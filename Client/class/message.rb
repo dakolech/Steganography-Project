@@ -55,7 +55,7 @@ class Message
     end
 
     def save
-        @image.save('../images/to_send.png')
+        @image.save('../images/to_send/to_send.png')
     end
 
     private
