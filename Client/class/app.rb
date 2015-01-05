@@ -106,15 +106,12 @@ class App
 
         def show_message_in_messenger(text, from)
             @messenger.app do
-                color = blue
-                adjust = "right"
-
-                if from == :you
-                    color = black
-                    adjust = "left"
+                if from == :I
+                    @messenger.append { inscription text + ' '*5, stroke: blue,  align: "right"}
+                elsif from == :you
+                    @messenger.append { inscription text, stroke: black, align: "left"}
                 end
 
-                @messenger.append { inscription text, stroke: color, align: adjust }
                 @messenger.scroll_top = @messenger.scroll_max
             end
         end
