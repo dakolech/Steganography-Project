@@ -5,7 +5,7 @@ Steganography-Project
 -------------------------
 
 Naszym zadaniem było stworzenie komunikatora wykorzystującego steganografię. Jest to program, w którym wiadomości ukryte są w obrazkach przesyłanych miedzy klientem a serwerem.
-Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a klient w Ruby z pomocą Shoes do tworzenia GUI.
+Część sieciowa jest obsługiwana przez sockety, serwer jest napisany w C, a klient w Ruby z pomocą platformy Shoes do tworzenia GUI.
 
 
 2. Ukrywanie wiadomości
@@ -15,7 +15,7 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 
 	Przykładowy numer: 1234, klucz: bezlitosny2
 	
-	Posiadamy dużą bazę imion i nazwisk. Mamy 4 cyfry, każdą ukrywamy w imię lub nazwisku według klucza. 2 w kluczu oznacza, że cyfry ukrywamy na trzecim miejscu w wyrazie (liczymy od zera).
+	Posiadamy dużą bazę imion i nazwisk. Mamy 4 cyfry, każdą ukrywamy w imieniu lub nazwisku według klucza. 2 w kluczu oznacza, że cyfry ukrywamy na trzecim miejscu w wyrazie (liczymy od zera).
 	
 	1 oznacza, że pierwsze imię powinno mieć na trzecim miejscu literę e (według klucza: 0-B, 1-E, 2-Z, 3-L, 4-I itd.). Pierwszym imieniem może być na przykład: ALEX. 
 	
@@ -27,7 +27,7 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 	
 	Teraz podobnie generujemy imię i nazwisko dla 3 i 4, czyli na trzecim miejscu znajdują się L oraz I, na przykład: AILEEN BRICE.
 	
-	Całe zdanie wygląda następująco: ALEX BOZEMAN LIKES  AILEEN BRICE. A prawdziwe zanczenie to: klient wysyła do serwera hasło 1234 podczas logowania.
+	Całe zdanie wygląda następująco: ALEX BOZEMAN LIKES  AILEEN BRICE. A prawdziwe znaczenie to: klient wysyła do serwera hasło 1234 podczas logowania.
 	
 	
 
@@ -36,9 +36,9 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 	Każdą czynność jaką chce wykonać klient lub serwer kodujemy za pomocą prostego, trzywyrazowego zdania, gdzie czasownik opisuje akcję:
 	>	IS - poprawne logowanie
 	
-	>	ARE - niepoprawne logowania
+	>	ARE - niepoprawne dane logowania
 	
-	>	HAVE - oznacza, że serwer ma do wysłania wiadomośći (obrazki) do klienta
+	>	HAVE - oznacza, że serwer ma do wysłania wiadomości (obrazki) do klienta
 	
 	>	HAS - serwer nie ma co wysłać do klienta
 	
@@ -46,9 +46,9 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 	
 	>	WERE - klient chce wysłać wiadomość
 	
-	>	HADNT - id do którego klient chce wysłać wiadomość jest poprawny
+	>	HADNT - id użytkownika, do którego klient chce wysłać wiadomość jest poprawny
 	
-	>	HAD - niepoprawny id do którego klient chce wysłać wiadomość
+	>	HAD - niepoprawny id użytkownika, do którego klient chce wysłać wiadomość
 	
 	>	BELONGS - wylogowywanie
 	
@@ -56,7 +56,7 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 	Do generowania zdań posiadamy bazę przymiotników, zwierząt oraz części ciała, aby zdania były poprawne stylistycznie. Są one jednak losowane.
 	
 	Dla przykładu:
-	>	Cat IS BLACK. - klient poprawnie się zalogował
+	>	CAT IS BLACK. - klient poprawnie się zalogował
 	
 	>	I HAVE BELLY - serwer chce wysłać wiadomości do klienta
 	
@@ -68,17 +68,24 @@ Część sieciowa jest obsługiwana przez Sockety, Serwer jest napisany w C, a k
 
     Wiadomości wymieniane przez użytkowników komunikatora szyfrowane są w obrazkach kotów. Klient posiada możliwość wybrania katalogu z obrazkami, z których za każdym razem przed wysłaniem wiadomości losowany będzie jeden obrazek (o rozszerzeniu .png). Szyfrowaniem oraz rozszyfrowywaniem obrazków zajmuje się klient. W obrazku zaszyfrowane są:
     *   klucz, bedący 9-cyfrową liczbą naturalną [lewy górny róg, kwadrat 3x3 piksele]
-    *   timestamp, składający się z 13 cyfr, oznaczający czas szyfrowania obrazka (podany w czasie uniksowym, z dokładnością do 1 ms) [część w lewym górnym, część w prawym dolnym rogu]
-    *   nadawca wiadomości, czyli 4-cyfrowy identyfikator nadawcy, tak, aby klient po odszyfrowaniu wiedział, od kogo pochodzi wiadomość [prawy dolny róg, kwadrat 2x2]
+    *   timestamp, składający się z 13 cyfr, oznaczający dokładną datę preparowania obrazka (podana w czasie uniksowym, z dokładnością do 1 ms) [część w lewym górnym, część w prawym dolnym rogu]
+    *   nadawca wiadomości, czyli 4-cyfrowy identyfikator nadawcy, tak, aby klient po odszyfrowaniu wiedział, od kogo ona pochodzi [prawy dolny róg, kwadrat 2x2 piksele]
     *   treść wiadomości, rozsiana po całym obrazku, w losowych pikselach
     
-    No dobrze, nie do końca losowych. Ustalenie, w których pikselach obrazka znajduje się kolejna litera wiadomości możliwe jest za pomocą klucza. Klucz używany jest do tego, aby ustawić generator liczb pseudolosowych w Ruby na określoną przez niego wartość początkową (seed). Następnie losowane są liczby z przedziału [0, image_width] oraz [0, image_height], stanowiące kolejne współrzędne pikseli, w których znajdą się kolejne litery wiadomości. Wylosowana współrzędna jest akceptowana, jeśli dany piksel jest nadal wolny (nic wcześniej tam nie zapisaliśmy) oraz nie pochodzi z jednego z zarezerwowanych dla danych specjalnych (klucz, timestamp, nadawca) obszarów.
-    Jednak jak jest szyfrowana z osobna każda litera? Skoro każdy piksel odpowiada znakowi, to znaczy, że z dostępnych 4 bajtów na piksel obrazka (po 1 B na kanał czerwony, zielony, niebieski i przezroczystość) musimy wygospodarować 1 bajt na literę w kodzie ASCII. 3 najbardziej znaczące bity znaku w kodzie ASCII kodowane są na 3 najmniej znaczących bitach składowej czerwonej, następne 2 bity na 2 najmniej znaczących bitach koloru zielonego i 3 najmniej znaczące bity znaku na 3 najmniej znaczących bitach koloru niebieskiego.
+    No dobrze, nie do końca losowych. Ustalenie, w których pikselach obrazka znajduje się kolejna litera wiadomości możliwe jest za pomocą klucza. Klucz używany jest do tego, aby ustawić generator liczb pseudolosowych na określoną przez niego wartość początkową (seed). Następnie losowane są liczby z przedziału [0, image_width] oraz [0, image_height], stanowiące kolejne współrzędne pikseli, w których znajdą się kolejne litery wiadomości. Wylosowana współrzędna jest akceptowana, jeśli:
+    *   dany piksel jest nadal wolny (nic wcześniej tam nie zapisaliśmy) oraz
+    *   nie pochodzi z jednego z zarezerwowanych dla danych specjalnych (klucz, timestamp, nadawca) obszarów.
     
-    Dlaczego taki rozkład?
+    **Jednak jak jest szyfrowana z osobna każda litera?**
+    Skoro każdy piksel odpowiada znakowi, to znaczy, że z dostępnych 4 bajtów na piksel obrazka (po 1 B na kanał czerwony, zielony, niebieski i przezroczystość) musimy wygospodarować 1 bajt na literę w kodzie ASCII. 3 najbardziej znaczące bity znaku w kodzie ASCII kodowane są na 3 najmniej znaczących bitach składowej czerwonej, następne 2 bity na 2 najmniej znaczących bitach koloru zielonego i 3 najmniej znaczące bity znaku na 3 najmniej znaczących bitach koloru niebieskiego.
+    
+    **Dlaczego taki rozkład?**
     Ludzkie oko stosunkowo najlepiej rozróżnia kolor zielony, dlatego na stratę jego dokładności mogliśmy poświęcić najmniej bitów. Warto zauważyć, że kodowanie ma miejsce na najmniej znaczących bitach, co minimalizuje ostateczną zmianę koloru piksela z obrazka oryginalnego tak, że ludzkie oko nie jest w stanie zauważyć żadnej różnicy.
     Koniec wiadomości oznaczamy zaszyfrowując po ostatniej literze w kolejnym wylosowanym pikselu wartość 0, analogicznie do bajta zerowego, kończącego łańcuchy znaków ('\0').
     Cała magia dzieje się w programie klienta, w skrypcie class/message.rb w funkcji encode. Aby mieć pewność, że całość nie zawali, działanie algorytmu zostało zweryfikowane pomyślnym zakończeniem testów zdefiniowanych w pliku test/message_test.rb.
+    
+    **I po co nam to wszystko?**
+    Program udowania, że wszechświatem rządzą koty. Od dziś zza swojego biurka możemy, wymieniając się ich zdjęciami z odpowiednimi personami, ustalać z Gazpromem ceny gazu dla połowy Europy. A haker i tak będzie widział tylko koty.
     
 3. Komunikacja
 -------------------------
