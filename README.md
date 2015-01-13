@@ -1,4 +1,4 @@
-Steganography-Project
+Steganography-Project "**CATS ARE GREAT**"
 ===========================
 
 1. Wstęp
@@ -90,9 +90,17 @@ Część sieciowa jest obsługiwana przez sockety, serwer jest napisany w C, a k
 3. Komunikacja
 -------------------------
 
-Klient łączy się z serwerem za pomocą socketów, serwer tworzy nowy wątek. Klient wysyła id (LOVES), następnie hasło (LIKES). Serwer sprawdza poprawność logowania (dane w pliku txt, pierwsze id, w nstąpnej linii hasło). 	Jeżeli id i hasło są niepoprawne, serwer wysyła zdanie (ARE), w drugim przypadku wysyła zdanie (IS). Następnie serwer sprawdza czy do tego klienta nie są zapisane jakieś obrazki, jeżeli tak wysyła najpierw zdanie (HAVE), rozmiar pliku (jawnie) i sam obrazek, jeden. Sprawdza aż wyśle wszystkie, jeżeli nie ma już obrazków, serwer wysyła zdanie (HAS). Teraz klient steruje komunikacją. Może wysłać zdanie (BELONGS), dzięki czemu następuje koniec komunikacji, zdanie (WAS), serwer ponownie sprawdza czy są jakieś obrazki do wysłania lub zdanie (WERE), czyli klient chce wysłać obrazek. W ostatnim przypadku po wysłaniu wiadomości (WERE), klient wysyła id (HATES), do którego chce wysłać obrazek. Serwer sprawdza jego poprawność i wysyła zdanie (HAD) w przypadku błednego id (po tym klient może wysłać zdanie WAS, WERE, BELONGS) lub zdanie (HADNT). Następnie klient wysyła rozmiar pliku, potem obrazek, serwer zapisuje obrazek w odpowiednim folderze, a klient ponowanie może wysła zdanie WAS, WERE albo BELONGS.
+Klient łączy się z serwerem za pomocą socketów, serwer tworzy nowy wątek. Klient wysyła id (LOVES), następnie hasło (LIKES). Serwer sprawdza poprawność logowania (dane w pliku txt, pierwsze id, w nstąpnej linii hasło).
+Jeżeli id i hasło są niepoprawne, serwer wysyła zdanie (ARE), w drugim przypadku wysyła zdanie (IS). Następnie serwer sprawdza czy do tego klienta nie są zapisane jakieś obrazki, jeżeli tak wysyła najpierw zdanie (HAVE), rozmiar pliku (jawnie) i sam obrazek, jeden.
+Sprawdza aż wyśle wszystkie, jeżeli nie ma już obrazków, serwer wysyła zdanie (HAS). Teraz klient steruje komunikacją. Może wysłać zdanie (BELONGS), dzięki czemu następuje koniec komunikacji, zdanie (WAS), serwer ponownie sprawdza czy są jakieś obrazki do wysłania lub zdanie (WERE), czyli klient chce wysłać obrazek.
+W ostatnim przypadku po wysłaniu wiadomości (WERE), klient wysyła id (HATES), do którego chce wysłać obrazek. Serwer sprawdza jego poprawność i wysyła zdanie (HAD) w przypadku błednego id (po tym klient może wysłać zdanie WAS, WERE, BELONGS) lub zdanie (HADNT).
+Następnie klient wysyła rozmiar pliku, potem obrazek, serwer zapisuje obrazek w odpowiednim folderze, a klient ponownie może wysłać zdanie WAS, WERE albo BELONGS.
+
 4. Wnioski
 -------------------------	
 
-Największe trudności występowały podczas komunikacji między serwerem w C, a klientem w Ruby, jednakże udało nam się je przezwyciężyć. Sposoby na ukrywanie wiadomości zostały wymyślone przez nas. Aby założyć konto w komunikatorze, trzeba się zgłosić do administratora serwera, który poda id i hasło użytkownika oraz klucz. Bez tych trzech rzeczy nie ma możliwości, aby klient mógł działać poprawnie. Hacker przechwytujący wiadomości przesyłanie między klientem a serwerem będzie widział tylko zdania (czasami bezsensowne) oraz obrazki, bez wiedzy gdzie w obrazku zaszyty jest klucz, w jaki sposób oraz jak się nim posługiwać do odczyttywania kolejnych pozycji pikseli z literami zakodowanej wiadomości, nie będzie w stanie jej rozszyfrować.
+Największe trudności występowały podczas komunikacji między serwerem w C, a klientem w Ruby, jednakże udało nam się je przezwyciężyć.
+Sposoby na ukrywanie wiadomości zostały wymyślone przez nas. Aby założyć konto w komunikatorze, trzeba się zgłosić do administratora serwera, który poda id i hasło użytkownika oraz klucz.
+Bez tych trzech rzeczy nie ma możliwości, aby klient mógł działać poprawnie. Hacker przechwytujący wiadomości przesyłanie między klientem a serwerem będzie widział tylko zdania (czasami bezsensowne) oraz obrazki.
+Bez wiedzy gdzie w obrazku zaszyty jest klucz, w jaki sposób oraz jak się nim posługiwać do odczytywania kolejnych pozycji pikseli z literami zakodowanej wiadomości, nie będzie w stanie jej rozszyfrować.
 
