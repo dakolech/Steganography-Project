@@ -1,4 +1,6 @@
-Steganography-Project "**CATS ARE GREAT**"
+Steganography-Project
+===========================
+"**CATS ARE GREAT**"
 ===========================
 
 1. Wstęp
