@@ -31,9 +31,8 @@ class App
         end
 
         begin
-            @connection = Connection.new(OptionHelper::get_options[:server_ip].join('.'), 1234)
+            @connection = Connection.new(OptionHelper::get_options[:server_ip].join('.'), 3000)
             @connection.log_in(id, pass)
-            check_new_messages
         rescue ConnectionError => ce
             login_error.call ce.message
         rescue

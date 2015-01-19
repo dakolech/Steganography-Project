@@ -59,6 +59,7 @@ class Connection
             prepare_message(message, get_random_image_file)
 
             @socket.print File.size('../images/to_send/to_send.png')
+            sleep(0.1)
             File.open('../images/to_send/to_send.png') do |f|
                 @socket.print f.read
             end
