@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 require 'oily_png'
 require_relative 'exceptions'
+require_relative '../helper/message_helper'
 
 class Message
     attr_accessor :image
 
     def initialize(properties = {})
         filename = properties[:filename] || '../images/cat_small.png'
+        @save_as  = properties[:save_as]  || '../images/to_send/to_send.png'
 
         @text  = properties[:text]  || 'Some default text'
         @image = ChunkyPNG::Image.from_file(filename)
@@ -55,7 +57,7 @@ class Message
     end
 
     def save
-        @image.save('../images/to_send/to_send.png')
+        @image.save(@save_as)
     end
 
     private
@@ -112,7 +114,7 @@ class Message
         end
 
         def encode_timestamp
-            timestamp = Time.now.to_f.to_s.sub('.', '')[0..12]
+            timestamp = MessageHelper::get_timestamp
             timestamp.each_char.with_index do |char, i|
                 field_x, field_y = get_image_field(Image::TIMESTAMP_FIELDS[i])
                 encode_letter(field_x, field_y, char)

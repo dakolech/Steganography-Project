@@ -71,8 +71,9 @@ int recvFileSizeAndFile(char * fileName, int sck) {
 	int file_size;
 
     read(sck, buffer, BUFSIZ);
+    printf("\tJako rozmiar pliku do odebrania otrzymano: %s\n", buffer);
     file_size = atoi(buffer);
-    fprintf(stdout, "\nFile size : %d bytes.\n", file_size);
+    fprintf(stdout, "\n\tFile size : %d bytes.\n", file_size);
 
     ssize_t len;
     FILE *received_file;
@@ -91,7 +92,7 @@ int recvFileSizeAndFile(char * fileName, int sck) {
     while ((remain_data > 0) && ((len = read(sck, buffer, sizeof(buffer))) > 0)) {
         fwrite(buffer, sizeof(char), len, received_file);
         remain_data -= len;
-        fprintf(stdout, "Receive %jd bytes and we hope :- %d bytes\n", len, remain_data);
+        fprintf(stdout, "\tReceive %jd bytes and we hope :- %d bytes\n", len, remain_data);
     }
     fclose(received_file);
 

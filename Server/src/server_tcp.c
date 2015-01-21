@@ -2,7 +2,7 @@
 #include "connection.h"
 #include "errors.h"
 
-#define SERVER_PORT 3000
+#define SERVER_PORT 1234
 #define QUEUE_SIZE 5
 
 int nSocket;

@@ -5,6 +5,7 @@ require_relative 'exceptions'
 require_relative 'sentence_encoder'
 require_relative 'sentence_decoder'
 require_relative 'message'
+require_relative '../helper/message_helper'
 
 class Connection
     attr_reader :host, :port
@@ -55,14 +56,17 @@ class Connection
 
     def send_message_to_server(message, dest_id)
         begin
-            return false unless prepare_server_for_sending_image(dest_id)
-            prepare_message(message, get_random_image_file)
+            save_as = '../images/to_send/' + MessageHelper::get_timestamp + '.png'
 
-            @socket.print File.size('../images/to_send/to_send.png')
+            return false unless prepare_server_for_sending_image(dest_id)
+            prepare_message(message, get_random_image_file, save_as)
+
+            @socket.print File.size(save_as)
             sleep(0.1)
-            File.open('../images/to_send/to_send.png') do |f|
+            File.open(save_as) do |f|
                 @socket.print f.read
             end
+            File.delete(save_as)
         rescue ConnectionError => ce
             puts ce.message
             return false
@@ -128,8 +132,8 @@ class Connection
             true
         end
 
-        def prepare_message(message, file)
-            msg = Message.new(text: message, sender: @id, filename: file)
+        def prepare_message(message, file, save_as)
+            msg = Message.new(text: message, sender: @id, filename: file, save_as: save_as)
             msg.encode
             msg.save
         end
